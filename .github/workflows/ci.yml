@@ -8,8 +8,9 @@ on:
     branches:
       - main
 
+env:
+  SECRET_KEY: "somethingTh@tIsOnlyUs3dForT3sting"
 
-# three job definition
 jobs:
   health-check-job:
     runs-on: ubuntu-latest
