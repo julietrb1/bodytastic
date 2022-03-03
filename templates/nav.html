@@ -1,0 +1,10 @@
+<nav class="ui menu">
+    <div class="header item">Bodytastic</div>
+    <a class="{% if request.resolver_match.app_name == "medication" %}active{% endif %} item"
+       href="{% url "medication:medicine-index" %}">Medication</a>
+    <a class="{% if request.resolver_match.app_name == "body" %}active{% endif %} item"
+       href="{% url "body:report-index" %}">Body</a>
+    <div class="right menu">
+        <a class="item" href="{% url 'logout' %}">Log out&nbsp;<i class="sign out alternate icon"></i></a>
+    </div>
+</nav>

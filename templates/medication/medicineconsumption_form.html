@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+    <i class="book medical icon primary circular"></i>
+    <div class="content">
+        {% if object %}
+            Edit
+        {% else %}
+            Log
+        {% endif %}
+        Consumption
+        <div class="sub header">{{ medicine.name }}</div>
+    </div>
+{% endblock title %}
+{% block content %}
+    <form method="post" class="ui form">
+        {% csrf_token %}
+        {{ form }}
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button"
+               href="{% url 'medication:medicine-detail' view.kwargs.medicinepk %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+    </form>
+{% endblock content %}

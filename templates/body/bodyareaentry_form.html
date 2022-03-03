@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}
+    <i class="circular primary ruler combined icon"></i>
+    <div class="content">
+        {% if object %}
+            Edit
+        {% else %}
+            Add
+        {% endif %}
+        Entry For {{ report.when|naturalday|title }}
+        <div class="sub header">{{ object.body_area.name }}</div>
+    </div>
+{% endblock title %}
+{% block content %}
+    <div class="ui divider hidden"></div>
+    <form method="post" class="ui form">
+        {% csrf_token %}
+        {{ form }}
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button"
+               href="{% url 'body:report-detail' report.pk %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+    </form>
+{% endblock content %}

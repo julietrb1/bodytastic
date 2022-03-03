@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load body_extras %}
+{% block title %}
+    My Body
+{% endblock title %}
+{% block content %}
+    <div class="ui cards">
+        {% for report in object_list %}
+            {% report_card report %}
+        {% empty %}
+            <p>
+                No reports yet!
+            </p>
+        {% endfor %}
+    </div>
+    <div class="ui divider hidden"></div>
+    <a class="ui button labeled icon" href="{% url 'body:report-create' %}">
+        <i class="icon plus"></i>
+        Add Report
+    </a>
+{% endblock content %}

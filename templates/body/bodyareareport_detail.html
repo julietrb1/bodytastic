@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load body_extras %}
+{% block title %}
+    <i class="weight icon primary circular"></i>
+    <div class="content">
+        {{ object.when }}
+        <div class="sub header">{{ object.when|naturalday|title }} • {{ object.weight_display }}</div>
+    {% endblock title %}
+    {% block content %}
+        {% if object.bodyareaentry_set.count %}
+            <a class="small basic ui button" href="{% url 'body:report-index' %}">
+                <i class="left arrow icon"></i>
+                Back to Body
+            </a>
+            <div class="ui divider hidden"></div>
+            <div class="ui cards">
+                {% for entry in object.bodyareaentry_set.all %}
+                    {% entry_card entry %}
+                {% endfor %}
+            </div>
+            <div class="ui divider hidden"></div>
+            <a href="{% url 'body:entry-create' view.kwargs.pk %}"
+               class="ui labeled icon button">
+                <i class="icon plus"></i>
+                Add Entry
+            </a>
+        {% else %}
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="ruler combined icon"></i>
+                    No entries for {{ object.when|naturalday }}
+                </div>
+                <div class="inline">
+                    <a href="{% url 'body:entry-create' view.kwargs.pk %}"
+                       class="ui primary labeled icon button">
+                        <i class="icon plus"></i>
+                        Add Entry
+                    </a>
+                    <a href="{% url 'body:report-index' %}" class="ui button">Back to Body</a>
+                </div>
+            {% endif %}
+        {% endblock content %}

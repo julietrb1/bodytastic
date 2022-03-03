@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load medication_extras %}
+{% block title %}
+    My Medicines
+{% endblock title %}
+{% block content %}
+    <div class="ui cards">
+        {% for medicine in object_list %}
+            {% medicine_card medicine %}
+        {% endfor %}
+    </div>
+    <div class="ui hidden divider"></div>
+    <a href="{% url 'medication:medicine-create' %}"
+       class="labeled icon ui button">
+        <i class="icon plus"></i>
+        Add Medicine
+    </a>
+{% endblock content %}

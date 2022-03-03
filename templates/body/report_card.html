@@ -1,0 +1,30 @@
+{% load humanize %}
+<div class="card">
+    <div class="content">
+        <div class="header">
+            <i class="circular primary weight icon"></i>&nbsp;{{ report.when|naturalday|title }}
+        </div>
+        <div class="meta">
+            {{ report.bodyareaentry_set.count|apnumber|capfirst }} entr{{ report.bodyareaentry_set.count|pluralize:'y,ies' }} • {{ report.weight_display }}
+        </div>
+        <div class="description">
+            {% for entry in report.bodyareaentry_set.all %}
+                <span class="ui label small">{{ entry.body_area.name }} ({{ entry.measurement|floatformat:"0" }} {{ entry.body_area.measurement_unit }})</span>
+            {% empty %}
+                <span class="badge bg-secondary">No entries</span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="extra content">
+        <div class="ui four small buttons">
+            <a class="ui icon primary button"
+               href="{% url 'body:report-detail' report.pk %}"><i class="eye outline icon"></i></a>
+            <a class="ui icon basic button"
+               href="{% url 'body:entry-create' reportpk=report.pk %}"><i class="plus icon"></i></a>
+            <a class="ui basic icon button"
+               href="{% url 'body:report-update' report.pk %}"><i class="edit icon"></i></a>
+            <a class="ui basic icon button"
+               href="{% url 'body:report-delete' report.pk %}"><i class="trash icon"></i></a>
+        </div>
+    </div>
+</div>

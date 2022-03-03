@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}
+    {% if object %}
+        Edit
+    {% else %}
+        Add
+    {% endif %}
+    {{ body_area.name }} Report
+{% endblock title %}
+{% block content %}
+    <div class="ui divider hidden"></div>
+    <form method="post" class="ui form">
+        {% csrf_token %}
+        {{ form }}
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button" href="{% url 'body:report-index' %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+    </form>
+{% endblock content %}

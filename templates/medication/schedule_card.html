@@ -1,0 +1,30 @@
+{% load humanize %}
+<div class="{% if schedule.next_consumption %}green{% endif %} card">
+    <div class="content">
+        <div class="header">
+            <i class="{% if schedule.is_active %}green{% else %}primary{% endif %} circular clock icon"></i>&nbsp;Every {{ schedule.frequency_in_days|apnumber }} day{{ schedule.frequency_in_days|pluralize }}
+        </div>
+        {% if schedule.next_consumption %}
+            <div class="meta">
+                <strong>Next:</strong>&nbsp;{{ schedule.time }} ({{ schedule.next_consumption|naturaltime }})
+            </div>
+        {% endif %}
+        <div class="description">
+            Currently <strong>
+            {% if schedule.is_active %}
+                <span class="ui text success">active</span>
+            {% else %}
+                inactive
+            {% endif %}
+        </strong>
+    </div>
+</div>
+<div class="extra content">
+    <div class="ui three small buttons">
+        <a class="ui basic button"
+           href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
+        <a class="ui basic button"
+           href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Delete</a>
+    </div>
+</div>
+</div>

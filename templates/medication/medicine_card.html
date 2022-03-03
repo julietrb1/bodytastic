@@ -1,0 +1,24 @@
+{% load humanize %}
+<div class="card">
+    <div class="content">
+        <div class="header">
+            <i class="pills icon primary circular"></i>&nbsp;{{ medicine }}
+        </div>
+        <div class="meta">
+            <strong>{{ medicine.medicineconsumption_set.count|apnumber|capfirst }}</strong> consumption{{ medicine.medicineconsumption_set.count|pluralize }} logged.
+        </div>
+        <div class="description">
+            <strong>{{ medicine.active_schedules.count|apnumber|capfirst }}</strong> active schedule{{ medicine.active_schedules.count|pluralize }} set up.
+        </div>
+    </div>
+    <div class="extra content">
+        <div class="ui three small buttons">
+            <a class="ui primary button"
+               href="{% url 'medication:medicine-detail' medicine.id %}">View</a>
+            <a class="ui basic button"
+               href="{% url 'medication:medicine-edit' medicine.id %}">Edit</a>
+            <a class="ui basic button"
+               href="{% url 'medication:medicine-delete' medicine.id %}">Delete</a>
+        </div>
+    </div>
+</div>
