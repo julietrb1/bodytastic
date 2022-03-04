@@ -50,6 +50,8 @@ jobs:
         run: python manage.py migrate
       - name: Run Test
         run: python manage.py test
+  release-job:
+    steps:
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
