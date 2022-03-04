@@ -16,7 +16,43 @@
     <div class="ui divider hidden"></div>
     <form method="post" class="ui form">
         {% csrf_token %}
-        {{ form }}
+        <div class="{% if form.body_area %}three{% else %}two{% endif %} fields">
+            {% if form.body_area %}
+                <div class="field">
+                    {{ form.body_area.label_tag }}
+                    <select class="ui fluid dropdown"
+                            name="{{ form.body_area.name }}"
+                            id="{{ form.body_area.id_for_label }}">
+                        {% for area in form.body_area.field.choices %}
+                            <option value={{ area.0 }}>
+                                {{ area.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            <div class="field">
+                {{ form.sensations.label_tag }}
+                <select multiple=""
+                        class="ui fluid dropdown"
+                        name="{{ form.sensations.name }}"
+                        id="{{ form.sensations.id_for_label }}">
+                    {% for sensation in form.sensations.field.choices %}
+                        <option value={{ sensation.0 }}>
+                            {{ sensation.1 }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="field">
+                {{ form.measurement.label_tag }}
+                {{ form.measurement }}
+            </div>
+        </div>
+        <div class="field">
+            {{ form.notes.label_tag }}
+            {{ form.notes }}
+        </div>
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button"

@@ -87,7 +87,11 @@ class BodyAreaEntry(models.Model):
         return f"{self.body_area} report"
 
     def measurement_with_unit(self):
-        return f"{float(self.measurement):g} {self.body_area.measurement_unit}"
+        return (
+            f"{float(self.measurement):g} {self.body_area.measurement_unit}"
+            if self.measurement
+            else "no measurement"
+        )
 
 
 class BodyImage(models.Model):
