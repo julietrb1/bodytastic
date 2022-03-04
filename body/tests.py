@@ -2,9 +2,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.timezone import datetime
-
 from django.test import override_settings
-
 from body.models import BodyArea, BodyAreaEntry, BodyAreaReport
 
 
@@ -39,7 +37,7 @@ class ReportListViewTests(TestCase):
         """
         response = self.client.get(reverse("body:report-index"))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "No Reports Here, But there could be...")
+        self.assertContains(response, "No Reports Here, but There Could Be...")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
     def test_one_report_no_entries(self):
