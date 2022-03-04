@@ -4,15 +4,19 @@
     My Medicines
 {% endblock title %}
 {% block content %}
-    <div class="ui cards">
-        {% for medicine in object_list %}
-            {% medicine_card medicine %}
-        {% endfor %}
-    </div>
-    <div class="ui hidden divider"></div>
-    <a href="{% url 'medication:medicine-create' %}"
-       class="labeled icon ui button">
-        <i aria-hidden="true" class="icon plus"></i>
-        Add Medicine
-    </a>
+    {% if object_list %}
+        <div class="ui cards">
+            {% for medicine in object_list %}
+                {% medicine_card medicine %}
+            {% endfor %}
+        </div>
+        <div class="ui hidden divider"></div>
+        <a href="{% url 'medication:medicine-create' %}"
+           class="labeled icon ui button">
+            <i aria-hidden="true" class="icon plus"></i>
+            Add Medicine
+        </a>
+    {% else %}
+        {% include "medication/medicine_list_empty.html" %}
+    {% endif %}
 {% endblock content %}
