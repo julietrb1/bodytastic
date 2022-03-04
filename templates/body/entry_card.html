@@ -4,7 +4,7 @@
         <div class="header">
             <i aria-hidden="true" class="circular primary ruler combined icon"></i>&nbsp;{{ entry.body_area }}
         </div>
-        <div class="meta">{{ entry.measurement_with_unit }}</div>
+        <div class="meta">{{ entry.measurement_with_unit|capfirst }}</div>
         <div class="description">
             {% for sensation in entry.sensations.all %}
                 <span class="ui small label primary">{{ sensation.name }}</span>

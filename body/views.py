@@ -3,6 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.utils.timezone import datetime
+from body.forms import ReportForm
 
 from body.models import BodyArea, BodyAreaReport, BodyAreaEntry
 
@@ -46,7 +47,7 @@ class ReportDetailView(UserOnlyMixin, BodyAreaMixin, DetailView):
 
 class ReportCreateView(UserOnlyMixin, CreateView):
     model = BodyAreaReport
-    fields = ["when", "weight_in_kg"]
+    form_class = ReportForm
 
     def form_valid(self, form):
         form.instance.user = self.request.user
