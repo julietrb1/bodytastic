@@ -12,7 +12,26 @@
     <div class="ui divider hidden"></div>
     <form method="post" class="ui form">
         {% csrf_token %}
-        {{ form }}
+        {{ form.non_field_errors }}
+        <div class="two fields">
+            <div class="field">
+                {{ form.when.errors }}
+                {{ form.when.label_tag }}
+                <div class="ui calendar" id="{{ form.when.id_for_label }}">
+                    <div class="ui input left icon">
+                        <i aria-hidden="true" class="calendar icon"></i>
+                        <input type="text"
+                               placeholder="Date/Time"
+                               name="{{ form.when.name }}"
+                               value="{{ form.when.initial }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {{ form.weight_in_kg.label_tag }}
+                {{ form.weight_in_kg }}
+            </div>
+        </div>
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button" href="{% url 'body:report-index' %}">Cancel</a>
@@ -21,3 +40,12 @@
         </div>
     </form>
 {% endblock content %}
+{% block scripts %}
+    $('#{{ form.when.id_for_label }}')
+    .calendar({
+    type: 'date',
+    initialDate: new Date(),
+    maxDate: new Date(),
+    })
+    ;
+{% endblock scripts %}
