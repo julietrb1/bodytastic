@@ -1,9 +1,8 @@
 {% load humanize %}
+{% load body_extras %}
 <div class="card">
     <div class="content">
-        <div class="header">
-            <i class="circular primary weight icon"></i>&nbsp;{{ report.when|naturalday|title }}
-        </div>
+        <div class="header">{% report_icon %}&nbsp;{{ report.when|naturalday|title }}</div>
         <div class="meta">
             {{ report.bodyareaentry_set.count|apnumber|capfirst }} entr{{ report.bodyareaentry_set.count|pluralize:'y,ies' }} • {{ report.weight_display }}
         </div>

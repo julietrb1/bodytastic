@@ -5,18 +5,18 @@
     My Body
 {% endblock title %}
 {% block content %}
-    <div class="ui cards">
-        {% for report in object_list %}
-            {% report_card report %}
-        {% empty %}
-            <p>
-                No reports yet!
-            </p>
-        {% endfor %}
-    </div>
-    <div class="ui divider hidden"></div>
-    <a class="ui button labeled icon" href="{% url 'body:report-create' %}">
-        <i class="icon plus"></i>
-        Add Report
-    </a>
+    {% if object_list %}
+        <div class="ui cards">
+            {% for report in object_list %}
+                {% report_card report %}
+            {% endfor %}
+        </div>
+        <div class="ui divider hidden"></div>
+        <a class="ui button labeled icon" href="{% url 'body:report-create' %}">
+            <i class="icon plus"></i>
+            Add Report
+        </a>
+    {% else %}
+        {% include "body/report_list_empty.html" %}
+    {% endif %}
 {% endblock content %}

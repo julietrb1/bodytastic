@@ -1,0 +1,15 @@
+{% load humanize %}
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        <i class="ruler combined icon"></i>
+        No entries for {{ object.when|naturalday }}
+    </div>
+    <div class="inline">
+        <a href="{% url 'body:entry-create' view.kwargs.pk %}"
+           class="ui primary labeled icon button">
+            <i class="icon plus"></i>
+            Add Entry
+        </a>
+        <a href="{% url 'body:report-index' %}" class="ui button">Back to Body</a>
+    </div>
+</div>
