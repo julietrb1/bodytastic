@@ -53,7 +53,7 @@ class BodyAreaReport(models.Model):
     def weight_display(self):
         if not self.weight_in_kg:
             return "no weight"
-        return f"{self.weight_in_kg} kg"
+        return f"{float(self.weight_in_kg):g} kg"
 
 
 class BodyAreaEntry(models.Model):
@@ -75,7 +75,7 @@ class BodyAreaEntry(models.Model):
         return f"{self.body_area} report"
 
     def measurement_with_unit(self):
-        return f"{self.measurement} {self.body_area.measurement_unit}"
+        return f"{float(self.measurement):g} {self.body_area.measurement_unit}"
 
 
 class BodyImage(models.Model):

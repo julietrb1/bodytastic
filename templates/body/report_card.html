@@ -8,9 +8,7 @@
         </div>
         <div class="description">
             {% for entry in report.bodyareaentry_set.all %}
-                <span class="ui label small">{{ entry.body_area.name }} ({{ entry.measurement|floatformat:"0" }} {{ entry.body_area.measurement_unit }})</span>
-            {% empty %}
-                <span class="badge bg-secondary">No entries</span>
+                <span class="ui label small">{{ entry.body_area.name }} ({{ entry.measurement_with_unit }})</span>
             {% endfor %}
         </div>
     </div>
