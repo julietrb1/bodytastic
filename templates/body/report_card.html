@@ -5,6 +5,7 @@
         <div class="header">{% report_icon %}&nbsp;{{ report.when|naturalday|title }}</div>
         <div class="meta">
             {{ report.bodyareaentry_set.count|apnumber|capfirst }} entr{{ report.bodyareaentry_set.count|pluralize:'y,ies' }} • {{ report.weight_display }}
+            {% if report.waist_hip_ratio %}• WHR: {{ report.waist_hip_ratio|floatformat:3 }}{% endif %}
         </div>
         <div class="description">
             {% for entry in report.bodyareaentry_set.all %}

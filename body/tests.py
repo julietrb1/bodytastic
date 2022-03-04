@@ -65,4 +65,24 @@ class ReportListViewTests(TestCase):
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "One entry")
         self.assertContains(response, body_area.name)
+        self.assertNotContains(response, "WHR:")
+        self.assertQuerysetEqual(response.context["object_list"], [report])
+
+    def test_one_report_with_whr_entry(self):
+        """
+        A report with Hips and Waist entries should show WHR.
+        """
+        report = create_report(self.user)
+        waist_body_area = create_body_area("Waist")
+        create_entry(report, waist_body_area, 50)
+        hips_body_area = create_body_area("Hips")
+        create_entry(report, hips_body_area, 85)
+        response = self.client.get(reverse("body:report-index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "1 Jan 2022")
+        self.assertContains(response, "50.5 kg")
+        self.assertContains(response, "Two entries")
+        self.assertContains(response, "Waist")
+        self.assertContains(response, "Hips")
+        self.assertContains(response, "WHR: 0.588")
         self.assertQuerysetEqual(response.context["object_list"], [report])
