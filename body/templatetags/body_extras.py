@@ -17,4 +17,6 @@ def entry_card(entry):
 @register.simple_tag
 def report_icon(colour="primary", circular=False):
     circular_class = "circular" if circular else None
-    return format_html(f'<i class="weight icon {colour} {circular_class}"></i>')
+    return format_html(
+        f'<i aria-hidden="true" class="weight icon {colour} {circular_class}"></i>'
+    )

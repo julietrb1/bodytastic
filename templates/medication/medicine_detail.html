@@ -2,7 +2,7 @@
 {% load medication_extras %}
 {% load humanize %}
 {% block title %}
-    <i class="pills icon primary circular"></i>
+    <i aria-hidden="true" class="pills icon primary circular"></i>
     <div class="content">
         {{ object }}
         <div class="sub header">{{ consumptions.count|apnumber|title }} consumptions</div>
@@ -11,7 +11,7 @@
 {% block content %}
     <a class="ui small basic button"
        href="{% url 'medication:medicine-index' %}">
-        <i class="left arrow icon"></i>
+        <i aria-hidden="true" class="left arrow icon"></i>
         Back to Medicines
     </a>
     <div class="ui hidden divider"></div>
@@ -21,7 +21,7 @@
                 Schedules&nbsp;
                 <a href="{% url 'medication:schedule-create' medicinepk=object.pk %}"
                    class="mini icon ui button">
-                    <i class="icon plus"></i>
+                    <i aria-hidden="true" class="icon plus"></i>
                 </a>
             </h3>
             <div class="ui cards">
@@ -39,7 +39,7 @@
                 Consumptions&nbsp;
                 <a href="{% url 'medication:consumption-create' medicinepk=object.pk %}"
                    class="mini icon ui button">
-                    <i class="icon plus"></i>
+                    <i aria-hidden="true" class="icon plus"></i>
                 </a>
             </h3>
             <div class="ui cards">

@@ -5,6 +5,6 @@
     <a class="{% if request.resolver_match.app_name == "body" %}active{% endif %} item"
        href="{% url "body:report-index" %}">Body</a>
     <div class="right menu">
-        <a class="item" href="{% url 'logout' %}">Log out&nbsp;<i class="sign out alternate icon"></i></a>
+        <a class="item" href="{% url 'logout' %}">Log out&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
     </div>
 </nav>

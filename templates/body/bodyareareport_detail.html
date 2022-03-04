@@ -11,7 +11,7 @@
 {% block content %}
     {% if object.bodyareaentry_set.count %}
         <a class="small basic ui button" href="{% url 'body:report-index' %}">
-            <i class="left arrow icon"></i>
+            <i aria-hidden="true" class="left arrow icon"></i>
             Back to Body
         </a>
         <div class="ui divider hidden"></div>
@@ -23,7 +23,7 @@
         <div class="ui divider hidden"></div>
         <a href="{% url 'body:entry-create' view.kwargs.pk %}"
            class="ui labeled icon button">
-            <i class="icon plus"></i>
+            <i aria-hidden="true" class="icon plus"></i>
             Add Entry
         </a>
     {% else %}

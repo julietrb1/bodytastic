@@ -2,7 +2,8 @@
 <div class="{% if schedule.next_consumption %}green{% endif %} card">
     <div class="content">
         <div class="header">
-            <i class="{% if schedule.is_active %}green{% else %}primary{% endif %} circular clock icon"></i>&nbsp;Every {{ schedule.frequency_in_days|apnumber }} day{{ schedule.frequency_in_days|pluralize }}
+            <i aria-hidden="true"
+               class="{% if schedule.is_active %}green{% else %}primary{% endif %} circular clock icon"></i>&nbsp;Every {{ schedule.frequency_in_days|apnumber }} day{{ schedule.frequency_in_days|pluralize }}
         </div>
         {% if schedule.next_consumption %}
             <div class="meta">
