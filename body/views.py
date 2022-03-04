@@ -46,7 +46,7 @@ class ReportDetailView(UserOnlyMixin, BodyAreaMixin, DetailView):
 
 class ReportCreateView(UserOnlyMixin, CreateView):
     model = BodyAreaReport
-    fields = ["when", "weight_in_g"]
+    fields = ["when", "weight_in_kg"]
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -55,7 +55,7 @@ class ReportCreateView(UserOnlyMixin, CreateView):
 
 class ReportUpdateView(UserOnlyMixin, UpdateView):
     model = BodyAreaReport
-    fields = ["weight_in_g"]
+    fields = ["weight_in_kg"]
 
 
 class ReportDeleteView(UserOnlyMixin, DeleteView):

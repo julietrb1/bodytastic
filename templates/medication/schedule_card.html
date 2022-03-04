@@ -10,21 +10,20 @@
             </div>
         {% endif %}
         <div class="description">
-            Currently <strong>
+            Currently
             {% if schedule.is_active %}
-                <span class="ui text success">active</span>
+                <strong><span class="ui text success">active</span></strong>
             {% else %}
-                inactive
+                <strong>inactive</strong>
             {% endif %}
-        </strong>
+        </div>
     </div>
-</div>
-<div class="extra content">
-    <div class="ui three small buttons">
-        <a class="ui basic button"
-           href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
-        <a class="ui basic button"
-           href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Delete</a>
+    <div class="extra content">
+        <div class="ui three small buttons">
+            <a class="ui basic button"
+               href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
+            <a class="ui basic button"
+               href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Delete</a>
+        </div>
     </div>
-</div>
 </div>

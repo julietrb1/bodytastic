@@ -35,7 +35,13 @@ class BodyAreaReport(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     when = models.DateField()
-    weight_in_g = models.PositiveSmallIntegerField(blank=True, null=True)
+    weight_in_kg = models.DecimalField(
+        verbose_name="Weight (kg)",
+        decimal_places=2,
+        max_digits=5,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f"{self.user} on {self.when}"
@@ -45,9 +51,9 @@ class BodyAreaReport(models.Model):
 
     @property
     def weight_display(self):
-        if not self.weight_in_g:
+        if not self.weight_in_kg:
             return "no weight"
-        return f"{self.weight_in_g / 1000} kg"
+        return f"{self.weight_in_kg} kg"
 
 
 class BodyAreaEntry(models.Model):
