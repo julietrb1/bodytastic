@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import environ
 import os
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 import django_heroku
 
@@ -21,6 +23,8 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, []),
     STATIC_URL=(str, "static/"),
     ON_HEROKU=(bool, False),
+    SENTRY_DSN=(str, ""),
+    ENV_NAME=(str, "dev"),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -157,6 +161,20 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AXES_LOCK_OUT_BY_USER_OR_IP = True
+
+if env("SENTRY_DSN") and env("ENV_NAME"):
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN"),
+        integrations=[DjangoIntegration()],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=1.0,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
+        environment=env("ENV_NAME"),
+    )
 
 # Activate Django-Heroku (should be at the end of settings)
 if env("ON_HEROKU"):
