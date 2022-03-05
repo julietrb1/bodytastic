@@ -15,8 +15,18 @@
         Back to Medicines
     </a>
     <div class="ui hidden divider"></div>
-    <div class="ui stackable grid">
-        <div class="four wide column">
+    <div class="ui relaxed stackable grid">
+        <div class="eight wide column">
+            <h3 class="ui header">
+                Consumptions&nbsp;
+                <a href="{% url 'medication:consumption-create' medicinepk=object.pk %}"
+                   class="mini icon ui button">
+                    <i aria-hidden="true" class="icon plus"></i>
+                </a>
+            </h3>
+            {% consumption_table consumptions %}
+        </div>
+        <div class="eight wide column">
             <h3 class="ui header">
                 Schedules&nbsp;
                 <a href="{% url 'medication:schedule-create' medicinepk=object.pk %}"
@@ -27,24 +37,6 @@
             <div class="ui cards">
                 {% for schedule in schedules %}
                     {% schedule_card schedule %}
-                {% empty %}
-                    <p>
-                        Nothing here!
-                    </p>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="twelve wide column">
-            <h3 class="ui header">
-                Consumptions&nbsp;
-                <a href="{% url 'medication:consumption-create' medicinepk=object.pk %}"
-                   class="mini icon ui button">
-                    <i aria-hidden="true" class="icon plus"></i>
-                </a>
-            </h3>
-            <div class="ui cards">
-                {% for consumption in consumptions %}
-                    {% consumption_card consumption %}
                 {% empty %}
                     <p>
                         Nothing here!

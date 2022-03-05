@@ -9,14 +9,14 @@
     </div>
 {% endblock title %}
 {% block content %}
-    {% if object.bodyareaentry_set.count %}
+    {% if object.entry_set.count %}
         <a class="small basic ui button" href="{% url 'body:report-index' %}">
             <i aria-hidden="true" class="left arrow icon"></i>
             Back to Body
         </a>
         <div class="ui divider hidden"></div>
         <div class="ui cards">
-            {% for entry in object.bodyareaentry_set.all %}
+            {% for entry in object.entry_set.all %}
                 {% entry_card entry %}
             {% endfor %}
         </div>

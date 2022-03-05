@@ -30,7 +30,7 @@ class Sensation(models.Model):
         return self.name
 
 
-class BodyAreaReport(models.Model):
+class Report(models.Model):
     """A general body check-in by a user on a given date."""
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -60,18 +60,18 @@ class BodyAreaReport(models.Model):
 
     @property
     def waist_hip_ratio(self):
-        waist_entry = self.bodyareaentry_set.filter(body_area__name="Waist").first()
-        hip_entry = self.bodyareaentry_set.filter(body_area__name="Hips").first()
+        waist_entry = self.entry_set.filter(body_area__name="Waist").first()
+        hip_entry = self.entry_set.filter(body_area__name="Hips").first()
         if not waist_entry or not hip_entry:
             return None
 
         return waist_entry.measurement / hip_entry.measurement
 
 
-class BodyAreaEntry(models.Model):
+class Entry(models.Model):
     """A specific body area check-in by a user, describing how it feels, looks, or measures."""
 
-    report = models.ForeignKey(BodyAreaReport, on_delete=models.CASCADE)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE)
     body_area = models.ForeignKey(BodyArea, on_delete=models.CASCADE)
     measurement = models.DecimalField(
         decimal_places=2, max_digits=10, null=True, blank=True
@@ -97,6 +97,6 @@ class BodyAreaEntry(models.Model):
 class BodyImage(models.Model):
     """An image of the user's body, attached to a report."""
 
-    report = models.ForeignKey(BodyAreaReport, on_delete=models.CASCADE)
+    report = models.ForeignKey(Report, on_delete=models.CASCADE)
     image = models.ImageField()
     notes = models.CharField(max_length=500, blank=True)

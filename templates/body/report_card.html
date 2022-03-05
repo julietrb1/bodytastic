@@ -4,11 +4,11 @@
     <div class="content">
         <div class="header">{% report_icon %}&nbsp;{{ report.when|naturalday|title }}</div>
         <div class="meta">
-            {{ report.bodyareaentry_set.count|apnumber|capfirst }} entr{{ report.bodyareaentry_set.count|pluralize:'y,ies' }} • {{ report.weight_display }}
+            {{ report.entry_set.count|apnumber|capfirst }} entr{{ report.entry_set.count|pluralize:'y,ies' }} • {{ report.weight_display }}
             {% if report.waist_hip_ratio %}• WHR: {{ report.waist_hip_ratio|floatformat:3 }}{% endif %}
         </div>
         <div class="description">
-            {% for entry in report.bodyareaentry_set.all %}
+            {% for entry in report.entry_set.all %}
                 <span class="ui label small">{{ entry.body_area.name }} ({{ entry.measurement_with_unit }})</span>
             {% endfor %}
         </div>

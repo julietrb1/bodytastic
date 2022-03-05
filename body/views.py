@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.utils.timezone import datetime
 from body.forms import ReportForm
 
-from body.models import BodyArea, BodyAreaReport, BodyAreaEntry
+from body.models import BodyArea, Report, Entry
 
 
 class UserOnlyMixin:
@@ -38,15 +38,15 @@ class EntrySuccessMixin:
 
 
 class ReportListView(UserOnlyMixin, BodyAreaMixin, TodayMixin, ListView):
-    model = BodyAreaReport
+    model = Report
 
 
 class ReportDetailView(UserOnlyMixin, BodyAreaMixin, DetailView):
-    model = BodyAreaReport
+    model = Report
 
 
 class ReportCreateView(UserOnlyMixin, CreateView):
-    model = BodyAreaReport
+    model = Report
     form_class = ReportForm
 
     def form_valid(self, form):
@@ -55,12 +55,12 @@ class ReportCreateView(UserOnlyMixin, CreateView):
 
 
 class ReportUpdateView(UserOnlyMixin, UpdateView):
-    model = BodyAreaReport
+    model = Report
     fields = ["weight_in_kg"]
 
 
 class ReportDeleteView(UserOnlyMixin, DeleteView):
-    model = BodyAreaReport
+    model = Report
 
     def get_success_url(self) -> str:
         return reverse_lazy("body:report-index")
@@ -69,7 +69,7 @@ class ReportDeleteView(UserOnlyMixin, DeleteView):
 class EntryReportMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        report = BodyAreaReport.objects.get(pk=self.kwargs["reportpk"])
+        report = Report.objects.get(pk=self.kwargs["reportpk"])
         context["report"] = report
         return context
 
@@ -77,11 +77,11 @@ class EntryReportMixin:
 class EntryCreateView(
     EntryUserOnlyMixin, EntrySuccessMixin, EntryReportMixin, CreateView
 ):
-    model = BodyAreaEntry
+    model = Entry
     fields = ["body_area", "measurement", "sensations", "notes"]
 
     def form_valid(self, form):
-        report = BodyAreaReport.objects.get(pk=self.kwargs["reportpk"])
+        report = Report.objects.get(pk=self.kwargs["reportpk"])
         form.instance.report = report
         return super().form_valid(form)
 
@@ -89,9 +89,9 @@ class EntryCreateView(
 class EntryUpdateView(
     EntryUserOnlyMixin, EntrySuccessMixin, EntryReportMixin, UpdateView
 ):
-    model = BodyAreaEntry
+    model = Entry
     fields = ["measurement", "sensations", "notes"]
 
 
 class EntryDeleteView(EntryUserOnlyMixin, EntrySuccessMixin, DeleteView):
-    model = BodyAreaEntry
+    model = Entry

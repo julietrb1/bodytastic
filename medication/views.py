@@ -6,7 +6,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from medication.forms import ConsumptionForm
 
-from .models import Medicine, MedicineConsumption, MedicineSchedule
+from .models import Medicine, Consumption, Schedule
 
 
 class UserOnlyMixin:
@@ -49,8 +49,8 @@ class MedicationDetailView(UserOnlyMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data["consumptions"] = MedicineConsumption.objects.filter(medicine=self.object)
-        data["schedules"] = MedicineSchedule.objects.filter(medicine=self.object)
+        data["consumptions"] = Consumption.objects.filter(medicine=self.object)
+        data["schedules"] = Schedule.objects.filter(medicine=self.object)
         return data
 
 
@@ -80,7 +80,7 @@ class ConsumptionCreateView(
     MedicineSuccessMixin,
     CreateView,
 ):
-    model = MedicineConsumption
+    model = Consumption
     form_class = ConsumptionForm
 
     def get_initial(self):
@@ -93,12 +93,12 @@ class ConsumptionCreateView(
 class ConsumptionUpdateView(
     ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
 ):
-    model = MedicineConsumption
+    model = Consumption
     form_class = ConsumptionForm
 
 
 class ConsumptionDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
-    model = MedicineConsumption
+    model = Consumption
 
 
 class ScheduleCreateView(
@@ -108,7 +108,7 @@ class ScheduleCreateView(
     MedicineSuccessMixin,
     CreateView,
 ):
-    model = MedicineSchedule
+    model = Schedule
     fields = [
         "start_date",
         "end_date",
@@ -122,7 +122,7 @@ class ScheduleCreateView(
 class ScheduleUpdateView(
     ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
 ):
-    model = MedicineSchedule
+    model = Schedule
     fields = [
         "start_date",
         "end_date",
@@ -134,4 +134,4 @@ class ScheduleUpdateView(
 
 
 class ScheduleDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
-    model = MedicineSchedule
+    model = Schedule
