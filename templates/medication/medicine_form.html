@@ -10,7 +10,13 @@
 {% block content %}
     <form method="post" class="ui form">
         {% csrf_token %}
-        {{ form }}
+        {{ form.non_field_errors }}
+        <div class="fields">
+            <div class="field">
+                {{ form.name.label_tag }}
+                {{ form.name }}
+            </div>
+        </div>
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button" href="{% url 'medication:medicine-index' %}">Cancel</a>
