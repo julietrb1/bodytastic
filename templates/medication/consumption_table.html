@@ -2,7 +2,8 @@
 <table class="ui unstackable striped table"
        aria-label="Consumption list for this medicine">
     <thead>
-        <th>When</th>
+        <th>Date</th>
+        <th>Time</th>
         <th>Quantity</th>
     </thead>
     <tbody>
@@ -11,6 +12,7 @@
                 <td class="selectable">
                     <a href="{% url 'medication:consumption-edit' medicinepk=consumption.medicine.pk pk=consumption.pk %}">{{ consumption.when|naturalday|capfirst }}</a>
                 </td>
+                <td>{{ consumption.when|time }}</td>
                 <td>{{ consumption.quantity }}</td>
             </tr>
         {% endfor %}

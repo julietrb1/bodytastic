@@ -10,7 +10,9 @@ def create_medicine(user, name="Test meds"):
     return Medicine.objects.create(user=user, name=name)
 
 
-def create_consumption(medicine, when=make_aware(datetime(2022, 1, 1)), quantity=1):
+def create_consumption(
+    medicine, when=make_aware(datetime(2022, 1, 1, 14, 25)), quantity=1
+):
     return Consumption.objects.create(medicine=medicine, when=when, quantity=quantity)
 
 
@@ -47,3 +49,4 @@ class MedicineDetailViewTests(LoginTestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "1 Jan 2022")
+        self.assertContains(response, "2:25 p.m.")
