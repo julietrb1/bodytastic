@@ -1,7 +1,10 @@
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+
+from medication.forms import ConsumptionForm
 
 from .models import Medicine, MedicineConsumption, MedicineSchedule
 
@@ -78,14 +81,20 @@ class ConsumptionCreateView(
     CreateView,
 ):
     model = MedicineConsumption
-    fields = ["when", "quantity"]
+    form_class = ConsumptionForm
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["quantity"] = 1
+        initial["when"] = timezone.now()
+        return initial
 
 
 class ConsumptionUpdateView(
     ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
 ):
     model = MedicineConsumption
-    fields = ["when", "quantity"]
+    form_class = ConsumptionForm
 
 
 class ConsumptionDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
