@@ -25,12 +25,10 @@ class Medicine(models.Model):
     @property
     def active_schedules(self):
         today = datetime.today().date()
-        return self.medicineschedule_set.filter(
-            start_date__lte=today, end_date__gte=today
-        )
+        return self.schedule_set.filter(start_date__lte=today, end_date__gte=today)
 
 
-class MedicineConsumption(models.Model):
+class Consumption(models.Model):
     """An instance of consumption of a given medicine by the user."""
 
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
@@ -44,7 +42,7 @@ class MedicineConsumption(models.Model):
         return f"({self.quantity}x) {self.when}"
 
 
-class MedicineSchedule(models.Model):
+class Schedule(models.Model):
     """A schedule to adhere to for consuming a given medicine for a user."""
 
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)

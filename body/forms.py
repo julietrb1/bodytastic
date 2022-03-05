@@ -1,6 +1,6 @@
 from django import forms
 
-from body.models import BodyAreaReport
+from body.models import Report
 
 
 class ReportForm(forms.ModelForm):
@@ -9,5 +9,5 @@ class ReportForm(forms.ModelForm):
         self.fields["when"].input_formats = ["%B %d, %Y"]
 
     class Meta:
-        model = BodyAreaReport
+        model = Report
         fields = ["when", "weight_in_kg"]

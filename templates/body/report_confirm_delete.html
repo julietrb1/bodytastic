@@ -9,7 +9,7 @@
 {% endblock title %}
 {% block content %}
     <p>
-        This report has <span class="ui text red">{{ object.bodyareaentry_set.count|apnumber }}</span> entr{{ object.bodyareaentry_set.count|pluralize:"y,ies" }}.
+        This report has <span class="ui text red">{{ object.entry_set.count|apnumber }}</span> entr{{ object.entry_set.count|pluralize:"y,ies" }}.
     </p>
     <p>
         There's no going back from this. This will also delete all related information.

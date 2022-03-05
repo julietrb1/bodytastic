@@ -3,11 +3,13 @@
 from csv import list_dialects
 from django.contrib import admin
 
-from medication.models import Medicine, MedicineConsumption, MedicineSchedule
+from medication.models import Medicine, Consumption, Schedule
+
 
 @admin.register(Medicine)
 class MedicineAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user')
+    list_display = ("name", "user")
 
-admin.site.register(MedicineConsumption)
-admin.site.register(MedicineSchedule)
+
+admin.site.register(Consumption)
+admin.site.register(Schedule)

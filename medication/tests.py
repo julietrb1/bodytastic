@@ -2,7 +2,7 @@ from django.test import Client, TestCase
 from django.contrib.auth.models import User
 from django.test import override_settings
 from django.urls import reverse
-from medication.models import Medicine, MedicineConsumption
+from medication.models import Medicine, Consumption
 from django.utils.timezone import datetime, make_aware
 
 
@@ -11,9 +11,7 @@ def create_medicine(user, name="Test meds"):
 
 
 def create_consumption(medicine, when=make_aware(datetime(2022, 1, 1)), quantity=1):
-    return MedicineConsumption.objects.create(
-        medicine=medicine, when=when, quantity=quantity
-    )
+    return Consumption.objects.create(medicine=medicine, when=when, quantity=quantity)
 
 
 @override_settings(AXES_HANDLER="axes.handlers.dummy.AxesDummyHandler")

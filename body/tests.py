@@ -3,17 +3,15 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.timezone import datetime
 from django.test import override_settings
-from body.models import BodyArea, BodyAreaEntry, BodyAreaReport
+from body.models import BodyArea, Entry, Report
 
 
 def create_report(user, when=datetime(2022, 1, 1), weight_in_kg=50.5):
-    return BodyAreaReport.objects.create(
-        user=user, when=when, weight_in_kg=weight_in_kg
-    )
+    return Report.objects.create(user=user, when=when, weight_in_kg=weight_in_kg)
 
 
 def create_entry(report, body_area, measurement=20):
-    return BodyAreaEntry.objects.create(
+    return Entry.objects.create(
         report=report, body_area=body_area, measurement=measurement
     )
 

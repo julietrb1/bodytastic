@@ -1,6 +1,6 @@
 from django import forms
 
-from medication.models import MedicineConsumption
+from medication.models import Consumption
 
 
 class ConsumptionForm(forms.ModelForm):
@@ -9,5 +9,5 @@ class ConsumptionForm(forms.ModelForm):
         self.fields["when"].input_formats = ["%B %d, %Y %I:%M %p"]
 
     class Meta:
-        model = MedicineConsumption
+        model = Consumption
         fields = ["when", "quantity"]
