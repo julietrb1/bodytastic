@@ -32,6 +32,10 @@
                 </div>
             {% endif %}
             <div class="field">
+                {{ form.measurement.label_tag }}
+                {{ form.measurement }}
+            </div>
+            <div class="field">
                 {{ form.sensations.label_tag }}
                 <select multiple=""
                         class="ui fluid dropdown"
@@ -43,10 +47,6 @@
                         </option>
                     {% endfor %}
                 </select>
-            </div>
-            <div class="field">
-                {{ form.measurement.label_tag }}
-                {{ form.measurement }}
             </div>
         </div>
         <div class="field">
