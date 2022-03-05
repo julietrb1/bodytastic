@@ -9,9 +9,9 @@ def schedule_card(schedule):
     return {"schedule": schedule}
 
 
-@register.inclusion_tag("medication/consumption_card.html")
-def consumption_card(consumption):
-    return {"consumption": consumption}
+@register.inclusion_tag("medication/consumption_table.html")
+def consumption_table(consumptions):
+    return {"consumptions": consumptions}
 
 
 @register.inclusion_tag("medication/medicine_card.html")
