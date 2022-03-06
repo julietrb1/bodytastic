@@ -34,7 +34,6 @@ class ReportListViewTests(TestCase):
         If no reports exist, the empty state is shown.
         """
         response = self.client.get(reverse("body:report-index"))
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No Reports Here, but There Could Be...")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
@@ -44,7 +43,6 @@ class ReportListViewTests(TestCase):
         """
         report = create_report(self.user)
         response = self.client.get(reverse("body:report-index"))
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "0 entries")
@@ -58,7 +56,6 @@ class ReportListViewTests(TestCase):
         body_area = create_body_area()
         create_entry(report, body_area)
         response = self.client.get(reverse("body:report-index"))
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "One entry")
@@ -76,7 +73,6 @@ class ReportListViewTests(TestCase):
         hips_body_area = create_body_area("Hips")
         create_entry(report, hips_body_area, 85)
         response = self.client.get(reverse("body:report-index"))
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "Two entries")

@@ -55,7 +55,6 @@ class MedicineListViewTests(LoginTestCase):
         If no medicines exist, the empty state is shown.
         """
         response = self.client.get(reverse("medication:medicine-index"))
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "The Potential for Medicine Is Upon Us.")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
@@ -70,7 +69,6 @@ class MedicineDetailViewTests(LoginTestCase):
         response = self.client.get(
             reverse("medication:medicine-detail", args=[medicine.pk])
         )
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "2:25 p.m.")
 
@@ -85,7 +83,6 @@ class ScheduleListViewTests(LoginTestCase):
         response = self.client.get(
             reverse("medication:medicine-detail", args=[medicine.pk])
         )
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Every one day")
         self.assertContains(response, "Next:")
         self.assertContains(response, "2:25 p.m.")
