@@ -50,7 +50,9 @@ class MedicationDetailView(UserOnlyMixin, DetailView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data["consumptions"] = Consumption.objects.filter(medicine=self.object)
-        data["schedules"] = Schedule.objects.filter(medicine=self.object)
+        data["schedules_active"] = Schedule.objects.active(self.object)
+        data["schedules_future"] = Schedule.objects.future(self.object)
+        data["schedules_past"] = Schedule.objects.past(self.object)
         return data
 
 
