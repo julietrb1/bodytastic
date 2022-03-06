@@ -8,6 +8,25 @@
         <link rel="stylesheet"
               type="text/css"
               href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css"/>
+        <style type="text/css">
+                .top-page-spacer {
+                    margin-top: {% if user.is_authenticated %}40{% else %}20{% endif %}px;
+                }
+                #content {
+                    min-height: 100px;
+                }
+                #nav-grid {
+                    margin: 0 !important;
+                }
+                html.ios {
+                    overflow-x: hidden;
+                    -webkit-overflow-scrolling: touch;
+                }
+                html.ios,
+                html.ios body {
+                    height: initial !important;
+                }
+        </style>
     </head>
     <body>
         {% block fomantic_content %}

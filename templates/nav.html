@@ -1,12 +1,26 @@
-<nav class="ui menu">
-    <div class="header item">Bodytastic</div>
-    <a class="{% if request.resolver_match.app_name == "medication" %}active{% endif %} item"
-       href="{% url "medication:medicine-index" %}">Medication</a>
-    <a class="{% if request.resolver_match.app_name == "body" %}active{% endif %} item"
-       href="{% url "body:report-index" %}">Body</a>
-    <a class="{% if request.resolver_match.app_name == "life_events" %}active{% endif %} item"
-       href="{% url "life_events:event-index" %}">Life Events</a>
-    <div class="right menu">
-        <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
+<div class="ui grid">
+    <div class="computer only row">
+        <div class="column">
+            <div class="header item">Bodytastic</div>
+            <nav class="ui menu">
+                {% include "nav_options.html" %}
+            </nav>
+            <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
+        </div>
     </div>
-</nav>
+    <div class="tablet mobile only row">
+        <div class="column">
+            <div class="ui menu">
+                <a id="mobile-item" class="item"><i class="bars icon"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="ui pushable segment">
+        <nav class="ui sidebar vertical menu">
+            {% include "nav_options.html" %}
+        </nav>
+        <div class="pusher">
+            <div id="content">Content here</div>
+        </div>
+    </div>
+</div>

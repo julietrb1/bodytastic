@@ -1,0 +1,6 @@
+<a class="{% if request.resolver_match.app_name == "medication" %}active{% endif %} item"
+   href="{% url "medication:medicine-index" %}">Medication</a>
+<a class="{% if request.resolver_match.app_name == "body" %}active{% endif %} item"
+   href="{% url "body:report-index" %}">Body</a>
+<a class="{% if request.resolver_match.app_name == "life_events" %}active{% endif %} item"
+   href="{% url "life_events:event-index" %}">Life Events</a>
