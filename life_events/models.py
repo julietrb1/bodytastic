@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse_lazy
 
 
 class Category(models.Model):
@@ -26,3 +27,6 @@ class Event(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    def get_absolute_url(self):
+        return reverse_lazy("life_events:event-index")
