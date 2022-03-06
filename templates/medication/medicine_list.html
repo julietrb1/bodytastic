@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load medication_extras %}
 {% block title %}
-    My Medicines
+    My Medicines&nbsp;
+    <a href="{% url 'medication:medicine-create' %}"
+       class="mini icon ui button">
+        <i aria-hidden="true" class="icon plus"></i>
+    </a>
 {% endblock title %}
 {% block content %}
     {% if object_list %}
@@ -10,12 +14,6 @@
                 {% medicine_card medicine %}
             {% endfor %}
         </div>
-        <div class="ui hidden divider"></div>
-        <a href="{% url 'medication:medicine-create' %}"
-           class="labeled icon ui button">
-            <i aria-hidden="true" class="icon plus"></i>
-            Add Medicine
-        </a>
     {% else %}
         {% include "medication/medicine_list_empty.html" %}
     {% endif %}

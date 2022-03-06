@@ -2,7 +2,10 @@
 {% load humanize %}
 {% load body_extras %}
 {% block title %}
-    My Body
+    My Body&nbsp;
+    <a href="{% url 'body:report-create' %}" class="mini icon ui button">
+        <i aria-hidden="true" class="icon plus"></i>
+    </a>
 {% endblock title %}
 {% block content %}
     {% if object_list %}
@@ -11,11 +14,6 @@
                 {% report_card report %}
             {% endfor %}
         </div>
-        <div class="ui divider hidden"></div>
-        <a class="ui button labeled icon" href="{% url 'body:report-create' %}">
-            <i aria-hidden="true" class="icon plus"></i>
-            Add Report
-        </a>
     {% else %}
         {% include "body/report_list_empty.html" %}
     {% endif %}
