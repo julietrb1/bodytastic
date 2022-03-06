@@ -20,6 +20,7 @@ urlpatterns = [
     path("body/", include("body.urls")),
     path("medication/", include("medication.urls")),
     path("mind-and-soul/", include("mind_and_soul.urls")),
+    path("life-events/", include("life_events.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", include("home.urls")),
     path("admin/", admin.site.urls),
