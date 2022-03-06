@@ -18,7 +18,7 @@ class Event(models.Model):
     when = models.DateTimeField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, blank=True, null=True
+        Category, on_delete=models.SET_NULL, blank=True, null=True
     )
 
     class Meta:
