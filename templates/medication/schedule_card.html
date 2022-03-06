@@ -8,11 +8,11 @@
         {% if schedule.next_consumption %}
             <div class="meta">
                 {% if schedule.is_active %}
-                    <strong>Next:</strong>&nbsp;{{ schedule.time }} ({{ schedule.next_consumption|naturaltime }})
+                    <strong>Next:</strong> {{ schedule.time }} ({{ schedule.next_consumption|naturaltime }})
                 {% elif schedule.is_past %}
-                    <strong>Finished:</strong>&nbsp;{{ schedule.end_date|naturalday }} ({{ schedule.time }})
+                    <strong>Finished:</strong> {{ schedule.end_date|naturalday }} ({{ schedule.time }})
                 {% elif schedule.is_future %}
-                    <strong>Starts:</strong>&nbsp;{{ schedule.start_date|naturalday }} ({{ schedule.time }})
+                    <strong>Starts:</strong> {{ schedule.start_date|naturalday }} ({{ schedule.time }})
                 {% endif %}
             </div>
         {% endif %}
