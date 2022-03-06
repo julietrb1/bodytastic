@@ -7,24 +7,22 @@
         </div>
         {% if schedule.next_consumption %}
             <div class="meta">
-                <strong>Next:</strong>&nbsp;{{ schedule.time }} ({{ schedule.next_consumption|naturaltime }})
+                {% if schedule.is_active %}
+                    <strong>Next:</strong>&nbsp;{{ schedule.time }} ({{ schedule.next_consumption|naturaltime }})
+                {% elif schedule.is_past %}
+                    <strong>Finished:</strong>&nbsp;{{ schedule.end_date|naturalday }} ({{ schedule.time }})
+                {% elif schedule.is_future %}
+                    <strong>Starts:</strong>&nbsp;{{ schedule.start_date|naturalday }} ({{ schedule.time }})
+                {% endif %}
             </div>
         {% endif %}
-        <div class="description">
-            Currently
-            {% if schedule.is_active %}
-                <strong><span class="ui text success">active</span></strong>
-            {% else %}
-                <strong>inactive</strong>
-            {% endif %}
-        </div>
     </div>
     <div class="extra content">
-        <div class="ui three small buttons">
-            <a class="ui basic button"
-               href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
-            <a class="ui basic button"
-               href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Delete</a>
+        <div class="ui two small icon buttons">
+            <a class="ui button"
+               href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}"><i aria-hidden="true" class="edit icon"></i></a>
+            <a class="ui button"
+               href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}"><i aria-hidden="true" class="trash icon"></i></a>
         </div>
     </div>
 </div>

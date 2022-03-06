@@ -14,7 +14,72 @@
 {% block content %}
     <form method="post" class="ui form">
         {% csrf_token %}
-        {{ form }}
+        <div class="four fields">
+            <div class="field">
+                {{ form.start_date.errors }}
+                {{ form.start_date.label_tag }}
+                <div class="ui calendar" id="{{ form.start_date.id_for_label }}">
+                    <div class="ui input left icon">
+                        <i aria-hidden="true" class="calendar icon"></i>
+                        <input type="text"
+                               placeholder="Date"
+                               name="{{ form.start_date.name }}"
+                               value="{{ form.start_date.initial }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {{ form.end_date.errors }}
+                {{ form.end_date.label_tag }}
+                <div class="ui calendar" id="{{ form.end_date.id_for_label }}">
+                    <div class="ui input left icon">
+                        <i aria-hidden="true" class="calendar icon"></i>
+                        <input type="text"
+                               placeholder="Date"
+                               name="{{ form.end_date.name }}"
+                               value="{{ form.end_date.initial }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {{ form.time.errors }}
+                {{ form.time.label_tag }}
+                <div class="ui calendar" id="{{ form.time.id_for_label }}">
+                    <div class="ui input left icon">
+                        <i aria-hidden="true" class="calendar icon"></i>
+                        <input type="text"
+                               placeholder="Time"
+                               name="{{ form.time.name }}"
+                               value="{{ form.time.initial }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {{ form.frequency_in_days.label_tag }}
+                {{ form.frequency_in_days }}
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                {{ form.quantity.label_tag }}
+                {{ form.quantity }}
+            </div>
+            <div class="field">
+                <label>{{ form.tolerance_mins.label }}</label>
+                <div class="ui selection dropdown">
+                    <input type="hidden"
+                           name="{{ form.tolerance_mins.name }}"
+                           value="{{ form.tolerance_mins.initial }}"/>
+                    <i class="dropdown icon" aria-hidden="true"></i>
+                    <div class="default text">{{ form.tolerance_mins.label }}</div>
+                    <div class="menu">
+                        {% for val, label in form.tolerance_mins.field.choices %}
+                            <div class="item" data-value="{{ val }}">{{ label }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button"
@@ -24,3 +89,18 @@
         </div>
     </form>
 {% endblock content %}
+{% block scripts %}
+    $('#{{ form.start_date.id_for_label }},#{{ form.end_date.id_for_label }}')
+    .calendar({
+    type: 'date',
+    })
+    ;
+    $('#{{ form.time.id_for_label }}')
+    .calendar({
+    type: 'time',
+    })
+    ;
+    $('.selection.dropdown')
+    .dropdown()
+    ;
+{% endblock scripts %}

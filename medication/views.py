@@ -4,7 +4,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from medication.forms import ConsumptionForm
+from medication.forms import ConsumptionForm, ScheduleForm
 
 from .models import Medicine, Consumption, Schedule
 
@@ -50,7 +50,9 @@ class MedicationDetailView(UserOnlyMixin, DetailView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data["consumptions"] = Consumption.objects.filter(medicine=self.object)
-        data["schedules"] = Schedule.objects.filter(medicine=self.object)
+        data["schedules_active"] = Schedule.objects.active(self.object)
+        data["schedules_future"] = Schedule.objects.future(self.object)
+        data["schedules_past"] = Schedule.objects.past(self.object)
         return data
 
 
@@ -109,28 +111,14 @@ class ScheduleCreateView(
     CreateView,
 ):
     model = Schedule
-    fields = [
-        "start_date",
-        "end_date",
-        "frequency_in_days",
-        "time",
-        "quantity",
-        "tolerance_mins",
-    ]
+    form_class = ScheduleForm
 
 
 class ScheduleUpdateView(
     ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
 ):
     model = Schedule
-    fields = [
-        "start_date",
-        "end_date",
-        "frequency_in_days",
-        "time",
-        "quantity",
-        "tolerance_mins",
-    ]
+    form_class = ScheduleForm
 
 
 class ScheduleDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
