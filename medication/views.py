@@ -4,7 +4,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from medication.forms import ConsumptionForm
+from medication.forms import ConsumptionForm, ScheduleForm
 
 from .models import Medicine, Consumption, Schedule
 
@@ -111,28 +111,14 @@ class ScheduleCreateView(
     CreateView,
 ):
     model = Schedule
-    fields = [
-        "start_date",
-        "end_date",
-        "frequency_in_days",
-        "time",
-        "quantity",
-        "tolerance_mins",
-    ]
+    form_class = ScheduleForm
 
 
 class ScheduleUpdateView(
     ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
 ):
     model = Schedule
-    fields = [
-        "start_date",
-        "end_date",
-        "frequency_in_days",
-        "time",
-        "quantity",
-        "tolerance_mins",
-    ]
+    form_class = ScheduleForm
 
 
 class ScheduleDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):

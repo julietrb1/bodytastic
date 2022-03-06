@@ -67,11 +67,23 @@ class Schedule(models.Model):
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
-    frequency_in_days = models.PositiveSmallIntegerField()
+    frequency_in_days = models.PositiveSmallIntegerField(default=1)
     time = models.TimeField()
-    quantity = models.PositiveSmallIntegerField()
+    quantity = models.PositiveSmallIntegerField(default=1)
     tolerance_mins = models.PositiveSmallIntegerField(
-        verbose_name="Tolerance (mins)", default=30
+        verbose_name="Tolerance (mins)",
+        default=30,
+        choices=(
+            (5, "5m"),
+            (10, "10m"),
+            (15, "15m"),
+            (20, "20m"),
+            (30, "30m"),
+            (45, "45m"),
+            (60, "1h"),
+            (90, "1.5h"),
+            (120, "2h"),
+        ),
     )
 
     class Meta:
