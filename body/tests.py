@@ -56,6 +56,16 @@ class ReportListViewTests(TestCase):
         response = self.client.get(reverse("body:report-index"))
         self.assertIsNotNone(response.context["summary_chart_data"])
 
+    def test_one_report_with_entries_shows_graph(self):
+        """
+        A recent report with entries should show the summary chart.
+        """
+        report = create_report(self.user, datetime.now())
+        body_area = create_body_area()
+        create_entry(report, body_area)
+        response = self.client.get(reverse("body:report-index"))
+        self.assertIsNotNone(response.context["summary_chart_data"])
+
     def test_one_report_with_entry(self):
         """
         If a report exists, it should be shown in the list with one entry.
