@@ -1,5 +1,5 @@
 {% load humanize %}
-<div class="{% if schedule.next_consumption %}green{% endif %} card">
+<div class="{% if schedule.is_active %}green{% endif %} card">
     <div class="content">
         <div class="header">
             <i aria-hidden="true"
@@ -18,11 +18,11 @@
         {% endif %}
     </div>
     <div class="extra content">
-        <div class="ui two small icon buttons">
+        <div class="ui two basic tiny buttons">
             <a class="ui button"
-               href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}"><i aria-hidden="true" class="edit icon"></i></a>
+               href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
             <a class="ui button"
-               href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}"><i aria-hidden="true" class="trash icon"></i></a>
+               href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Delete</a>
         </div>
     </div>
 </div>
