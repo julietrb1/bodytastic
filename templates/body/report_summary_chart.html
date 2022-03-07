@@ -7,7 +7,12 @@ const myChart = new Chart(ctx, {
     type: 'line',
     data: timeSeriesData,
     options: {
-        "aspectRatio": 1.8,
+        aspectRatio: 1.8,
+        scales: {
+            y: {
+                grace: "20%"
+            }
+        }
     },
 });
 myChart.data.datasets.slice(1).forEach(function(ds) {
