@@ -9,6 +9,7 @@ from django.utils.timezone import datetime, timedelta
 from django.contrib.humanize.templatetags.humanize import naturalday
 
 from body.models import BodyArea, Report, Entry
+import random
 
 
 class UserOnlyMixin:
@@ -40,6 +41,61 @@ class EntrySuccessMixin:
         return reverse_lazy("body:report-detail", kwargs={"pk": self.object.report.pk})
 
 
+def generate_data(label, colour_pair_idx, data_length):
+    return {
+        "backgroundColor": f"rgba({COLOUR_PAIRS[colour_pair_idx]}, 0.24)",
+        "borderColor": f"rgb({COLOUR_PAIRS[colour_pair_idx]})",
+        "data": [None] * data_length,
+        "elements": {
+            "point": {"pointStyle": "crossRot", "radius": 6, "borderWidth": 2}
+        },
+        "fill": False,
+        "label": label,
+        "spanGaps": True,
+        "tension": 0.1,
+    }
+
+
+def add_entries(date_idx, entries, all_datasets, data_length):
+    for entry in entries:
+        label_name = f"{entry.body_area.name} ({entry.body_area.measurement_unit})"
+        dataset_idx = -1
+        try:
+            dataset_idx = list(map(lambda x: x["label"], all_datasets)).index(
+                label_name
+            )
+        except ValueError:
+            pass
+
+        if dataset_idx == -1:
+            all_datasets.append(
+                generate_data(
+                    label_name,
+                    len(all_datasets) % len(COLOUR_PAIRS),
+                    data_length,
+                )
+            )
+
+        all_datasets[dataset_idx]["data"][date_idx] = (
+            float(entry.measurement) if entry.measurement else None
+        )
+
+
+COLOUR_PAIRS = [
+    "249, 65, 68",
+    "243, 114, 44",
+    "248, 150, 30",
+    "249, 132, 74",
+    "249, 199, 79",
+    "144, 190, 109",
+    "67, 170, 139",
+    "77, 144, 142",
+    "87, 117, 144",
+    "39, 125, 161",
+]
+random.shuffle(COLOUR_PAIRS)
+
+
 def report_stats_over_time(last_x_days=14):
 
     current_date = datetime.now().date()
@@ -56,32 +112,33 @@ def report_stats_over_time(last_x_days=14):
     all_dates = [
         current_date - timedelta(days=subtract_days)
         for subtract_days in list(
-            reversed(range(latest_days_ago, earliest_days_ago - 1))
+            reversed(range(latest_days_ago, earliest_days_ago + 1))
         )
     ]
     all_datasets = [
-        {
-            "label": "Weight (kg)",
-            "borderColor": "#FC814A",
-            "backgroundColor": "#FEC8AF",
-            "data": [None] * len(all_dates),
-            "tension": 0.1,
-            "fill": True,
-            "spanGaps": True,
-        }
+        generate_data(label, idx, len(all_dates))
+        for idx, label in enumerate(["Weight (kg)", "WHR x100"])
     ]
     for report in last_x_reports:
         try:
-            idx = all_dates.index(report.when)
-            all_datasets[0]["data"][idx] = (
+            date_idx = all_dates.index(report.when)
+            all_datasets[0]["data"][date_idx] = (
                 float(report.weight_in_kg) if report.weight_in_kg else None
             )
+            all_datasets[1]["data"][date_idx] = (
+                float(report.waist_hip_ratio * 100) if report.waist_hip_ratio else None
+            )
+            add_entries(date_idx, report.entry_set.all(), all_datasets, len(all_dates))
         except ValueError:
             pass
 
+    filtered_datasets = list(
+        filter(lambda x: any(d is not None for d in x["data"]), all_datasets)
+    )
+
     return {
         "labels": [naturalday(d) for d in all_dates],
-        "datasets": all_datasets,
+        "datasets": filtered_datasets,
     }
 
 
