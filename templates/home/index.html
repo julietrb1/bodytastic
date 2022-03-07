@@ -4,24 +4,16 @@
 {% endblock title %}
 {% block content %}
     <div class="ui stackable grid">
-        <div class="eight wide column">
-            <div class="ui segment">
-                <h3 class="ui header">Medication</h3>
-                <p>
-                    Never miss a beat. Keep track of consumption and schedules for your meds.
-                </p>
-                <a href="{% url "medication:medicine-index" %}"
-                   class="ui button primary">Go to Medicine</a>
+        {% for item in items %}
+            <div class="eight wide column">
+                <div class="ui segment">
+                    <h3 class="ui header">{{ item.title }}</h3>
+                    <p>
+                        {{ item.body }}
+                    </p>
+                    <a href="{% url item.path %}" class="ui button primary">Go to {{ item.title }}</a>
+                </div>
             </div>
-        </div>
-        <div class="eight wide column">
-            <div class="ui segment">
-                <h3 class="ui header">Body</h3>
-                <p>
-                    Measurements matter. Keep track of trends and make notes here.
-                </p>
-                <a href="{% url "body:report-index" %}" class="ui button primary">Go to Body</a>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 {% endblock content %}

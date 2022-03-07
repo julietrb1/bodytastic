@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from body.models import BodyArea, Entry, Sensation, Report
+from body.models import BodyArea, Entry, Sensation, Report, Attribute
 
 
 @admin.register(BodyArea)
@@ -15,3 +15,4 @@ class EntryAdmin(admin.ModelAdmin):
 
 admin.site.register(Sensation)
 admin.site.register(Report)
+admin.site.register(Attribute)

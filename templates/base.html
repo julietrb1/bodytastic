@@ -1,33 +1,27 @@
 {% extends "fomantic.html" %}
 {% block fomantic_content %}
-    {% if user.is_authenticated %}
-        {% include "nav.html" %}
-    {% endif %}
-    <div class="ui container">
-        <div class="ui hidden divider"></div>
-        <h2 class="ui header">
-            {% block title %}
-                (no title)
-            {% endblock title %}
-        </h2>
-        {% if messages %}
-            <div class="ui {{ message.tags }} message">
-                <div class="header">Messages</div>
-                <ul class="list">
-                    {% for message in messages %}<li>{{ message }}</li>{% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-        <div class="ui hidden divider"></div>
-        {% block content %}
-            (no content)
-        {% endblock content %}
+    {% include "nav.html" %}
+    <div class="pusher">
+        <div class="top-page-spacer"></div>
+        <div id="content" class="ui container">
+            <h2 class="ui header">
+                {% block title %}
+                    (no title)
+                {% endblock title %}
+            </h2>
+            <div class="ui divider hidden"></div>
+            {% block content %}
+                (no content)
+            {% endblock content %}
+        </div>
     </div>
 {% endblock fomantic_content %}
 {% block fomantic_scripts %}
     <script>
-        $('.ui.dropdown') .dropdown();
-    {% block scripts %}
-    {% endblock scripts %}
+        $('.ui.dropdown').dropdown();
+        $('.ui.sidebar').sidebar({
+        }).sidebar('attach events', '#mobile-item');        
+        {% block scripts %}
+        {% endblock scripts %}
     </script>
 {% endblock fomantic_scripts %}
