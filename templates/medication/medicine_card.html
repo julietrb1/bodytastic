@@ -11,13 +11,11 @@
         </div>
     </div>
     <div class="extra content">
-        <div class="ui three small buttons">
+        <div class="ui two tiny buttons">
             <a class="ui primary button"
                href="{% url 'medication:medicine-detail' medicine.id %}">View</a>
             <a class="ui basic button"
-               href="{% url 'medication:medicine-edit' medicine.id %}">Edit</a>
-            <a class="ui basic button"
-               href="{% url 'medication:medicine-delete' medicine.id %}">Delete</a>
+               href="{% url 'medication:consumption-create' medicinepk=medicine.id %}">Log</a>
         </div>
     </div>
 </div>
