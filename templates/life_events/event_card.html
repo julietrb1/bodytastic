@@ -7,11 +7,11 @@
         {% if event.category %}<div class="description">{{ event.category }}</div>{% endif %}
     </div>
     <div class="extra content">
-        <div class="ui two tiny icon buttons">
+        <div class="ui two tiny basic buttons">
             <a class="ui button"
-               href="{% url 'life_events:event-update' event.pk %}"><i aria-hidden="true" class="edit icon"></i></a>
+               href="{% url 'life_events:event-update' event.pk %}">Edit</a>
             <a class="ui button"
-               href="{% url 'life_events:event-delete' event.pk %}"><i aria-hidden="true" class="trash icon"></i></a>
+               href="{% url 'life_events:event-delete' event.pk %}">Delete</a>
         </div>
     </div>
 </div>
