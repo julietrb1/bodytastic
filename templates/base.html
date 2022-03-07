@@ -1,33 +1,6 @@
 {% extends "fomantic.html" %}
 {% block fomantic_content %}
-    {% if user.is_authenticated %}
-        <div class="ui grid" id="nav-grid">
-            <div class="computer only row">
-                <div class="column">
-                    <div class="ui fixed menu">
-                        <div class="header item">Bodytastic</div>
-                        {% include "nav_options.html" %}
-                        <div class="right menu">
-                            <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tablet mobile only row">
-                <div class="column">
-                    <div class="ui fixed menu">
-                        <a id="mobile-item" class="item"><i class="bars icon"></i></a>
-                        <div class="header item">Bodytastic</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <div class="ui sidebar vertical inverted menu">
-        <div class="top-page-spacer"></div>
-        {% include "nav_options.html" %}
-        <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
-    </div>
+    {% include "nav.html" %}
     <div class="pusher">
         <div class="top-page-spacer"></div>
         <div id="content" class="ui container">

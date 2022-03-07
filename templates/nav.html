@@ -1,26 +1,28 @@
-<div class="ui grid">
-    <div class="computer only row">
-        <div class="column">
-            <div class="header item">Bodytastic</div>
-            <nav class="ui menu">
-                {% include "nav_options.html" %}
-            </nav>
-            <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
+{% if user.is_authenticated %}
+    <div class="ui grid" id="nav-grid">
+        <div class="computer only row">
+            <div class="column">
+                <div class="ui fixed menu">
+                    <div class="header item">Bodytastic</div>
+                    {% include "nav_options.html" %}
+                    <div class="right menu">
+                        <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="tablet mobile only row">
-        <div class="column">
-            <div class="ui menu">
-                <a id="mobile-item" class="item"><i class="bars icon"></i></a>
+        <div class="tablet mobile only row">
+            <div class="column">
+                <div class="ui fixed menu">
+                    <a id="mobile-item" class="item"><i class="bars icon" aria-hidden="true"></i></a>
+                    <div class="header item">Bodytastic</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="ui pushable segment">
-        <nav class="ui sidebar vertical menu">
-            {% include "nav_options.html" %}
-        </nav>
-        <div class="pusher">
-            <div id="content">Content here</div>
-        </div>
-    </div>
+{% endif %}
+<div class="ui sidebar vertical inverted menu">
+    <div class="top-page-spacer"></div>
+    {% include "nav_options.html" %}
+    <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
 </div>
