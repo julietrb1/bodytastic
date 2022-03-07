@@ -30,6 +30,22 @@ class Sensation(models.Model):
         return self.name
 
 
+class Attribute(models.Model):
+    """An indication of the environment or situation in which a report was taken, which may
+    give additional context to trends or anomalies."""
+
+    name = models.CharField(max_length=50)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+
+
 class Report(models.Model):
     """A general body check-in by a user on a given date."""
 
@@ -42,6 +58,7 @@ class Report(models.Model):
         null=True,
         blank=True,
     )
+    attributes = models.ManyToManyField(Attribute, blank=True)
 
     class Meta:
         ordering = ["-when"]
