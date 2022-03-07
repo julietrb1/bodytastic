@@ -14,15 +14,11 @@
         </div>
     </div>
     <div class="extra content">
-        <div class="ui four small buttons">
-            <a class="ui icon button"
-               href="{% url 'body:report-detail' report.pk %}"><i aria-hidden="true" class="eye outline icon"></i></a>
-            <a class="ui icon button"
-               href="{% url 'body:entry-create' reportpk=report.pk %}"><i aria-hidden="true" class="plus icon"></i></a>
-            <a class="ui icon button"
-               href="{% url 'body:report-update' report.pk %}"><i aria-hidden="true" class="edit icon"></i></a>
-            <a class="ui icon button"
-               href="{% url 'body:report-delete' report.pk %}"><i aria-hidden="true" class="trash icon"></i></a>
+        <div class="ui four tiny buttons">
+            <a class="ui primary button"
+               href="{% url 'body:report-detail' report.pk %}">View</a>
+            <a class="ui basic button"
+               href="{% url 'body:entry-create' reportpk=report.pk %}">Add Entry</a>
         </div>
     </div>
 </div>

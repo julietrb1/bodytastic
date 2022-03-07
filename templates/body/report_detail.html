@@ -10,22 +10,24 @@
 {% endblock title %}
 {% block content %}
     {% if object.entry_set.count %}
-        <a class="small basic ui button" href="{% url 'body:report-index' %}">
-            <i aria-hidden="true" class="left arrow icon"></i>
-            Back to Body
-        </a>
+        <div class="small ui buttons">
+            <a class="basic ui button" href="{% url 'body:report-index' %}">
+                <i aria-hidden="true" class="left arrow icon"></i>
+                Back to Body
+            </a>
+            <a class="ui button primary"
+               href="{% url 'body:entry-create' reportpk=report.pk %}">Add Entry</a>
+            <a class="ui basic button"
+               href="{% url 'body:report-update' report.pk %}">Edit</a>
+            <a class="ui basic button"
+               href="{% url 'body:report-delete' report.pk %}">Delete</a>
+        </div>
         <div class="ui divider hidden"></div>
         <div class="ui cards">
             {% for entry in object.entry_set.all %}
                 {% entry_card entry %}
             {% endfor %}
         </div>
-        <div class="ui divider hidden"></div>
-        <a href="{% url 'body:entry-create' view.kwargs.pk %}"
-           class="ui labeled icon button">
-            <i aria-hidden="true" class="icon plus"></i>
-            Add Entry
-        </a>
     {% else %}
         {% include "body/report_detail_empty.html" %}
     {% endif %}
