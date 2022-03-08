@@ -9,7 +9,7 @@
         {% for refill in refills %}
             <tr>
                 <td class="selectable">
-                    <a href="">{{ refill.when|naturalday|capfirst }}</a>
+                    <a href="{% url "medication:refill-update" medicinepk=refill.medicine.pk pk=refill.pk %}">{{ refill.when|naturalday|capfirst }}</a>
                 </td>
                 <td>{{ refill.quantity }}</td>
             </tr>

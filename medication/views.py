@@ -128,3 +128,9 @@ class MedicineRefillCreateView(MedicineSuccessMixin, MedicineFormMixin, CreateVi
     model = LedgerEntry
     template_name = "medication/refill_form.html"
     form_class = RefillForm
+
+
+class MedicineRefillUpdateView(MedicineSuccessMixin, UpdateView):
+    model = LedgerEntry
+    template_name = "medication/refill_form.html"
+    form_class = RefillForm

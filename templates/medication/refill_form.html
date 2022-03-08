@@ -24,7 +24,7 @@
                         <input type="text"
                                placeholder="Date/Time"
                                name="{{ form.when.name }}"
-                               value="{{ form.when.initial }}"/>
+                               value="{{ form.when.initial|date:"r" }}"/>
                     </div>
                 </div>
                 {{ form.when.errors }}
@@ -43,7 +43,7 @@
     $('#{{ form.when.id_for_label }}')
     .calendar({
     type: 'datetime',
-    initialDate: new Date(),
+    maxDate: new Date(),
     })
     ;
 {% endblock scripts %}
