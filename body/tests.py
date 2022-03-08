@@ -1,4 +1,4 @@
-from django.test import Client, TestCase
+from django.test import Client, TestCase, SimpleTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.timezone import datetime
@@ -20,15 +20,36 @@ def create_body_area(name="Sample Area", measurement_unit="cm"):
     return BodyArea.objects.create(name=name, measurement_unit=measurement_unit)
 
 
+def create_user():
+    return User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+
+
 @override_settings(AXES_HANDLER="axes.handlers.dummy.AxesDummyHandler")
-class ReportListViewTests(TestCase):
+class LoginTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user(
-            "john", "lennon@thebeatles.com", "johnpassword"
-        )
+        self.user = create_user()
         self.logged_in = self.client.force_login(self.user)
 
+
+class ViewsWithoutLoginTests(SimpleTestCase):
+    def verify_redirect(self, route_path, kwargs=None):
+        route_path = reverse(route_path, kwargs=kwargs)
+        response = self.client.get(route_path)
+        self.assertRedirects(
+            response,
+            f"/accounts/login/?next={route_path}",
+            fetch_redirect_response=False,
+        )
+
+    def test_report_list_redirects_to_login(self):
+        self.verify_redirect("body:report-index")
+
+    def test_report_detail_redirects_to_login(self):
+        self.verify_redirect("body:report-detail", {"pk": 1})
+
+
+class ReportListViewTests(LoginTestCase):
     def test_no_reports(self):
         """
         If no reports exist, the empty state is shown.
