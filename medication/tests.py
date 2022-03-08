@@ -65,6 +65,16 @@ class MedicineListViewTests(LoginTestCase):
         self.assertContains(response, "The Potential for Medicine Is Upon Us.")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
+    def test_with_schedule(self):
+        medicine = create_medicine(self.user)
+        create_schedule(medicine)
+        response = self.client.get(
+            reverse("medication:medicine-detail", args=[medicine.pk])
+        )
+        self.assertContains(response, "Every one day")
+        self.assertContains(response, "Next:")
+        self.assertContains(response, "2:25 p.m.")
+
 
 class MedicineDetailViewTests(LoginTestCase):
     def test_with_consumptions(self):
@@ -77,21 +87,6 @@ class MedicineDetailViewTests(LoginTestCase):
             reverse("medication:medicine-detail", args=[medicine.pk])
         )
         self.assertContains(response, "1 Jan 2022")
-        self.assertContains(response, "2:25 p.m.")
-
-
-class ScheduleListViewTests(LoginTestCase):
-    def test_with_schedule(self):
-        """
-        Given that a schedule exists for a medicine, it should be shown in the view.
-        """
-        medicine = create_medicine(self.user)
-        create_schedule(medicine)
-        response = self.client.get(
-            reverse("medication:medicine-detail", args=[medicine.pk])
-        )
-        self.assertContains(response, "Every one day")
-        self.assertContains(response, "Next:")
         self.assertContains(response, "2:25 p.m.")
 
 
