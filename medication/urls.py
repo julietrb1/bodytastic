@@ -65,4 +65,9 @@ urlpatterns = [
         views.MedicineRefillUpdateView.as_view(),
         name="refill-update",
     ),
+    path(
+        "<int:medicinepk>/refills/<int:pk>/delete/",
+        views.MedicineRefillDeleteView.as_view(),
+        name="refill-delete",
+    ),
 ]

@@ -134,3 +134,8 @@ class MedicineRefillUpdateView(MedicineSuccessMixin, UpdateView):
     model = LedgerEntry
     template_name = "medication/refill_form.html"
     form_class = RefillForm
+
+
+class MedicineRefillDeleteView(MedicineSuccessMixin, DeleteView):
+    model = LedgerEntry
+    template_name = "medication/refill_confirm_delete.html"
