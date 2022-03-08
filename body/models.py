@@ -62,6 +62,7 @@ class Report(models.Model):
 
     class Meta:
         ordering = ["-when"]
+        unique_together = [["user", "when"]]
 
     def __str__(self):
         return f"{self.user} on {self.when}"

@@ -55,4 +55,19 @@ urlpatterns = [
         views.ScheduleDeleteView.as_view(),
         name="schedule-delete",
     ),
+    path(
+        "<int:medicinepk>/refills/create/",
+        views.MedicineRefillCreateView.as_view(),
+        name="refill-create",
+    ),
+    path(
+        "<int:medicinepk>/refills/<int:pk>/",
+        views.MedicineRefillUpdateView.as_view(),
+        name="refill-update",
+    ),
+    path(
+        "<int:medicinepk>/refills/<int:pk>/delete/",
+        views.MedicineRefillDeleteView.as_view(),
+        name="refill-delete",
+    ),
 ]

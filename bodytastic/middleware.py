@@ -10,6 +10,7 @@ class RejectAnonymousUsersMiddleware(AuthenticationMiddleware):
             return
 
         current_route = resolve(request.path_info).route
+        print("Route", current_route)
 
         if not current_route.startswith("accounts"):
             return redirect_to_login(request.path)

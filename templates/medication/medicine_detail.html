@@ -5,7 +5,7 @@
     {% medicine_icon %}
     <div class="content">
         {{ object }}
-        <div class="sub header">{{ consumptions.count|apnumber|title }} consumptions</div>
+        <div class="sub header">{{ object.current_balance }} left</div>
     </div>
 {% endblock title %}
 {% block content %}
@@ -23,17 +23,17 @@
     <div class="ui relaxed stackable grid">
         <div class="six wide column">
             <h3 class="ui header">
-                Consumptions&nbsp;
+                Consumptions ({{ object.consumption_set.count }})&nbsp;
                 <a href="{% url 'medication:consumption-create' medicinepk=object.pk %}"
                    class="mini icon ui button">
                     <i aria-hidden="true" class="icon plus"></i>
                 </a>
             </h3>
-            {% consumption_table consumptions %}
+            {% consumption_table object.consumption_set.all %}
         </div>
-        <div class="ten wide column">
+        <div class="five wide column">
             <h3 class="ui header">
-                Schedules&nbsp;
+                Schedules ({{ object.schedule_set.count }})&nbsp;
                 <a href="{% url 'medication:schedule-create' medicinepk=object.pk %}"
                    class="mini icon ui button">
                     <i aria-hidden="true" class="icon plus"></i>
@@ -63,6 +63,16 @@
                     {% endfor %}
                 </div>
             {% endif %}
+        </div>
+        <div class="five wide column">
+            <h3 class="ui header">
+                Refills ({{ object.refills.count }})&nbsp;
+                <a href="{% url 'medication:refill-create' medicinepk=object.pk %}"
+                   class="mini icon ui button">
+                    <i aria-hidden="true" class="icon plus"></i>
+                </a>
+            </h3>
+            {% refill_table object.refills %}
         </div>
     </div>
 {% endblock content %}

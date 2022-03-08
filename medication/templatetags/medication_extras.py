@@ -14,6 +14,11 @@ def consumption_table(consumptions):
     return {"consumptions": consumptions}
 
 
+@register.inclusion_tag("medication/refill_table.html")
+def refill_table(refills):
+    return {"refills": refills}
+
+
 @register.inclusion_tag("medication/medicine_card.html")
 def medicine_card(medicine):
     return {"medicine": medicine}

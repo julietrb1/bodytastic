@@ -1,0 +1,18 @@
+{% load humanize %}
+<table class="ui unstackable striped table"
+       aria-label="Refill list for this medicine">
+    <thead>
+        <th>Date</th>
+        <th>Quantity</th>
+    </thead>
+    <tbody>
+        {% for refill in refills %}
+            <tr>
+                <td class="selectable">
+                    <a href="{% url "medication:refill-update" medicinepk=refill.medicine.pk pk=refill.pk %}">{{ refill.when|naturalday|capfirst }}</a>
+                </td>
+                <td>{{ refill.quantity }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
