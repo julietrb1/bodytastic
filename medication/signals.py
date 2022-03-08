@@ -60,7 +60,7 @@ def consumption_post_save(sender, **kwargs):
         )
 
     # If there's no ledger entry here, one shouldn't be added as this will mess with the medicine balance.
-    elif consumption.ledgerentry:
+    elif hasattr(consumption, "ledgerentry"):
         # Note the negative quantity here
         consumption.ledgerentry.quantity = -consumption.quantity
         consumption.ledgerentry.when = consumption.when
