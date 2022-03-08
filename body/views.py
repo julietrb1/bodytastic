@@ -96,11 +96,11 @@ COLOUR_PAIRS = [
 random.shuffle(COLOUR_PAIRS)
 
 
-def report_stats_over_time(last_x_days=14):
+def report_stats_over_time(user, last_x_days=14):
 
     current_date = datetime.now().date()
     last_x_reports = Report.objects.order_by("when").filter(
-        when__gt=current_date - timedelta(days=last_x_days)
+        when__gt=current_date - timedelta(days=last_x_days), user=user
     )
     if not last_x_days or last_x_days < 0 or not last_x_reports:
         return None
@@ -147,7 +147,7 @@ class ReportListView(UserOnlyMixin, BodyAreaMixin, TodayMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["summary_chart_data"] = report_stats_over_time()
+        context["summary_chart_data"] = report_stats_over_time(self.request.user)
         return context
 
 
