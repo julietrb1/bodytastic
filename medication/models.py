@@ -60,7 +60,7 @@ class LedgerEntry(models.Model):
     quantity = models.SmallIntegerField()
 
     def __str__(self):
-        return f"{self.medication} ({self.quantity})"
+        return f"{self.medicine} ({self.quantity})"
 
     class Meta:
         ordering = ["when"]

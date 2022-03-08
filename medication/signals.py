@@ -29,13 +29,15 @@ def consumption_post_save(sender, **kwargs):
         LedgerEntry.objects.create(
             consumption=consumption,
             medicine=consumption.medicine,
-            quantity=consumption.quantity,
+            # Note the negative quantity here
+            quantity=-consumption.quantity,
             when=consumption.when,
         )
 
     # If there's no ledger entry here, one shouldn't be added as this will mess with the medicine balance.
     elif consumption.ledgerentry:
-        consumption.ledgerentry.quantity = consumption.quantity
+        # Note the negative quantity here
+        consumption.ledgerentry.quantity = -consumption.quantity
         consumption.ledgerentry.when = consumption.when
         consumption.ledgerentry.medicine = consumption.medicine
         consumption.ledgerentry.save()

@@ -5,7 +5,7 @@
     {% medicine_icon %}
     <div class="content">
         {{ object }}
-        <div class="sub header">{{ consumptions.count|apnumber|title }} consumptions</div>
+        <div class="sub header">{{ consumptions.count|apnumber|title }} consumptions • {{ object.current_balance }} left</div>
     </div>
 {% endblock title %}
 {% block content %}

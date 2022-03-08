@@ -7,8 +7,10 @@ from medication.models import LedgerEntry, Medicine, Consumption, Schedule
 from django.utils.timezone import datetime, make_aware, timedelta
 
 
-def create_medicine(user, name="Test meds"):
-    return Medicine.objects.create(user=user, name=name)
+def create_medicine(user, name="Test meds", current_balance=0):
+    return Medicine.objects.create(
+        user=user, name=name, current_balance=current_balance
+    )
 
 
 def create_ledger_entry(medicine, quantity, when=make_aware(datetime.now())):
@@ -69,7 +71,7 @@ class MedicineDetailViewTests(LoginTestCase):
         """
         Given that a consumption exists for a medicine, it should be shown in the view.
         """
-        medicine = create_medicine(self.user)
+        medicine = create_medicine(self.user, current_balance=1)
         create_consumption(medicine)
         response = self.client.get(
             reverse("medication:medicine-detail", args=[medicine.pk])
@@ -108,31 +110,31 @@ class MedicineTests(LoginTestCase):
 class ConsumptionTests(LoginTestCase):
     def test_new_consumption_adds_ledger_entry(self):
         """
-        A new consumption should add to the ledger with same medicine, quantity, and date/time.
+        A new consumption should add to the ledger with same medicine, negative quantity, and date/time.
         """
         self.assertEqual(len(LedgerEntry.objects.all()), 0)
-        medicine = create_medicine(self.user)
+        medicine = create_medicine(self.user, current_balance=2)
         consumption = create_consumption(medicine)
         all_ledger_entries = LedgerEntry.objects.all()
         self.assertEqual(len(all_ledger_entries), 1)
         self.assertEqual(all_ledger_entries[0].when, consumption.when)
-        self.assertEqual(all_ledger_entries[0].quantity, consumption.quantity)
+        self.assertEqual(all_ledger_entries[0].quantity, -1)
         self.assertEqual(all_ledger_entries[0].medicine, consumption.medicine)
 
     def test_updating_consumption_matches_ledger_entry(self):
         """
         As with adding new consumptions, changing existing consumptions should update the ledger entries.
         """
-        medicine = create_medicine(self.user)
+        medicine = create_medicine(self.user, current_balance=5)
         consumption = create_consumption(medicine)
         consumption.quantity = 2
         consumption.save()
         all_ledger_entries = LedgerEntry.objects.all()
         self.assertEqual(len(all_ledger_entries), 1)
-        self.assertEqual(all_ledger_entries[0].quantity, consumption.quantity)
+        self.assertEqual(all_ledger_entries[0].quantity, -2)
 
     def test_deleting_consumption_removes_ledger_entry(self):
-        medicine = create_medicine(self.user)
+        medicine = create_medicine(self.user, current_balance=1)
         consumption = create_consumption(medicine)
         self.assertEqual(medicine.ledgerentry_set.count(), 1)
         consumption.delete()

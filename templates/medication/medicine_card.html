@@ -4,7 +4,7 @@
     <div class="content">
         <div class="header">{% medicine_icon %}&nbsp;{{ medicine }}</div>
         <div class="meta">
-            <strong>{{ medicine.consumption_set.count|apnumber|capfirst }}</strong> consumption{{ medicine.consumption_set.count|pluralize }} logged.
+            <strong>{{ medicine.consumption_set.count|apnumber|capfirst }}</strong> consumption{{ medicine.consumption_set.count|pluralize }} • {{ medicine.current_balance }} left
         </div>
         <div class="description">
             <strong>{{ medicine.active_schedules.count|apnumber|capfirst }}</strong> active schedule{{ medicine.active_schedules.count|pluralize }} set up.
