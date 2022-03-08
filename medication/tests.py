@@ -25,15 +25,13 @@ def create_consumption(
 
 def create_schedule(
     medicine,
-    start_date=None,
-    end_date=None,
+    start_date,
+    end_date,
     frequency_in_days=1,
     time=make_aware(datetime(2022, 1, 1, 14, 25)).time(),
     quantity=1,
     tolerance_mins=30,
 ):
-    start_date = start_date or make_aware(datetime.now() - timedelta(days=1))
-    end_date = end_date or make_aware(datetime.now() + timedelta(days=1))
 
     return Schedule.objects.create(
         medicine=medicine,
@@ -67,7 +65,25 @@ class MedicineListViewTests(LoginTestCase):
 
     def test_with_schedule(self):
         medicine = create_medicine(self.user)
-        create_schedule(medicine)
+        create_schedule(
+            medicine,
+            make_aware(datetime.now() - timedelta(days=1)),
+            make_aware(datetime.now() + timedelta(days=1)),
+        )
+        response = self.client.get(
+            reverse("medication:medicine-detail", args=[medicine.pk])
+        )
+        self.assertContains(response, "Every one day")
+        self.assertContains(response, "Next:")
+        self.assertContains(response, "2:25 p.m.")
+
+    def test_with_schedule_without_end_date(self):
+        medicine = create_medicine(self.user)
+        create_schedule(
+            medicine,
+            make_aware(datetime.now() - timedelta(days=1)),
+            None,
+        )
         response = self.client.get(
             reverse("medication:medicine-detail", args=[medicine.pk])
         )

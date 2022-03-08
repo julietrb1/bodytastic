@@ -118,7 +118,9 @@ class Schedule(models.Model):
     @property
     def is_active(self):
         now_date = datetime.now().date()
-        return self.start_date <= now_date and self.end_date >= now_date
+        return self.start_date <= now_date and (
+            not self.end_date or self.end_date >= now_date
+        )
 
     @property
     def is_past(self):
