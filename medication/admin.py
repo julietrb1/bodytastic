@@ -3,7 +3,7 @@
 from csv import list_dialects
 from django.contrib import admin
 
-from medication.models import Medicine, Consumption, Schedule
+from medication.models import Medicine, Consumption, Schedule, LedgerEntry
 
 
 @admin.register(Medicine)
@@ -13,3 +13,4 @@ class MedicineAdmin(admin.ModelAdmin):
 
 admin.site.register(Consumption)
 admin.site.register(Schedule)
+admin.site.register(LedgerEntry)

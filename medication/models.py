@@ -3,8 +3,8 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils.timezone import datetime, timedelta
+from django.db.models import Sum
 
 
 class Medicine(models.Model):
@@ -12,6 +12,7 @@ class Medicine(models.Model):
 
     name = models.CharField(max_length=100)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    current_balance = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
         ordering = ["name"]
@@ -27,6 +28,12 @@ class Medicine(models.Model):
         today = datetime.today().date()
         return self.schedule_set.filter(start_date__lte=today, end_date__gte=today)
 
+    def recalculate_balance_from_ledger(self):
+        self.current_balance = self.ledgerentry_set.all().aggregate(Sum("quantity"))[
+            "quantity__sum"
+        ]
+        self.save()
+
 
 class Consumption(models.Model):
     """An instance of consumption of a given medicine by the user."""
@@ -40,6 +47,23 @@ class Consumption(models.Model):
 
     def __str__(self) -> str:
         return f"({self.quantity}x) {self.when}"
+
+
+class LedgerEntry(models.Model):
+    """Helps keep track of how much medication is remaining, and may correspond to consumptions."""
+
+    consumption = models.OneToOneField(
+        Consumption, null=True, blank=True, on_delete=models.CASCADE
+    )
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    when = models.DateTimeField()
+    quantity = models.SmallIntegerField()
+
+    def __str__(self):
+        return f"{self.medication} ({self.quantity})"
+
+    class Meta:
+        ordering = ["when"]
 
 
 class ScheduleManager(models.Manager):
