@@ -13,23 +13,26 @@
     <form method="post" class="ui form">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <div class="two fields">
-            <div class="field">
-                {{ form.when.errors }}
-                {{ form.when.label_tag }}
-                <div class="ui calendar" id="{{ form.when.id_for_label }}">
-                    <div class="ui input left icon">
-                        <i aria-hidden="true" class="calendar icon"></i>
-                        <input type="text"
-                               placeholder="Date/Time"
-                               name="{{ form.when.name }}"
-                               value="{{ form.when.initial }}"/>
+        <div class="fields">
+            {% if not object %}
+                <div class="field">
+                    {{ form.when.label_tag }}
+                    <div class="ui calendar" id="{{ form.when.id_for_label }}">
+                        <div class="ui input left icon">
+                            <i aria-hidden="true" class="calendar icon"></i>
+                            <input type="text"
+                                   placeholder="Date/Time"
+                                   name="{{ form.when.name }}"
+                                   value="{{ form.when.initial|date:"r" }}"/>
+                        </div>
                     </div>
+                    {{ form.when.errors }}
                 </div>
-            </div>
+            {% endif %}
             <div class="field">
                 {{ form.weight_in_kg.label_tag }}
                 {{ form.weight_in_kg }}
+                {{ form.weight_in_kg.errors }}
             </div>
         </div>
         <div class="ui divider hidden"></div>
@@ -44,8 +47,10 @@
     $('#{{ form.when.id_for_label }}')
     .calendar({
     type: 'date',
-    initialDate: new Date(),
     maxDate: new Date(),
+    disabledDates: [
+    {% for disabled_date in disabled_dates %}"{{ disabled_date }}",{% endfor %}
+    ]
     })
     ;
 {% endblock scripts %}

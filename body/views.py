@@ -159,6 +159,13 @@ class ReportCreateView(UserOnlyMixin, CreateView):
     model = Report
     form_class = ReportForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["disabled_dates"] = Report.objects.filter(
+            user=self.request.user
+        ).values_list("when", flat=True)
+        return context
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
