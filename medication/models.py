@@ -29,8 +29,7 @@ class Medicine(models.Model):
 
     @property
     def active_schedules(self):
-        today = datetime.today().date()
-        return self.schedule_set.filter(start_date__lte=today, end_date__gte=today)
+        return Schedule.objects.active(self)
 
     def recalculate_balance_from_ledger(self):
         self.current_balance = self.ledgerentry_set.all().aggregate(Sum("quantity"))[
