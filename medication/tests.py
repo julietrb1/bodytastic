@@ -90,6 +90,12 @@ class MedicineDetailViewTests(LoginTestCase):
         self.assertContains(response, "2:25 p.m.")
 
 
+class MedicineCreateViewTests(LoginTestCase):
+    def test_create_form_shows_name_field(self):
+        response = self.client.get(reverse("medication:medicine-create"))
+        self.assertContains(response, "Name:")
+
+
 class MedicineTests(LoginTestCase):
     def test_ledger_recalculates(self):
         """
