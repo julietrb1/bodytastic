@@ -1,4 +1,5 @@
-from medication.models import LedgerEntry
+from medication.exceptions import ExcessiveConsumptionQuantityError
+from medication.models import Consumption, LedgerEntry
 
 
 def ledger_entry_pre_save(sender, **kwargs):
@@ -19,6 +20,30 @@ def ledger_entry_post_delete(sender, **kwargs):
     ledger_entry = kwargs["instance"]
     ledger_entry.medicine.current_balance -= ledger_entry.quantity
     ledger_entry.medicine.save()
+
+
+def consumption_pre_save(sender, **kwargs):
+    consumption = kwargs["instance"]
+    consumption_created = consumption.pk is None
+    if (
+        consumption_created
+        and consumption.medicine
+        and consumption.medicine.current_balance < consumption.quantity
+    ):
+        raise ExcessiveConsumptionQuantityError(
+            consumption.medicine.name,
+            consumption.medicine.current_balance,
+            consumption.quantity,
+        )
+    elif not consumption_created:
+        old_consumption = Consumption.objects.get(pk=consumption.pk)
+        quantity_delta = consumption.quantity - old_consumption.quantity
+        if consumption.medicine.current_balance - quantity_delta < 0:
+            raise ExcessiveConsumptionQuantityError(
+                consumption.medicine.name,
+                consumption.medicine.current_balance,
+                quantity_delta,
+            )
 
 
 def consumption_post_save(sender, **kwargs):

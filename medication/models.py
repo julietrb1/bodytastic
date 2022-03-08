@@ -24,6 +24,10 @@ class Medicine(models.Model):
         return reverse("medication:medicine-detail", kwargs={"pk": self.pk})
 
     @property
+    def refills(self):
+        return self.ledgerentry_set.filter(quantity__gte=1)
+
+    @property
     def active_schedules(self):
         today = datetime.today().date()
         return self.schedule_set.filter(start_date__lte=today, end_date__gte=today)
@@ -63,7 +67,7 @@ class LedgerEntry(models.Model):
         return f"{self.medicine} ({self.quantity})"
 
     class Meta:
-        ordering = ["when"]
+        ordering = ["-when"]
 
 
 class ScheduleManager(models.Manager):

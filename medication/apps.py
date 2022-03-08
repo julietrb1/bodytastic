@@ -12,11 +12,18 @@ class MedicationConfig(AppConfig):
 
     def ready(self):
         from medication.signals import (
+            consumption_pre_save,
             consumption_post_save,
             ledger_entry_pre_save,
             ledger_entry_post_delete,
         )
         from medication.models import Consumption, LedgerEntry
+
+        pre_save.connect(
+            consumption_pre_save,
+            dispatch_uid="consumption_pre_save",
+            sender=Consumption,
+        )
 
         post_save.connect(
             consumption_post_save,

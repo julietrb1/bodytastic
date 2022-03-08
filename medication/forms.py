@@ -1,6 +1,6 @@
 from django import forms
 
-from medication.models import Consumption, Schedule
+from medication.models import Consumption, Schedule, LedgerEntry
 
 
 class ConsumptionForm(forms.ModelForm):
@@ -10,6 +10,16 @@ class ConsumptionForm(forms.ModelForm):
 
     class Meta:
         model = Consumption
+        fields = ["when", "quantity"]
+
+
+class RefillForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(RefillForm, self).__init__(*args, **kwargs)
+        self.fields["when"].input_formats = ["%B %d, %Y %I:%M %p"]
+
+    class Meta:
+        model = LedgerEntry
         fields = ["when", "quantity"]
 
 
