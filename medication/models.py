@@ -73,10 +73,8 @@ class LedgerEntry(models.Model):
 class ScheduleManager(models.Manager):
     def active(self, medicine):
         now_date = datetime.now().date()
-        return self.filter(
-            medicine=medicine,
-            start_date__lte=now_date,
-            end_date__gte=now_date,
+        return self.filter(medicine=medicine, start_date__lte=now_date,).exclude(
+            end_date__lt=now_date,
         )
 
     def future(self, medicine):
