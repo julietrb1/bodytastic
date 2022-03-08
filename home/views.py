@@ -1,10 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    """Shows the home page (for authenticated users only)"""
-
+class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["items"] = [

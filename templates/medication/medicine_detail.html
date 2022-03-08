@@ -67,7 +67,7 @@
         <div class="five wide column">
             <h3 class="ui header">
                 Refills ({{ object.refills.count }})&nbsp;
-                <a href="{% url 'medication:medicine-refill' medicinepk=object.pk %}"
+                <a href="{% url 'medication:refill-create' medicinepk=object.pk %}"
                    class="mini icon ui button">
                     <i aria-hidden="true" class="icon plus"></i>
                 </a>

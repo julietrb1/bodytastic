@@ -58,6 +58,6 @@ urlpatterns = [
     path(
         "<int:medicinepk>/refills/create/",
         views.MedicineRefillCreateView.as_view(),
-        name="medicine-refill",
+        name="refill-create",
     ),
 ]
