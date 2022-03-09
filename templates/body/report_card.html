@@ -9,16 +9,10 @@
         </div>
         <div class="description">
             {% for entry in report.entry_set.all %}
-                <span class="ui label small">{{ entry.body_area.name }} ({{ entry.measurement_with_unit }})</span>
+                <span class="ui teal label small">{{ entry.body_area.name }} ({{ entry.measurement_with_unit }})</span>
             {% endfor %}
         </div>
     </div>
-    <div class="extra content">
-        <div class="ui two tiny buttons">
-            <a class="ui primary button"
-               href="{% url 'body:report-detail' report.pk %}">View</a>
-            <a class="ui basic button"
-               href="{% url 'body:entry-create' reportpk=report.pk %}">Add Entry</a>
-        </div>
-    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'body:report-detail' report.pk %}">View</a>
 </div>

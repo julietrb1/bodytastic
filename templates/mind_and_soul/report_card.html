@@ -6,14 +6,6 @@
         <div class="meta">{{ report.when }}</div>
         <div class="description"></div>
     </div>
-    <div class="extra content">
-        <div class="ui two tiny buttons">
-            <a class="ui primary button"
-               href="{% url 'mind_and_soul:report-detail' report.pk %}">View</a>
-            {% comment %} <a class="ui basic button"
-    {% endcomment %}
-    {% comment %}
-    href="{% url 'body:entry-create' reportpk=report.pk %}">Add Entry</a> {% endcomment %}
-        </div>
-    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'mind_and_soul:report-detail' report.pk %}">View</a>
 </div>

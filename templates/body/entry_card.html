@@ -13,14 +13,6 @@
             {% endfor %}
         </div>
     </div>
-    <div class="extra content">
-        <div class="ui two small buttons">
-            <a class="ui basic button"
-               a
-               class="ui basic button"
-               href="{% url 'body:entry-update' reportpk=entry.report.pk pk=entry.pk %}">Edit</a>
-            <a class="ui basic button"
-               href="{% url 'body:entry-delete' reportpk=entry.report.pk pk=entry.pk %}">Delete</a>
-        </div>
-    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'body:entry-update' reportpk=entry.report.pk pk=entry.pk %}">Edit</a>
 </div>

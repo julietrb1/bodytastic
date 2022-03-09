@@ -18,7 +18,7 @@
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button"
-               href="{% url 'medication:medicine-detail' object.medicine.pk %}">Cancel</a>
+               href="{% url 'medication:schedule-edit' medicinepk=object.medicine.pk pk=object.pk %}">Cancel</a>
             <div class="or"></div>
             <button class="ui negative button" type="submit">Delete</button>
         </div>

@@ -10,12 +10,6 @@
             <strong>{{ medicine.active_schedules.count|apnumber|capfirst }}</strong> active schedule{{ medicine.active_schedules.count|pluralize }} set up.
         </div>
     </div>
-    <div class="extra content">
-        <div class="ui two tiny buttons">
-            <a class="ui primary button"
-               href="{% url 'medication:medicine-detail' medicine.id %}">View</a>
-            <a class="ui basic button"
-               href="{% url 'medication:consumption-create' medicinepk=medicine.id %}">Log</a>
-        </div>
-    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'medication:medicine-detail' medicine.id %}">View</a>
 </div>
