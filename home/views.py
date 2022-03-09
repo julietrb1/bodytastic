@@ -20,6 +20,11 @@ class HomeView(TemplateView):
                 "body": "Significant, small, or otherwise, it's probably worth remembering. Note it down here.",
                 "path": "life_events:event-index",
             },
+            {
+                "title": "Mind & Soul",
+                "body": "You're loved. Feel that? It's your soul saying thank you. Thank it back here.",
+                "path": "mind_and_soul:report-index",
+            },
         ]
         return context
 

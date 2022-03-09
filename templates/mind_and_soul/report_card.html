@@ -1,0 +1,11 @@
+{% load humanize %}
+{% load mind_and_soul_extras %}
+<div class="card">
+    <div class="content">
+        <div class="header">{% report_icon %}&nbsp;{{ report.when|naturaltime|title }}</div>
+        <div class="meta">{{ report.when }}</div>
+        <div class="description"></div>
+    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'mind_and_soul:report-detail' report.pk %}">View</a>
+</div>

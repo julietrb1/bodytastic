@@ -60,5 +60,9 @@
             <div class="or"></div>
             <button class="ui positive button" type="submit">Save</button>
         </div>
+        {% if object %}
+            <a class="basic ui icon button"
+               href="{% url 'body:entry-delete' reportpk=object.report.pk pk=object.pk %}"><i aria-hidden="true" class="trash alternate icon"></i></a>
+        {% endif %}
     </form>
 {% endblock content %}

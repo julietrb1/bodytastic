@@ -17,12 +17,6 @@
             </div>
         {% endif %}
     </div>
-    <div class="extra content">
-        <div class="ui two basic tiny buttons">
-            <a class="ui button"
-               href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
-            <a class="ui button"
-               href="{% url 'medication:schedule-delete' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Delete</a>
-        </div>
-    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'medication:schedule-edit' medicinepk=schedule.medicine.pk pk=schedule.pk %}">Edit</a>
 </div>
