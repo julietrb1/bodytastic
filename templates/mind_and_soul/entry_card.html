@@ -1,0 +1,25 @@
+{% load humanize %}
+{% load mind_and_soul_extras %}
+<div class="card">
+    <div class="content">
+        <div class="header">{% emotion_icon %}&nbsp;{{ entry.emotion.name }}</div>
+        <div class="description">
+            <div class="ui yellow disabled tiny rating"
+                 data-icon="star"
+                 data-rating="{{ entry.strength }}"
+                 data-max-rating="10">
+            </div>
+            <p>
+                {{ entry.notes }}
+            </p>
+        </div>
+    </div>
+    {% comment %}
+    <div class="extra content">
+        <div class="ui two small buttons">
+            <a class="ui basic button" a class="ui basic button" href="{% url 'body:entry-update' reportpk=entry.report.pk pk=entry.pk %}">Edit</a>
+            <a class="ui basic button" href="{% url 'body:entry-delete' reportpk=entry.report.pk pk=entry.pk %}">Delete</a>
+        </div>
+    </div>
+    {% endcomment %}
+</div>

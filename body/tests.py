@@ -2,12 +2,12 @@ from decimal import Decimal
 from django.test import Client, TestCase, SimpleTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.utils.timezone import datetime
+from django.utils.timezone import datetime, make_aware
 from django.test import override_settings
 from body.models import BodyArea, Entry, Report
 
 
-def create_report(user, when=datetime(2022, 1, 1), weight_in_kg=50.5):
+def create_report(user, when=make_aware(datetime(2022, 1, 1)), weight_in_kg=50.5):
     return Report.objects.create(user=user, when=when, weight_in_kg=weight_in_kg)
 
 

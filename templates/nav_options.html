@@ -4,3 +4,5 @@
    href="{% url "body:report-index" %}">Body</a>
 <a class="{% if request.resolver_match.app_name == "life_events" %}active{% endif %} item"
    href="{% url "life_events:event-index" %}">Life Events</a>
+<a class="{% if request.resolver_match.app_name == "mind_and_soul" %}active{% endif %} item"
+   href="{% url "mind_and_soul:report-index" %}">Mind &amp; Soul</a>

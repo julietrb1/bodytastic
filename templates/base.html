@@ -20,8 +20,8 @@
 {% block fomantic_scripts %}
     <script>
         $('.ui.dropdown').dropdown();
-        $('.ui.sidebar').sidebar({
-        }).sidebar('attach events', '#mobile-item');        
+        $('.ui.sidebar').sidebar({}).sidebar('attach events', '#mobile-item');
+        $('.ui.rating').rating();
         {% block scripts %}
         {% endblock scripts %}
     </script>
