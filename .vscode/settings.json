@@ -1,4 +1,7 @@
 {
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": false
+    "python.linting.enabled": false,
+    "sonarlint.connectedMode.project": {
+        "projectKey": "dylanjboyd_bodytastic"
+    },
 }
