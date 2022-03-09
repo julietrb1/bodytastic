@@ -6,6 +6,9 @@ from django.urls import reverse
 
 from mind_and_soul.models import EmotionReport
 
+LIST_ROUTE_NAME = "mind_and_soul:report-index"
+DETAIL_ROUTE_NAME = "mind_and_soul:report-detail"
+
 
 def create_user(
     username="john", email="lennon@thebeatles.com", password="johnpassword"
@@ -36,14 +39,14 @@ class UserOnlyMixin:
 
 class ReportListViewTests(LoginTestCase):
     def test_empty_state_shown(self):
-        response = self.client.get(reverse("mind_and_soul:report-index"))
+        response = self.client.get(reverse(LIST_ROUTE_NAME))
         self.assertContains(response, "My Mind &amp; Soul")
         self.assertContains(response, "Mind Over Matter. That's What They Say, Anyway.")
 
     def test_no_other_user_reports_shown(self):
         report = create_report(self.user)
         create_report(create_user("jane", "jane@example.com", "janepassword"))
-        response = self.client.get(reverse("mind_and_soul:report-index"))
+        response = self.client.get(reverse(LIST_ROUTE_NAME))
         self.assertQuerysetEqual(response.context["object_list"], [report])
 
 
@@ -52,18 +55,14 @@ class ReportDetailViewTests(LoginTestCase):
         other_report = create_report(
             create_user("jane", "jane@example.com", "janepassword")
         )
-        response = self.client.get(
-            reverse("mind_and_soul:report-detail", args=[other_report.pk])
-        )
+        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[other_report.pk]))
         self.assertEqual(response.status_code, 404)
 
     def test_nonexistent_report_404(self):
-        response = self.client.get(reverse("mind_and_soul:report-detail", args=[12345]))
+        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[12345]))
         self.assertEqual(response.status_code, 404)
 
     def test_report_without_entries(self):
         report = create_report(self.user)
-        response = self.client.get(
-            reverse("mind_and_soul:report-detail", args=[report.pk])
-        )
+        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[report.pk]))
         self.assertContains(response, "1 Jan 2022")
