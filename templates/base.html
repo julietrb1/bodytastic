@@ -4,6 +4,13 @@
     <div class="pusher">
         <div class="top-page-spacer"></div>
         <div id="content" class="ui container">
+            {% for message in messages %}
+                <div class="ui {{ message.tags }} message">
+                    <p>
+                        {{ message }}
+                    </p>
+                </div>
+            {% endfor %}
             <h1 class="ui header">
                 {% block title %}
                     (no title)
@@ -22,6 +29,7 @@
         $('.ui.dropdown').dropdown();
         $('.ui.sidebar').sidebar({}).sidebar('attach events', '#mobile-item');
         $('.ui.rating').rating();
+        $('.message .close').on('click', function() { $(this).closest('.message').transition('fade'); });
         {% block scripts %}
         {% endblock scripts %}
     </script>
