@@ -34,7 +34,7 @@ def create_user(
 @override_settings(AXES_HANDLER="axes.handlers.dummy.AxesDummyHandler")
 class LoginTestCase(TestCase):
     def setUp(self):
-        self.client = Client()
+        self.client: Client = Client()
         self.user = create_user()
         self.logged_in = self.client.force_login(self.user)
 
@@ -178,4 +178,37 @@ class ReportUpdateViewTests(LoginTestCase):
         self.assertContains(response, "Edit")
         self.assertEqual(
             response.context["form"].initial["weight_in_kg"], Decimal(50.5)
+        )
+
+    def test_updating_report_saves(self):
+        report = create_report(self.user)
+        new_weight = 90
+        response = self.client.post(
+            reverse(UPDATE_ROUTE_NAME, args=[report.pk]),
+            {
+                "pk": report.pk,
+                "weight_in_kg": new_weight,
+            },
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        new_report = Report.objects.get(pk=report.pk)
+        self.assertEqual(new_report.weight_in_kg, new_weight)
+
+    def test_updating_report_shows_message(self):
+        report = create_report(self.user)
+        new_weight = 90
+        response = self.client.post(
+            reverse(UPDATE_ROUTE_NAME, args=[report.pk]),
+            {
+                "pk": report.pk,
+                "weight_in_kg": new_weight,
+            },
+            follow=True,
+        )
+        messages = list(response.context["messages"])
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]),
+            "A little tuning here and there never hurt anyone. Report changes saved.",
         )

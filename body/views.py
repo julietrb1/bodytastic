@@ -6,6 +6,7 @@ from django.utils.timezone import datetime
 from body.forms import ReportForm
 from django.utils.timezone import datetime, timedelta
 from django.contrib.humanize.templatetags.humanize import naturalday
+from django.contrib import messages
 
 from body.models import BodyArea, Report, Entry
 import random
@@ -173,6 +174,13 @@ class ReportCreateView(UserOnlyMixin, CreateView):
 class ReportUpdateView(UserOnlyMixin, UpdateView):
     model = Report
     fields = ["weight_in_kg"]
+
+    def form_valid(self, form):
+        messages.success(
+            self.request,
+            "A little tuning here and there never hurt anyone. Report changes saved.",
+        )
+        return super().form_valid(form)
 
 
 class ReportDeleteView(UserOnlyMixin, DeleteView):
