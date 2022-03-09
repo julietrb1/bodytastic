@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.test import Client, TestCase, SimpleTestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -20,8 +21,10 @@ def create_body_area(name="Sample Area", measurement_unit="cm"):
     return BodyArea.objects.create(name=name, measurement_unit=measurement_unit)
 
 
-def create_user():
-    return User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+def create_user(
+    username="john", email="lennon@thebeatles.com", password="johnpassword"
+):
+    return User.objects.create_user(username, email, password)
 
 
 @override_settings(AXES_HANDLER="axes.handlers.dummy.AxesDummyHandler")
@@ -119,3 +122,60 @@ class ReportListViewTests(LoginTestCase):
         self.assertContains(response, "Hips")
         self.assertContains(response, "WHR: 0.588")
         self.assertQuerysetEqual(response.context["object_list"], [report])
+
+    def test_no_other_user_reports_shown(self):
+        report = create_report(self.user)
+        create_report(create_user("jane", "jane@example.com", "janepassword"))
+        response = self.client.get(reverse("body:report-index"))
+        self.assertQuerysetEqual(response.context["object_list"], [report])
+
+
+class ReportDetailViewTests(LoginTestCase):
+    def test_no_other_user_reports_shown(self):
+        other_report = create_report(
+            create_user("jane", "jane@example.com", "janepassword")
+        )
+        response = self.client.get(
+            reverse("body:report-detail", args=[other_report.pk])
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_nonexistent_report_404(self):
+        response = self.client.get(reverse("body:report-detail", args=[12345]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_report_without_entries(self):
+        report = create_report(self.user)
+        response = self.client.get(reverse("body:report-detail", args=[report.pk]))
+        self.assertContains(response, "1 Jan 2022")
+        self.assertContains(response, "No entries for 1 Jan 2022")
+
+    def test_report_with_entry(self):
+        report = create_report(self.user)
+        create_entry(report, create_body_area())
+        response = self.client.get(reverse("body:report-detail", args=[report.pk]))
+        self.assertContains(response, "Sample Area")
+        self.assertContains(response, "20 cm")
+
+
+class ReportUpdateViewTests(LoginTestCase):
+    def test_no_other_user_reports_shown(self):
+        other_report = create_report(
+            create_user("jane", "jane@example.com", "janepassword")
+        )
+        response = self.client.get(
+            reverse("body:report-update", args=[other_report.pk])
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_nonexistent_report_404(self):
+        response = self.client.get(reverse("body:report-update", args=[12345]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_valid_report_loads_form(self):
+        report = create_report(self.user)
+        response = self.client.get(reverse("body:report-update", args=[report.pk]))
+        self.assertContains(response, "Edit")
+        self.assertEqual(
+            response.context["form"].initial["weight_in_kg"], Decimal(50.5)
+        )
