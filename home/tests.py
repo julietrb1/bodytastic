@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.test import override_settings
 from django.utils.html import escape
 
+LIST_ROUTE_NAME = "home:index"
+
 
 @override_settings(AXES_HANDLER="axes.handlers.dummy.AxesDummyHandler")
 class LoginTestCase(TestCase):
@@ -20,7 +22,7 @@ class HomeViewTests(LoginTestCase):
         """
         A nice simple test: Does the title show?
         """
-        response = self.client.get(reverse("home:index"))
+        response = self.client.get(reverse(LIST_ROUTE_NAME))
         self.assertContains(
             response,
             "Never miss a beat. Keep track of consumption and schedules for your meds.",

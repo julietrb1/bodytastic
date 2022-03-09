@@ -24,7 +24,7 @@
                         <input type="text"
                                placeholder="Date"
                                name="{{ form.start_date.name }}"
-                               value="{{ form.start_date.initial }}"/>
+                               value="{{ form.start_date.initial|date:"c" }}"/>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                         <input type="text"
                                placeholder="Date"
                                name="{{ form.end_date.name }}"
-                               value="{{ form.end_date.initial }}"/>
+                               value="{{ form.end_date.initial|date:"c" }}"/>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                         <input type="text"
                                placeholder="Time"
                                name="{{ form.time.name }}"
-                               value="{{ form.time.initial }}"/>
+                               value="{{ form.time.initial|date:"c" }}"/>
                     </div>
                 </div>
             </div>

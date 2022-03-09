@@ -13,7 +13,7 @@
     <form method="post" class="ui form">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <div class="three fields">
+        <div class="fields">
             <div class="field">
                 {{ form.name.label_tag }}
                 {{ form.name }}
@@ -26,7 +26,7 @@
                         <input type="text"
                                placeholder="Date/Time"
                                name="{{ form.when.name }}"
-                               value="{{ form.when.initial|date:"r" }}"/>
+                               value="{{ form.when.initial|date:"c" }}"/>
                     </div>
                 </div>
                 {{ form.when.errors }}
