@@ -8,6 +8,7 @@ class Category(models.Model):
 
     class Meta:
         ordering = ["name"]
+        db_table = "category"
 
     def __str__(self) -> str:
         return self.name
@@ -24,6 +25,7 @@ class Event(models.Model):
 
     class Meta:
         ordering = ["-when"]
+        db_table = "event"
 
     def __str__(self) -> str:
         return self.name
