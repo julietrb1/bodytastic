@@ -6,9 +6,9 @@ from django.urls import reverse
 from medication.models import LedgerEntry, Medicine, Consumption, Schedule
 from django.utils.timezone import datetime, make_aware, timedelta
 
-LIST_ROUTE_NAME = "medication:medicine-index"
-DETAIL_ROUTE_NAME = "medication:medicine-detail"
-CREATE_ROUTE_NAME = "medication:medicine-create"
+MEDICINE_LIST_ROUTE = "medication:medicine-index"
+MEDICINE_DETAIL_ROUTE = "medication:medicine-detail"
+MEDICINE_CREATE_ROUTE = "medication:medicine-create"
 
 
 def create_medicine(user, name="Test meds", current_balance=0):
@@ -63,7 +63,7 @@ class MedicineListViewTests(LoginTestCase):
         """
         If no medicines exist, the empty state is shown.
         """
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(MEDICINE_LIST_ROUTE))
         self.assertContains(response, "The Potential for Medicine Is Upon Us.")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
@@ -74,7 +74,7 @@ class MedicineListViewTests(LoginTestCase):
             make_aware(datetime.now() - timedelta(days=1)),
             make_aware(datetime.now() + timedelta(days=1)),
         )
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[medicine.pk]))
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "Every one day")
         self.assertContains(response, "Next:")
         self.assertContains(response, "2:25 p.m.")
@@ -86,7 +86,7 @@ class MedicineListViewTests(LoginTestCase):
             make_aware(datetime.now() - timedelta(days=1)),
             None,
         )
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[medicine.pk]))
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "Every one day")
         self.assertContains(response, "Next:")
         self.assertContains(response, "2:25 p.m.")
@@ -99,14 +99,14 @@ class MedicineDetailViewTests(LoginTestCase):
         """
         medicine = create_medicine(self.user, current_balance=1)
         create_consumption(medicine)
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[medicine.pk]))
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "2:25 p.m.")
 
 
 class MedicineCreateViewTests(LoginTestCase):
     def test_create_form_shows_name_field(self):
-        response = self.client.get(reverse(CREATE_ROUTE_NAME))
+        response = self.client.get(reverse(MEDICINE_CREATE_ROUTE))
         self.assertContains(response, "Name:")
 
 

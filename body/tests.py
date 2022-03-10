@@ -6,9 +6,9 @@ from django.utils.timezone import datetime, make_aware
 from django.test import override_settings
 from body.models import BodyArea, Entry, Report
 
-LIST_ROUTE_NAME = "body:report-index"
-UPDATE_ROUTE_NAME = "body:report-update"
-DETAIL_ROUTE_NAME = "body:report-detail"
+BODY_REPORT_LIST_ROUTE = "body:report-index"
+BODY_REPORT_UPDATE_ROUTE = "body:report-update"
+BODY_REPORT_DETAIL_ROUTE = "body:report-detail"
 
 
 def create_report(user, when=make_aware(datetime(2022, 1, 1)), weight_in_kg=50.5):
@@ -25,9 +25,7 @@ def create_body_area(name="Sample Area", measurement_unit="cm"):
     return BodyArea.objects.create(name=name, measurement_unit=measurement_unit)
 
 
-def create_user(
-    username="john", email="lennon@thebeatles.com", password="johnpassword"
-):
+def create_user(username, email, password):
     return User.objects.create_user(username, email, password)
 
 
@@ -35,7 +33,8 @@ def create_user(
 class LoginTestCase(TestCase):
     def setUp(self):
         self.client: Client = Client()
-        self.user = create_user()
+        self.user = create_user("john", "lennon@thebeatles.com", "johnpassword")
+        self.other_user = create_user("jane", "jane@example.com", "janepassword")
         self.logged_in = self.client.force_login(self.user)
 
 
@@ -50,10 +49,10 @@ class ViewsWithoutLoginTests(SimpleTestCase):
         )
 
     def test_report_list_redirects_to_login(self):
-        self.verify_redirect(LIST_ROUTE_NAME)
+        self.verify_redirect(BODY_REPORT_LIST_ROUTE)
 
     def test_report_detail_redirects_to_login(self):
-        self.verify_redirect(DETAIL_ROUTE_NAME, {"pk": 1})
+        self.verify_redirect(BODY_REPORT_DETAIL_ROUTE, {"pk": 1})
 
 
 class ReportListViewTests(LoginTestCase):
@@ -61,7 +60,7 @@ class ReportListViewTests(LoginTestCase):
         """
         If no reports exist, the empty state is shown.
         """
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertContains(response, "No Reports Here, but There Could Be...")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
@@ -70,7 +69,7 @@ class ReportListViewTests(LoginTestCase):
         If a report exists, it should be shown in the list with the no entries message.
         """
         report = create_report(self.user)
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "0 entries")
@@ -81,7 +80,7 @@ class ReportListViewTests(LoginTestCase):
         A recent report should show the summary chart.
         """
         create_report(self.user, datetime.now())
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertIsNotNone(response.context["summary_chart_data"])
 
     def test_one_report_with_entries_shows_graph(self):
@@ -91,7 +90,7 @@ class ReportListViewTests(LoginTestCase):
         report = create_report(self.user, datetime.now())
         body_area = create_body_area()
         create_entry(report, body_area)
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertIsNotNone(response.context["summary_chart_data"])
 
     def test_one_report_with_entry(self):
@@ -101,7 +100,7 @@ class ReportListViewTests(LoginTestCase):
         report = create_report(self.user)
         body_area = create_body_area()
         create_entry(report, body_area)
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "One entry")
@@ -118,9 +117,7 @@ class ReportListViewTests(LoginTestCase):
         create_entry(report, waist_body_area, 50)
         hips_body_area = create_body_area("Hips")
         create_entry(report, hips_body_area, 85)
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
-        self.assertContains(response, "1 Jan 2022")
-        self.assertContains(response, "50.5 kg")
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertContains(response, "Two entries")
         self.assertContains(response, "Waist")
         self.assertContains(response, "Hips")
@@ -129,52 +126,52 @@ class ReportListViewTests(LoginTestCase):
 
     def test_no_other_user_reports_shown(self):
         report = create_report(self.user)
-        create_report(create_user("jane", "jane@example.com", "janepassword"))
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        create_report(self.other_user)
+        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
         self.assertQuerysetEqual(response.context["object_list"], [report])
 
 
 class ReportDetailViewTests(LoginTestCase):
     def test_no_other_user_reports_shown(self):
-        other_report = create_report(
-            create_user("jane", "jane@example.com", "janepassword")
+        other_report = create_report(self.other_user)
+        response = self.client.get(
+            reverse(BODY_REPORT_DETAIL_ROUTE, args=[other_report.pk])
         )
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[other_report.pk]))
         self.assertEqual(response.status_code, 404)
 
     def test_nonexistent_report_404(self):
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[12345]))
+        response = self.client.get(reverse(BODY_REPORT_DETAIL_ROUTE, args=[12345]))
         self.assertEqual(response.status_code, 404)
 
     def test_report_without_entries(self):
         report = create_report(self.user)
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[report.pk]))
+        response = self.client.get(reverse(BODY_REPORT_DETAIL_ROUTE, args=[report.pk]))
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "No entries for 1 Jan 2022")
 
     def test_report_with_entry(self):
         report = create_report(self.user)
         create_entry(report, create_body_area())
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[report.pk]))
+        response = self.client.get(reverse(BODY_REPORT_DETAIL_ROUTE, args=[report.pk]))
         self.assertContains(response, "Sample Area")
         self.assertContains(response, "20 cm")
 
 
 class ReportUpdateViewTests(LoginTestCase):
     def test_no_other_user_reports_shown(self):
-        other_report = create_report(
-            create_user("jane", "jane@example.com", "janepassword")
+        other_report = create_report(self.other_user)
+        response = self.client.get(
+            reverse(BODY_REPORT_UPDATE_ROUTE, args=[other_report.pk])
         )
-        response = self.client.get(reverse(UPDATE_ROUTE_NAME, args=[other_report.pk]))
         self.assertEqual(response.status_code, 404)
 
     def test_nonexistent_report_404(self):
-        response = self.client.get(reverse(UPDATE_ROUTE_NAME, args=[12345]))
+        response = self.client.get(reverse(BODY_REPORT_UPDATE_ROUTE, args=[12345]))
         self.assertEqual(response.status_code, 404)
 
     def test_valid_report_loads_form(self):
         report = create_report(self.user)
-        response = self.client.get(reverse(UPDATE_ROUTE_NAME, args=[report.pk]))
+        response = self.client.get(reverse(BODY_REPORT_UPDATE_ROUTE, args=[report.pk]))
         self.assertContains(response, "Edit")
         self.assertEqual(
             response.context["form"].initial["weight_in_kg"], Decimal(50.5)
@@ -184,7 +181,7 @@ class ReportUpdateViewTests(LoginTestCase):
         report = create_report(self.user)
         new_weight = 90
         response = self.client.post(
-            reverse(UPDATE_ROUTE_NAME, args=[report.pk]),
+            reverse(BODY_REPORT_UPDATE_ROUTE, args=[report.pk]),
             {
                 "pk": report.pk,
                 "weight_in_kg": new_weight,
@@ -199,7 +196,7 @@ class ReportUpdateViewTests(LoginTestCase):
         report = create_report(self.user)
         new_weight = 90
         response = self.client.post(
-            reverse(UPDATE_ROUTE_NAME, args=[report.pk]),
+            reverse(BODY_REPORT_UPDATE_ROUTE, args=[report.pk]),
             {
                 "pk": report.pk,
                 "weight_in_kg": new_weight,

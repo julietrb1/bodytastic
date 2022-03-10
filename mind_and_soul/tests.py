@@ -6,14 +6,8 @@ from django.urls import reverse
 
 from mind_and_soul.models import EmotionReport
 
-LIST_ROUTE_NAME = "mind_and_soul:report-index"
-DETAIL_ROUTE_NAME = "mind_and_soul:report-detail"
-
-
-def create_user(
-    username="john", email="lennon@thebeatles.com", password="johnpassword"
-):
-    return User.objects.create_user(username, email, password)
+EMOTION_REPORT_LIST_ROUTE = "mind_and_soul:report-index"
+EMOTION_REPORT_DETAIL_ROUTE = "mind_and_soul:report-detail"
 
 
 def create_report(
@@ -28,7 +22,12 @@ def create_report(
 class LoginTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = create_user()
+        self.user = User.objects.create_user(
+            "john", "lennon@thebeatles.com", "johnpassword"
+        )
+        self.other_user = User.objects.create_user(
+            "jane", "jane@example.com", "janepassword"
+        )
         self.logged_in = self.client.force_login(self.user)
 
 
@@ -37,32 +36,34 @@ class UserOnlyMixin:
         return self.model.objects.filter(user=self.request.user)
 
 
-class ReportListViewTests(LoginTestCase):
+class EmotionReportListViewTests(LoginTestCase):
     def test_empty_state_shown(self):
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(EMOTION_REPORT_LIST_ROUTE))
         self.assertContains(response, "My Mind &amp; Soul")
         self.assertContains(response, "Mind Over Matter. That's What They Say, Anyway.")
 
     def test_no_other_user_reports_shown(self):
         report = create_report(self.user)
-        create_report(create_user("jane", "jane@example.com", "janepassword"))
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        create_report(self.other_user)
+        response = self.client.get(reverse(EMOTION_REPORT_LIST_ROUTE))
         self.assertQuerysetEqual(response.context["object_list"], [report])
 
 
-class ReportDetailViewTests(LoginTestCase):
+class EmotionReportDetailViewTests(LoginTestCase):
     def test_no_other_user_reports_shown(self):
-        other_report = create_report(
-            create_user("jane", "jane@example.com", "janepassword")
+        other_report = create_report(self.other_user)
+        response = self.client.get(
+            reverse(EMOTION_REPORT_DETAIL_ROUTE, args=[other_report.pk])
         )
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[other_report.pk]))
         self.assertEqual(response.status_code, 404)
 
     def test_nonexistent_report_404(self):
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[12345]))
+        response = self.client.get(reverse(EMOTION_REPORT_DETAIL_ROUTE, args=[12345]))
         self.assertEqual(response.status_code, 404)
 
     def test_report_without_entries(self):
         report = create_report(self.user)
-        response = self.client.get(reverse(DETAIL_ROUTE_NAME, args=[report.pk]))
+        response = self.client.get(
+            reverse(EMOTION_REPORT_DETAIL_ROUTE, args=[report.pk])
+        )
         self.assertContains(response, "1 Jan 2022")
