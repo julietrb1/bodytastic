@@ -1,6 +1,6 @@
 from django.urls import path
 
-from body.views.life_events_views import (
+from body.views.life_events import (
     EventListView,
     EventCreateView,
     EventUpdateView,

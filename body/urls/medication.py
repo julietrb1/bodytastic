@@ -1,6 +1,6 @@
 from django.urls import path
 
-from body.views.medication_views import (
+from body.views.medication import (
     MedicationListView,
     MedicationDetailView,
     MedicationCreateView,

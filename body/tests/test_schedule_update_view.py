@@ -7,6 +7,39 @@ BODY_SCHEDULE_UPDATE_ROUTE = "schedule-update"
 
 
 class ScheduleUpdateViewTests(LoginTestCase):
+    def test_initial_values_set_in_form(self):
+        start_date = make_aware(datetime(2022, 1, 1)).date()
+        end_date = None
+        time = datetime(2022, 1, 1, 8).time()
+        frequency_in_days = 2
+        quantity = 3
+        tolerance_mins = 45
+        schedule = create_schedule(
+            create_medicine(self.user),
+            start_date,
+            end_date,
+            frequency_in_days,
+            time,
+            quantity,
+            tolerance_mins,
+        )
+        response = self.client.get(
+            reverse(
+                BODY_SCHEDULE_UPDATE_ROUTE,
+                kwargs={"medicinepk": schedule.medicine.pk, "pk": schedule.pk},
+            )
+        )
+        self.assertEqual(response.context["form"].initial["start_date"], start_date)
+        self.assertEqual(response.context["form"].initial["end_date"], end_date)
+        self.assertEqual(response.context["form"].initial["time"], time)
+        self.assertEqual(
+            response.context["form"].initial["frequency_in_days"], frequency_in_days
+        )
+        self.assertEqual(response.context["form"].initial["quantity"], quantity)
+        self.assertEqual(
+            response.context["form"].initial["tolerance_mins"], tolerance_mins
+        )
+
     def test_no_other_user_schedules_shown(self):
         other_medicine = create_medicine(self.other_user)
         other_schedule = create_schedule(
