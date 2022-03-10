@@ -1,0 +1,15 @@
+{% load humanize %}
+{% load body_extras %}
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        {% report_icon None False %}
+        Mind Over Matter. That's What They Say, Anyway.
+    </div>
+    <div class="inline">
+        <a href="{% url "report-create" %}"
+           class="ui primary labeled icon button">
+            <i aria-hidden="true" class="icon plus"></i>
+            Add Report
+        </a>
+    </div>
+</div>

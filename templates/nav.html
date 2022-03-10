@@ -3,7 +3,7 @@
         <div class="computer only row">
             <div class="column">
                 <div class="ui fixed menu">
-                    <a href="{% url 'home:index' %}" class="header item">Bodytastic</a>
+                    <a href="{% url 'index' %}" class="header item">Bodytastic</a>
                     {% include "nav_options.html" %}
                     <div class="right menu">
                         <a class="item" href="{% url 'logout' %}">Log out ({{ request.user }})&nbsp;<i aria-hidden="true" class="sign out alternate icon"></i></a>
@@ -15,7 +15,7 @@
             <div class="column">
                 <div class="ui fixed menu">
                     <a id="mobile-item" class="item"><i class="bars icon" aria-hidden="true"></i></a>
-                    <a href="{% url 'home:index' %}" class="header item">Bodytastic</a>
+                    <a href="{% url 'index' %}" class="header item">Bodytastic</a>
                 </div>
             </div>
         </div>

@@ -10,16 +10,14 @@
 {% endblock title %}
 {% block content %}
     <div class="small ui buttons">
-        <a class="basic ui button" href="{% url 'body:report-index' %}">
+        <a class="basic ui button" href="{% url 'report-index' %}">
             <i aria-hidden="true" class="left arrow icon"></i>
             Back to Body
         </a>
         <a class="ui button primary"
-           href="{% url 'body:entry-create' reportpk=report.pk %}">Add Entry</a>
-        <a class="ui basic button"
-           href="{% url 'body:report-update' report.pk %}">Edit</a>
-        <a class="ui basic button"
-           href="{% url 'body:report-delete' report.pk %}">Delete</a>
+           href="{% url 'entry-create' reportpk=report.pk %}">Add Entry</a>
+        <a class="ui basic button" href="{% url 'report-update' report.pk %}">Edit</a>
+        <a class="ui basic button" href="{% url 'report-delete' report.pk %}">Delete</a>
     </div>
     <div class="ui divider hidden"></div>
     {% if object.entry_set.count %}

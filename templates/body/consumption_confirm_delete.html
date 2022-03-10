@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}
+    <i aria-hidden="true" class="trash red alternate icon circular"></i>
+    <div class="content">
+        Delete Consumption?
+        <div class="sub header">{{ object.medicine }}</div>
+    </div>
+{% endblock title %}
+{% block content %}
+    <p>
+        This consumption was logged as being at <span class="ui text red">{{ object.when }}</span> of quantity <span class="ui text red">{{ object.quantity|apnumber }}</span>.
+    </p>
+    <p>
+        There's no going back from this. This will also delete all related information.
+    </p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button"
+               href="{% url 'consumption-edit' medicinepk=object.medicine.pk pk=object.pk %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui negative button" type="submit">Delete</button>
+        </div>
+    </form>
+{% endblock content %}

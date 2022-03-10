@@ -49,10 +49,6 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 INSTALLED_APPS = [
     "body.apps.BodyConfig",
-    "home.apps.HomeConfig",
-    "life_events.apps.LifeEventsConfig",
-    "medication.apps.MedicationConfig",
-    "mind_and_soul.apps.MindAndSoulConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

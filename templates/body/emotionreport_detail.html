@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load body_extras %}
+{% block title %}
+    {% report_icon %}
+    <div class="content">
+        {{ object.when }}
+        <div class="sub header">
+            {{ object.emotionentry_set.count|apnumber|capfirst }} emotion{{ object.emotionentry_set.count|pluralize }}
+        </div>
+    </div>
+{% endblock title %}
+{% block content %}
+    <div class="small ui buttons">
+        <a class="basic ui button" href="{% url 'report-index' %}">
+            <i aria-hidden="true" class="left arrow icon"></i>
+            Back to Mind &amp; Soul
+        </a>
+    </div>
+    <h3 class="ui header">
+        Emotions&nbsp;
+        <a href="" class="mini icon ui button">
+            <i aria-hidden="true" class="icon plus"></i>
+        </a>
+    </h3>
+    <div class="ui cards">
+        {% for entry in object.emotionentry_set.all %}
+            {% include "body/emotionentry_card.html" with entry=entry %}
+        {% empty %}
+            {% include "body/emotionentry_empty_card.html" %}
+        {% endfor %}
+    </div>
+{% endblock content %}

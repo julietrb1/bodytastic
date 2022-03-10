@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load body_extras %}
+{% block title %}
+    My Mind &amp; Soul&nbsp;
+    <a href="{% url "emotionreport-create" %}" class="mini icon ui button">
+        <i aria-hidden="true" class="icon plus"></i>
+    </a>
+{% endblock title %}
+{% block content %}
+    {% if object_list %}
+        <div class="ui cards">
+            {% for report in object_list %}
+                {% include "body/emotionreport_card.html" with report=report %}
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include "body/emotionreport_list_empty.html" %}
+    {% endif %}
+{% endblock content %}
