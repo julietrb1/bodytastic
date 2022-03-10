@@ -23,7 +23,7 @@ urlpatterns = [
         name="report-detail",
     ),
     path(
-        "add/",
+        "create/",
         ReportCreateView.as_view(),
         name="report-create",
     ),

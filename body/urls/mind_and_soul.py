@@ -18,7 +18,7 @@ urlpatterns = [
         name="emotionreport-detail",
     ),
     path(
-        "add/",
+        "create/",
         EmotionReportCreateView.as_view(),
         name="emotionreport-create",
     ),
