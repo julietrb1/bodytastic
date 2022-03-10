@@ -1,0 +1,20 @@
+{% load humanize %}
+<table class="ui unstackable striped table"
+       aria-label="Consumption list for this medicine">
+    <thead>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Quantity</th>
+    </thead>
+    <tbody>
+        {% for consumption in consumptions %}
+            <tr>
+                <td class="selectable">
+                    <a href="{% url 'consumption-edit' medicinepk=consumption.medicine.pk pk=consumption.pk %}">{{ consumption.when|naturalday|capfirst }}</a>
+                </td>
+                <td>{{ consumption.when|time }}</td>
+                <td>{{ consumption.quantity }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

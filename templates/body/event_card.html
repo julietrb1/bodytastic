@@ -1,0 +1,11 @@
+{% load humanize %}
+{% load body_extras %}
+<div class="card">
+    <div class="content">
+        <div class="header">{% event_icon %}&nbsp;{{ event.name }}</div>
+        <div class="meta">{{ event.when|date }}</div>
+        {% if event.category %}<div class="description">{{ event.category }}</div>{% endif %}
+    </div>
+    <a class="ui bottom attached button"
+       href="{% url 'event-update' event.pk %}">Edit</a>
+</div>

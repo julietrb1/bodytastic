@@ -1,0 +1,17 @@
+{% load humanize %}
+{% load body_extras %}
+<div class="card">
+    <div class="content">
+        <div class="header">{% emotion_icon %}&nbsp;{{ entry.emotion.name }}</div>
+        <div class="description">
+            <div class="ui yellow disabled tiny rating"
+                 data-icon="star"
+                 data-rating="{{ entry.strength }}"
+                 data-max-rating="10">
+            </div>
+            <p>
+                {{ entry.notes }}
+            </p>
+        </div>
+    </div>
+</div>

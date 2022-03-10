@@ -6,6 +6,43 @@ import django.db.migrations.operations.special
 import django.db.models.deletion
 
 
+def seed_emotions(apps, _):
+    """Inserts default sensations that the app should start with."""
+    emotion_model = apps.get_model("body.Emotion")
+    emotions = (
+        "Surprised",
+        "Aroused",
+        "Annoyed",
+        "Excited",
+        "Delighted",
+        "Enthusiastic",
+        "Glad",
+        "Joyful",
+        "Content",
+        "Serene",
+        "At ease",
+        "Relaxed",
+        "Calm",
+        "Irritable",
+        "Sleepy",
+        "Tired",
+        "Bored",
+        "Gloomy",
+        "Miserable",
+        "Depressed",
+        "Disgusted",
+        "Frustrated",
+        "Tense",
+        "Afraid",
+        "Astonished",
+        "Alarmed",
+        "Fearful",
+        "Angry",
+    )
+
+    emotion_model.objects.bulk_create([emotion_model(name=name) for name in emotions])
+
+
 def seed_body_areas(apps, _):
     """Inserts default body areas that the app should start with."""
     body_area_model = apps.get_model("body.BodyArea")
@@ -26,6 +63,23 @@ def seed_body_areas(apps, _):
 
     body_area_model.objects.bulk_create(
         [body_area_model(name=name, measurement_unit=unit) for name, unit in body_areas]
+    )
+
+
+def seed_categories(apps, _):
+    """Inserts default categories that the app should start with."""
+    category_model = apps.get_model("body.Category")
+    categories = (
+        "Work & Career",
+        "Social & Friendship",
+        "Health & Fitness",
+        "Travel & Experiences",
+        "Financial & Organisational",
+        "Habits & Goals",
+    )
+
+    category_model.objects.bulk_create(
+        [category_model(name=name) for name in categories]
     )
 
 
@@ -74,9 +128,9 @@ class Migration(migrations.Migration):
         ("body", "0002_auto_20220301_2334"),
         ("body", "0003_alter_bodyarea_options_alter_sensation_options_and_more"),
         ("body", "0004_alter_bodyareaentry_options"),
-        ("body", "0005_alter_bodyareareport_weight_in_g"),
-        ("body", "0006_rename_weight_in_g_bodyareareport_weight_in_kg"),
-        ("body", "0007_alter_bodyareareport_weight_in_kg"),
+        ("body", "0005_alter_report_weight_in_g"),
+        ("body", "0006_rename_weight_in_g_report_weight_in_kg"),
+        ("body", "0007_alter_report_weight_in_kg"),
         ("body", "0008_rename_bodyareaentry_entry_and_more"),
         ("body", "0009_attribute_report_attributes"),
         ("body", "0010_alter_report_unique_together"),
@@ -92,6 +146,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.CreateModel(
             name="BodyArea",
+            options={"ordering": ["name"], "db_table": "bodyarea"},
             fields=[
                 (
                     "id",
@@ -107,7 +162,12 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name="BodyAreaReport",
+            name="Report",
+            options={
+                "ordering": ["-when"],
+                "db_table": "report",
+                "unique_together": {("user", "when")},
+            },
             fields=[
                 (
                     "id",
@@ -120,8 +180,14 @@ class Migration(migrations.Migration):
                 ),
                 ("when", models.DateField()),
                 (
-                    "weight_in_g",
-                    models.PositiveSmallIntegerField(blank=True, null=True),
+                    "weight_in_kg",
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        max_digits=5,
+                        null=True,
+                        verbose_name="Weight (kg)",
+                    ),
                 ),
                 (
                     "user",
@@ -134,6 +200,7 @@ class Migration(migrations.Migration):
         ),
         migrations.CreateModel(
             name="Sensation",
+            options={"ordering": ["name"], "db_table": "sensation"},
             fields=[
                 (
                     "id",
@@ -149,6 +216,7 @@ class Migration(migrations.Migration):
         ),
         migrations.CreateModel(
             name="BodyImage",
+            options={"db_table": "bodyimage"},
             fields=[
                 (
                     "id",
@@ -165,13 +233,18 @@ class Migration(migrations.Migration):
                     "report",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="body.bodyareareport",
+                        to="body.report",
                     ),
                 ),
             ],
         ),
         migrations.CreateModel(
-            name="BodyAreaEntry",
+            name="Entry",
+            options={
+                "ordering": ["body_area"],
+                "db_table": "entry",
+                "unique_together": {("report", "body_area")},
+            },
             fields=[
                 (
                     "id",
@@ -199,10 +272,13 @@ class Migration(migrations.Migration):
                     "report",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        to="body.bodyareareport",
+                        to="body.report",
                     ),
                 ),
-                ("sensations", models.ManyToManyField(to="body.sensation")),
+                (
+                    "sensations",
+                    models.ManyToManyField(blank=True, to="body.sensation"),
+                ),
             ],
         ),
         migrations.RunPython(
@@ -212,62 +288,6 @@ class Migration(migrations.Migration):
         migrations.RunPython(
             code=seed_sensations,
             reverse_code=django.db.migrations.operations.special.RunPython.noop,
-        ),
-        migrations.AlterModelOptions(
-            name="bodyarea",
-            options={"ordering": ["name"]},
-        ),
-        migrations.AlterModelOptions(
-            name="sensation",
-            options={"ordering": ["name"]},
-        ),
-        migrations.AlterField(
-            model_name="bodyareaentry",
-            name="sensations",
-            field=models.ManyToManyField(blank=True, to="body.sensation"),
-        ),
-        migrations.AlterUniqueTogether(
-            name="bodyareaentry",
-            unique_together={("report", "body_area")},
-        ),
-        migrations.AlterModelOptions(
-            name="bodyareaentry",
-            options={"ordering": ["body_area"]},
-        ),
-        migrations.RenameField(
-            model_name="bodyareareport",
-            old_name="weight_in_g",
-            new_name="weight_in_kg",
-        ),
-        migrations.AlterField(
-            model_name="bodyareareport",
-            name="weight_in_kg",
-            field=models.DecimalField(
-                blank=True, decimal_places=2, max_digits=6, null=True
-            ),
-        ),
-        migrations.AlterField(
-            model_name="bodyareareport",
-            name="weight_in_kg",
-            field=models.DecimalField(
-                blank=True,
-                decimal_places=2,
-                max_digits=5,
-                null=True,
-                verbose_name="Weight (kg)",
-            ),
-        ),
-        migrations.RenameModel(
-            old_name="BodyAreaEntry",
-            new_name="Entry",
-        ),
-        migrations.RenameModel(
-            old_name="BodyAreaReport",
-            new_name="Report",
-        ),
-        migrations.AlterModelOptions(
-            name="report",
-            options={"ordering": ["-when"]},
         ),
         migrations.CreateModel(
             name="Attribute",
@@ -292,9 +312,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={
-                "ordering": ["name"],
-            },
+            options={"ordering": ["name"], "db_table": "attribute"},
         ),
         migrations.AddField(
             model_name="report",
@@ -305,32 +323,282 @@ class Migration(migrations.Migration):
             code=seed_attributes,
             reverse_code=django.db.migrations.operations.special.RunPython.noop,
         ),
-        migrations.AlterUniqueTogether(
-            name="report",
-            unique_together={("user", "when")},
+        migrations.CreateModel(
+            name="Category",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+            ],
+            options={
+                "ordering": ["name"],
+                "db_table": "category",
+            },
         ),
-        migrations.AlterModelTable(
-            name="attribute",
-            table="attribute",
+        migrations.CreateModel(
+            name="Event",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=60)),
+                ("notes", models.CharField(blank=True, max_length=500)),
+                ("when", models.DateTimeField()),
+                (
+                    "category",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="body.category",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+            options={
+                "ordering": ["-when"],
+                "db_table": "event",
+            },
         ),
-        migrations.AlterModelTable(
-            name="bodyarea",
-            table="bodyarea",
+        migrations.RunPython(
+            code=seed_categories,
+            reverse_code=django.db.migrations.operations.special.RunPython.noop,
         ),
-        migrations.AlterModelTable(
-            name="bodyimage",
-            table="bodyimage",
+        migrations.CreateModel(
+            name="Medicine",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                ("current_balance", models.PositiveSmallIntegerField(default=0)),
+            ],
+            options={
+                "ordering": ["name"],
+                "db_table": "medicine",
+            },
         ),
-        migrations.AlterModelTable(
-            name="entry",
-            table="entry",
+        migrations.CreateModel(
+            name="Consumption",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("when", models.DateTimeField()),
+                ("quantity", models.PositiveSmallIntegerField()),
+                (
+                    "medicine",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="body.medicine",
+                    ),
+                ),
+            ],
+            options={
+                "ordering": ["-when"],
+                "db_table": "consumption",
+            },
         ),
-        migrations.AlterModelTable(
-            name="report",
-            table="report",
+        migrations.CreateModel(
+            name="Schedule",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("start_date", models.DateField()),
+                ("end_date", models.DateField(blank=True, null=True)),
+                ("frequency_in_days", models.PositiveSmallIntegerField(default=1)),
+                ("time", models.TimeField()),
+                ("quantity", models.PositiveSmallIntegerField(default=1)),
+                (
+                    "medicine",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="body.medicine",
+                    ),
+                ),
+                (
+                    "tolerance_mins",
+                    models.PositiveSmallIntegerField(
+                        choices=[
+                            (5, "5m"),
+                            (10, "10m"),
+                            (15, "15m"),
+                            (20, "20m"),
+                            (30, "30m"),
+                            (45, "45m"),
+                            (60, "1h"),
+                            (90, "1.5h"),
+                            (120, "2h"),
+                        ],
+                        default=30,
+                        verbose_name="Tolerance (mins)",
+                    ),
+                ),
+            ],
+            options={
+                "ordering": ["-end_date"],
+                "db_table": "schedule",
+            },
         ),
-        migrations.AlterModelTable(
-            name="sensation",
-            table="sensation",
+        migrations.CreateModel(
+            name="LedgerEntry",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("when", models.DateTimeField()),
+                ("quantity", models.SmallIntegerField()),
+                (
+                    "consumption",
+                    models.OneToOneField(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="body.consumption",
+                    ),
+                ),
+                (
+                    "medicine",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="body.medicine",
+                    ),
+                ),
+            ],
+            options={
+                "ordering": ["-when"],
+                "db_table": "ledgerentry",
+            },
+        ),
+        migrations.CreateModel(
+            name="Emotion",
+            options={"ordering": ["name"], "db_table": "emotion"},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("description", models.CharField(blank=True, max_length=500)),
+            ],
+        ),
+        migrations.CreateModel(
+            name="EmotionReport",
+            options={"db_table": "emotionreport"},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("when", models.DateTimeField()),
+                ("notes", models.CharField(blank=True, max_length=200)),
+                (
+                    "energy_level",
+                    models.PositiveSmallIntegerField(blank=True, null=True),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="EmotionEntry",
+            options={"db_table": "emotionentry"},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("strength", models.PositiveSmallIntegerField()),
+                ("notes", models.CharField(blank=True, max_length=200)),
+                (
+                    "emotion",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="body.emotion",
+                    ),
+                ),
+                (
+                    "report",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="body.emotionreport",
+                    ),
+                ),
+            ],
+        ),
+        migrations.RunPython(
+            code=seed_emotions,
+            reverse_code=django.db.migrations.operations.special.RunPython.noop,
         ),
     ]

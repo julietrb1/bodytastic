@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load body_extras %}
+{% load humanize %}
+{% block title %}
+    {% medicine_icon %}
+    <div class="content">
+        {{ object }}
+        <div class="sub header">{{ object.current_balance }} left</div>
+    </div>
+{% endblock title %}
+{% block content %}
+    <div class="ui small buttons">
+        <a class="ui basic button" href="{% url 'medicine-index' %}">
+            <i aria-hidden="true" class="left arrow icon"></i>
+            Back to Medicines
+        </a>
+        <a class="ui basic button" href="{% url 'medicine-edit' object.pk %}">Edit</a>
+        <a class="ui basic button" href="{% url 'medicine-delete' object.pk %}">Delete</a>
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="ui relaxed stackable grid">
+        <div class="six wide column">
+            <h3 class="ui header">
+                Consumptions ({{ object.consumption_set.count }})&nbsp;
+                <a href="{% url 'consumption-create' medicinepk=object.pk %}"
+                   class="mini icon ui button">
+                    <i aria-hidden="true" class="icon plus"></i>
+                </a>
+            </h3>
+            {% consumption_table object.consumption_set.all %}
+        </div>
+        <div class="five wide column">
+            <h3 class="ui header">
+                Schedules ({{ object.schedule_set.count }})&nbsp;
+                <a href="{% url 'schedule-create' medicinepk=object.pk %}"
+                   class="mini icon ui button">
+                    <i aria-hidden="true" class="icon plus"></i>
+                </a>
+            </h3>
+            {% if schedules_active %}
+                <h4 class="ui header">Active</h4>
+                <div class="ui cards">
+                    {% for schedule in schedules_active %}
+                        {% schedule_card schedule %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if schedules_past %}
+                <h4 class="ui header">Past</h4>
+                <div class="ui cards">
+                    {% for schedule in schedules_past %}
+                        {% schedule_card schedule %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if schedules_future %}
+                <h4 class="ui header">Future</h4>
+                <div class="ui cards">
+                    {% for schedule in schedules_future %}
+                        {% schedule_card schedule %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="five wide column">
+            <h3 class="ui header">
+                Refills ({{ object.refills.count }})&nbsp;
+                <a href="{% url 'refill-create' medicinepk=object.pk %}"
+                   class="mini icon ui button">
+                    <i aria-hidden="true" class="icon plus"></i>
+                </a>
+            </h3>
+            {% refill_table object.refills %}
+        </div>
+    </div>
+{% endblock content %}

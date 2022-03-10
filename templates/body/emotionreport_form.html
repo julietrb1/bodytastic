@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}
+    {% if object %}
+        Edit
+    {% else %}
+        Add
+    {% endif %}
+    {{ body_area.name }} Report
+{% endblock title %}
+{% block content %}
+    <div class="ui divider hidden"></div>
+    <form method="post" class="ui form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="fields">
+            {% if not object %}
+                <div class="field">
+                    {{ form.when.label_tag }}
+                    <div class="ui calendar" id="{{ form.when.id_for_label }}">
+                        <div class="ui input left icon">
+                            <i aria-hidden="true" class="calendar icon"></i>
+                            <input type="text"
+                                   placeholder="Date/Time"
+                                   name="{{ form.when.name }}"
+                                   value="{{ form.when.initial|date:"c" }}"/>
+                        </div>
+                    </div>
+                    {{ form.when.errors }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button" href="{% url 'report-index' %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+    </form>
+{% endblock content %}
+{% block scripts %}
+    $('#{{ form.when.id_for_label }}')
+    .calendar({
+    type: 'date',
+    maxDate: new Date(),
+    disabledDates: [
+    {% for disabled_date in disabled_dates %}"{{ disabled_date }}",{% endfor %}
+    ]
+    })
+    ;
+{% endblock scripts %}

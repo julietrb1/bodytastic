@@ -1,0 +1,87 @@
+from django.urls import path
+
+from body.views.medication_views import (
+    MedicationListView,
+    MedicationDetailView,
+    MedicationCreateView,
+    MedicationUpdateView,
+    MedicationDeleteView,
+    ConsumptionCreateView,
+    ConsumptionUpdateView,
+    ConsumptionDeleteView,
+    ScheduleCreateView,
+    ScheduleUpdateView,
+    ScheduleDeleteView,
+    MedicineRefillCreateView,
+    MedicineRefillUpdateView,
+    MedicineRefillDeleteView,
+)
+
+urlpatterns = [
+    path("", MedicationListView.as_view(), name="medicine-index"),
+    path(
+        "create/",
+        MedicationCreateView.as_view(),
+        name="medicine-create",
+    ),
+    path(
+        "<int:pk>/",
+        MedicationDetailView.as_view(),
+        name="medicine-detail",
+    ),
+    path(
+        "<int:pk>/edit/",
+        MedicationUpdateView.as_view(),
+        name="medicine-edit",
+    ),
+    path(
+        "<int:pk>/delete/",
+        MedicationDeleteView.as_view(),
+        name="medicine-delete",
+    ),
+    path(
+        "<int:medicinepk>/consumptions/create/",
+        ConsumptionCreateView.as_view(),
+        name="consumption-create",
+    ),
+    path(
+        "<int:medicinepk>/consumptions/<int:pk>/update/",
+        ConsumptionUpdateView.as_view(),
+        name="consumption-edit",
+    ),
+    path(
+        "<int:medicinepk>/consumptions/<int:pk>/delete/",
+        ConsumptionDeleteView.as_view(),
+        name="consumption-delete",
+    ),
+    path(
+        "<int:medicinepk>/schedules/create/",
+        ScheduleCreateView.as_view(),
+        name="schedule-create",
+    ),
+    path(
+        "<int:medicinepk>/schedules/<int:pk>/update",
+        ScheduleUpdateView.as_view(),
+        name="schedule-update",
+    ),
+    path(
+        "<int:medicinepk>/schedules/<int:pk>/delete/",
+        ScheduleDeleteView.as_view(),
+        name="schedule-delete",
+    ),
+    path(
+        "<int:medicinepk>/refills/create/",
+        MedicineRefillCreateView.as_view(),
+        name="refill-create",
+    ),
+    path(
+        "<int:medicinepk>/refills/<int:pk>/",
+        MedicineRefillUpdateView.as_view(),
+        name="refill-update",
+    ),
+    path(
+        "<int:medicinepk>/refills/<int:pk>/delete/",
+        MedicineRefillDeleteView.as_view(),
+        name="refill-delete",
+    ),
+]

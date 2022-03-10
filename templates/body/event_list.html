@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}
+    My Life&nbsp;
+    <a href="{% url 'event-create' %}" class="mini icon ui button">
+        <i aria-hidden="true" class="icon plus"></i>
+    </a>
+{% endblock title %}
+{% block content %}
+    {% if object_list %}
+        <div class="ui cards">
+            {% for event in object_list %}
+                {% include "body/event_card.html" with event=event %}
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include "body/event_list_empty.html" %}
+    {% endif %}
+{% endblock content %}

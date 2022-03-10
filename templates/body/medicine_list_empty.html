@@ -1,0 +1,15 @@
+{% load humanize %}
+{% load body_extras %}
+<div class="ui placeholder segment">
+    <div class="ui icon header">
+        {% medicine_icon None False %}
+        The Potential for Medicine Is Upon Us.
+    </div>
+    <div class="inline">
+        <a href="{% url 'medicine-create' %}"
+           class="ui primary labeled icon button">
+            <i aria-hidden="true" class="icon plus"></i>
+            Add Medicine
+        </a>
+    </div>
+</div>

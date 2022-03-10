@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load body_extras %}
+{% block title %}
+    My Medicines&nbsp;
+    <a href="{% url 'medicine-create' %}" class="mini icon ui button">
+        <i aria-hidden="true" class="icon plus"></i>
+    </a>
+{% endblock title %}
+{% block content %}
+    {% if object_list %}
+        <div class="ui cards">
+            {% for medicine in object_list %}
+                {% medicine_card medicine %}
+            {% endfor %}
+        </div>
+    {% else %}
+        {% include "body/medicine_list_empty.html" %}
+    {% endif %}
+{% endblock content %}

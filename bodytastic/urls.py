@@ -18,11 +18,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
 urlpatterns = [
-    path("body/", include("body.urls")),
-    path("medication/", include("medication.urls")),
-    path("mind-and-soul/", include("mind_and_soul.urls")),
-    path("life-events/", include("life_events.urls")),
-    path("", include("home.urls")),
+    path("", include("body.urls")),
     path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
     path("accounts/logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("admin/", admin.site.urls),

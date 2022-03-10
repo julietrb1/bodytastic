@@ -55,14 +55,13 @@
         </div>
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
-            <a class="cancel ui button"
-               href="{% url 'body:report-detail' report.pk %}">Cancel</a>
+            <a class="cancel ui button" href="{% url 'report-detail' report.pk %}">Cancel</a>
             <div class="or"></div>
             <button class="ui positive button" type="submit">Save</button>
         </div>
         {% if object %}
             <a class="basic ui icon button"
-               href="{% url 'body:entry-delete' reportpk=object.report.pk pk=object.pk %}"><i aria-hidden="true" class="trash alternate icon"></i></a>
+               href="{% url 'entry-delete' reportpk=object.report.pk pk=object.pk %}"><i aria-hidden="true" class="trash alternate icon"></i></a>
         {% endif %}
     </form>
 {% endblock content %}

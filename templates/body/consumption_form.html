@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}
+    <i aria-hidden="true" class="book medical icon primary circular"></i>
+    <div class="content">
+        {% if object %}
+            Edit
+        {% else %}
+            Log
+        {% endif %}
+        Consumption
+        <div class="sub header">{{ medicine.name }}</div>
+    </div>
+{% endblock title %}
+{% block content %}
+    <form method="post" class="ui form">
+        {% csrf_token %}
+        <div class="fields">
+            <div class="field">
+                {{ form.when.errors }}
+                {{ form.when.label_tag }}
+                <div class="ui calendar" id="{{ form.when.id_for_label }}">
+                    <div class="ui input left icon">
+                        <i aria-hidden="true" class="calendar icon"></i>
+                        <input type="text"
+                               placeholder="Date/Time"
+                               name="{{ form.when.name }}"
+                               value="{{ form.when.initial|date:"c" }}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                {{ form.quantity.label_tag }}
+                {{ form.quantity }}
+            </div>
+        </div>
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button"
+               href="{% url 'medicine-detail' view.kwargs.medicinepk %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+        {% if object %}
+            <a class="basic ui icon button"
+               href="{% url 'consumption-delete' medicinepk=object.medicine.pk pk=object.pk %}"><i aria-hidden="true" class="trash alternate icon"></i></a>
+        {% endif %}
+    </form>
+{% endblock content %}
+{% block scripts %}
+    $('#{{ form.when.id_for_label }}')
+    .calendar({
+    type: 'datetime',
+    maxDate: new Date(),
+    })
+    ;
+{% endblock scripts %}
