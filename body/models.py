@@ -13,6 +13,7 @@ class BodyArea(models.Model):
 
     class Meta:
         ordering = ["name"]
+        db_table = "bodyarea"
 
     def __str__(self):
         return self.name
@@ -25,6 +26,7 @@ class Sensation(models.Model):
 
     class Meta:
         ordering = ["name"]
+        db_table = "sensation"
 
     def __str__(self):
         return self.name
@@ -44,6 +46,7 @@ class Attribute(models.Model):
 
     class Meta:
         ordering = ["name"]
+        db_table = "attribute"
 
 
 class Report(models.Model):
@@ -63,6 +66,7 @@ class Report(models.Model):
     class Meta:
         ordering = ["-when"]
         unique_together = [["user", "when"]]
+        db_table = "report"
 
     def __str__(self):
         return f"{self.user} on {self.when}"
@@ -100,6 +104,7 @@ class Entry(models.Model):
     class Meta:
         unique_together = [["report", "body_area"]]
         ordering = ["body_area"]
+        db_table = "entry"
 
     def __str__(self):
         return f"{self.body_area} report"
@@ -118,3 +123,6 @@ class BodyImage(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
     image = models.ImageField()
     notes = models.CharField(max_length=500, blank=True)
+
+    class Meta:
+        db_table = "bodyimage"

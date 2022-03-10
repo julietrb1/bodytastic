@@ -16,6 +16,7 @@ class Medicine(models.Model):
 
     class Meta:
         ordering = ["name"]
+        db_table = "medicine"
 
     def __str__(self) -> str:
         return self.name
@@ -47,6 +48,7 @@ class Consumption(models.Model):
 
     class Meta:
         ordering = ["-when"]
+        db_table = "consumption"
 
     def __str__(self) -> str:
         return f"({self.quantity}x) {self.when}"
@@ -67,6 +69,7 @@ class LedgerEntry(models.Model):
 
     class Meta:
         ordering = ["-when"]
+        db_table = "ledgerentry"
 
 
 class ScheduleManager(models.Manager):
@@ -113,6 +116,7 @@ class Schedule(models.Model):
 
     class Meta:
         ordering = ["-end_date"]
+        db_table = "schedule"
 
     @property
     def is_active(self):
