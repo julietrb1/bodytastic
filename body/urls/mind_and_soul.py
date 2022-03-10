@@ -1,6 +1,6 @@
 from django.urls import path
 
-from body.views.mind_and_soul_views import (
+from body.views.mind_and_soul import (
     EmotionReportListView,
     EmotionReportDetailView,
     EmotionReportCreateView,

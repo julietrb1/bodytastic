@@ -1,6 +1,6 @@
 from django.urls import path
 
-from body.views.body_views import (
+from body.views.body import (
     ReportListView,
     ReportDetailView,
     ReportDeleteView,
