@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import override_settings
 from django.urls import reverse
 
-LIST_ROUTE_NAME = "life_events:event-index"
+EVENT_LIST_ROUTE = "life_events:event-index"
 
 
 @override_settings(AXES_HANDLER="axes.handlers.dummy.AxesDummyHandler")
@@ -21,14 +21,14 @@ class EventListViewTests(LoginTestCase):
         """
         A nice simple test: Does the title show?
         """
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(EVENT_LIST_ROUTE))
         self.assertContains(response, "My Life")
 
     def test_empty_state_shown(self):
         """
         Shows the friendly empty state message with no events.
         """
-        response = self.client.get(reverse(LIST_ROUTE_NAME))
+        response = self.client.get(reverse(EVENT_LIST_ROUTE))
         self.assertContains(
             response, "Make Something Great Happen. Add Your First Event Here."
         )
