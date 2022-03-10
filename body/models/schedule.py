@@ -59,7 +59,7 @@ class Schedule(models.Model):
 
     @property
     def is_past(self):
-        return self.end_date < datetime.now().date()
+        return self.end_date and self.end_date < datetime.now().date()
 
     @property
     def is_future(self):
