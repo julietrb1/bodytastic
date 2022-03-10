@@ -45,3 +45,23 @@ class MedicineDetailViewTests(LoginTestCase):
         self.assertContains(response, "Every one day")
         self.assertContains(response, "Next:")
         self.assertContains(response, "2:25 p.m.")
+
+    def test_with_schedule_without_end_date_in_past(self):
+        medicine = create_medicine(self.user)
+        create_schedule(
+            medicine,
+            make_aware(datetime.now() - timedelta(days=2)),
+            make_aware(datetime.now() - timedelta(days=1)),
+        )
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "Finished:")
+
+    def test_with_schedule_without_end_date_in_future(self):
+        medicine = create_medicine(self.user)
+        create_schedule(
+            medicine,
+            make_aware(datetime.now() + timedelta(days=1)),
+            make_aware(datetime.now() + timedelta(days=2)),
+        )
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "Starts:")
