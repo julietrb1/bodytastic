@@ -1,11 +1,11 @@
 from django.urls import path
 
 from body.views.medication import (
-    MedicationListView,
-    MedicationDetailView,
-    MedicationCreateView,
-    MedicationUpdateView,
-    MedicationDeleteView,
+    MedicineListView,
+    MedicineDetailView,
+    MedicineCreateView,
+    MedicineUpdateView,
+    MedicineDeleteView,
     ConsumptionCreateView,
     ConsumptionUpdateView,
     ConsumptionDeleteView,
@@ -33,25 +33,25 @@ SCHEDULE_DELETE_ROUTE = "schedule-delete"
 SCHEDULE_UPDATE_ROUTE = "schedule-update"
 
 urlpatterns = [
-    path("", MedicationListView.as_view(), name=MEDICINE_LIST_ROUTE),
+    path("", MedicineListView.as_view(), name=MEDICINE_LIST_ROUTE),
     path(
         "create/",
-        MedicationCreateView.as_view(),
+        MedicineCreateView.as_view(),
         name=MEDICINE_CREATE_ROUTE,
     ),
     path(
         "<int:pk>/",
-        MedicationDetailView.as_view(),
+        MedicineDetailView.as_view(),
         name=MEDICINE_DETAIL_ROUTE,
     ),
     path(
         "<int:pk>/edit/",
-        MedicationUpdateView.as_view(),
+        MedicineUpdateView.as_view(),
         name=MEDICINE_UPDATE_ROUTE,
     ),
     path(
         "<int:pk>/delete/",
-        MedicationDeleteView.as_view(),
+        MedicineDeleteView.as_view(),
         name=MEDICINE_DELETE_ROUTE,
     ),
     path(

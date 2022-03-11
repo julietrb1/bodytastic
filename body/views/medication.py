@@ -40,11 +40,11 @@ class MedicineFormMixin:
         return super().form_valid(form)
 
 
-class MedicationListView(UserOnlyMixin, ListView):
+class MedicineListView(UserOnlyMixin, ListView):
     model = Medicine
 
 
-class MedicationDetailView(UserOnlyMixin, DetailView):
+class MedicineDetailView(UserOnlyMixin, DetailView):
     model = Medicine
 
     def get_context_data(self, **kwargs):
@@ -55,7 +55,7 @@ class MedicationDetailView(UserOnlyMixin, DetailView):
         return data
 
 
-class MedicationCreateView(UserOnlyMixin, CreateView):
+class MedicineCreateView(UserOnlyMixin, CreateView):
     model = Medicine
     fields = ["name"]
 
@@ -64,12 +64,12 @@ class MedicationCreateView(UserOnlyMixin, CreateView):
         return super().form_valid(form)
 
 
-class MedicationUpdateView(UserOnlyMixin, UpdateView):
+class MedicineUpdateView(UserOnlyMixin, UpdateView):
     model = Medicine
     fields = ["name"]
 
 
-class MedicationDeleteView(UserOnlyMixin, DeleteView):
+class MedicineDeleteView(UserOnlyMixin, DeleteView):
     model = Medicine
     success_url = reverse_lazy("medicine-index")
 
