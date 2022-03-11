@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import sys
 import environ
 import os
 import sentry_sdk
@@ -42,8 +43,33 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
+TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
+
 ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
+if not TESTING:
+    LOGGING = {
+        "version": 1,  # the dictConfig format version
+        "disable_existing_loggers": False,  # retain the default loggers
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "formatter": "simple",
+            },
+        },
+        "loggers": {
+            "body": {
+                "handlers": ["console"],
+                "level": os.getenv("DJANGO_LOG_LEVEL", "WARNING"),
+            },
+        },
+        "formatters": {
+            "simple": {
+                "format": "{levelname}|{module}|{message}",
+                "style": "{",
+            },
+        },
+    }
 
 # Application definition
 
