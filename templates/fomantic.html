@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en_au">
     <head>
@@ -7,7 +8,7 @@
         <title>Bodytastic</title>
         <link rel="stylesheet"
               type="text/css"
-              href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css"/>
+              href="{% static 'body/semantic.min.css' %}"/>
         <style type="text/css">
                 .top-page-spacer {
                     margin-top: {% if user.is_authenticated %}40{% else %}20{% endif %}px;
@@ -31,13 +32,13 @@
     <body>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js" integrity="sha256-ErZ09KkZnzjpqcane4SCyyHsKAXMvID9/xwbl/Aq1pc=" crossorigin="anonymous"></script>
         <script>
-            Chart.defaults.font.family = "Lato,'Helvetica Neue',Arial,Helvetica,sans-serif";
-            Chart.defaults.font.weight = 500;
+            Chart.defaults.font.family = "Titillium Web";
+            Chart.defaults.font.weight = 400;
         </script>
         {% block fomantic_content %}
         {% endblock fomantic_content %}
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+        <script src="{% static 'body/semantic.min.js' %}"></script>
         {% block fomantic_scripts %}
         {% endblock fomantic_scripts %}
     </body>

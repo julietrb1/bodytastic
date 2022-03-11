@@ -1,0 +1,23 @@
+{
+  "name": "bodytastic",
+  "version": "1.0.0",
+  "description": "[![Django CI Workflow](https://github.com/dylanjboyd/bodytastic/actions/workflows/ci.yml/badge.svg)](https://github.com/dylanjboyd/bodytastic/actions/workflows/ci.yml) [![Coverage Status](https://coveralls.io/repos/github/dylanjboyd/bodytastic/badge.svg?branch=main)](https://coveralls.io/github/dylanjboyd/bodytastic?branch=main) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=dylanjboyd_bodytastic&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=dylanjboyd_bodytastic) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=dylanjboyd_bodytastic&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=dylanjboyd_bodytastic) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=dylanjboyd_bodytastic&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=dylanjboyd_bodytastic) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=dylanjboyd_bodytastic&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=dylanjboyd_bodytastic)",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanjboyd/bodytastic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylanjboyd/bodytastic/issues"
+  },
+  "homepage": "https://github.com/dylanjboyd/bodytastic#readme",
+  "dependencies": {
+    "fomantic-ui": "^2.8.8"
+  }
+}
