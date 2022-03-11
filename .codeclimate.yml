@@ -1,0 +1,5 @@
+exclude_patterns:
+  - "semantic/"
+  - "body/static/body/"
+  - "body/tests/"
+  - "**/migrations/"
