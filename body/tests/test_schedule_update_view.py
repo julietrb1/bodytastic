@@ -2,10 +2,12 @@ from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_medicine, create_schedule
 from django.utils.timezone import make_aware, datetime
+from freezegun import freeze_time
 
 SCHEDULE_UPDATE_ROUTE = "schedule-update"
 
 
+@freeze_time("2022-03-01")
 class ScheduleUpdateViewTests(LoginTestCase):
     def test_initial_values_set_in_form(self):
         start_date = make_aware(datetime(2022, 1, 1)).date()

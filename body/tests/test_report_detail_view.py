@@ -2,8 +2,10 @@ from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
 from body.urls.mybody import REPORT_DETAIL_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class ReportDetailViewTests(LoginTestCase):
     def test_report_detail_redirects_to_login(self):
         self.client.logout()

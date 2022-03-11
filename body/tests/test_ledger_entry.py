@@ -2,8 +2,10 @@ from django.db import IntegrityError
 from body.tests.login_test_case import LoginTestCase
 
 from body.tests.model_helpers import create_ledger_entry, create_medicine
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class LedgerEntryTests(LoginTestCase):
     def test_creating_ledger_entry_changes_balance(self):
         medicine = create_medicine(self.user)

@@ -6,6 +6,6 @@ from freezegun import freeze_time
 
 @freeze_time("2022-03-01")
 class MedicineCreateViewTests(LoginTestCase):
-    def test_create_form_shows_name_field(self):
+    def test_loads_form(self):
         response = self.client.get(reverse(MEDICINE_CREATE_ROUTE))
-        self.assertContains(response, "Name:")
+        self.assertContains(response, "Add")

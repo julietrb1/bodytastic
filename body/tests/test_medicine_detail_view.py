@@ -8,8 +8,10 @@ from body.tests.model_helpers import (
     create_schedule,
 )
 from body.urls.medication import MEDICINE_DETAIL_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class MedicineDetailViewTests(LoginTestCase):
     def test_with_consumptions(self):
         """
