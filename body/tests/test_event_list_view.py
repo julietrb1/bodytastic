@@ -2,8 +2,10 @@ from django.urls import reverse
 
 from body.tests.login_test_case import LoginTestCase
 from body.urls.life_events import EVENT_LIST_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class EventListViewTests(LoginTestCase):
     def test_title_shown(self):
         """

@@ -3,8 +3,10 @@ from django.utils.html import escape
 
 from body.tests.login_test_case import LoginTestCase
 from body.urls.home import HOME_INDEX_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class HomeViewTests(LoginTestCase):
     def test_title_shown(self):
         """

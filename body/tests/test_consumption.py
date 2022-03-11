@@ -2,8 +2,10 @@ from body.exceptions import ExcessiveConsumptionQuantityError
 from body.models import LedgerEntry
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_consumption, create_medicine
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class ConsumptionTests(LoginTestCase):
     def test_new_consumption_adds_ledger_entry(self):
         """

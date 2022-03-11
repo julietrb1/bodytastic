@@ -4,8 +4,10 @@ from body.tests.model_helpers import create_body_area, create_entry, create_repo
 from django.utils.timezone import datetime
 
 from body.urls.mybody import REPORT_LIST_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class ReportListViewTests(LoginTestCase):
     def test_report_list_redirects_to_login(self):
         self.client.logout()

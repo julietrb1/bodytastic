@@ -2,8 +2,10 @@ from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_medicine
 from body.urls.medication import MEDICINE_DETAIL_ROUTE, MEDICINE_LIST_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class MedicineListViewTests(LoginTestCase):
     def test_no_medicines(self):
         response = self.client.get(reverse(MEDICINE_LIST_ROUTE))

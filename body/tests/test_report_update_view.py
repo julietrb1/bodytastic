@@ -4,8 +4,10 @@ from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_report
 from body.models import Report
 from body.urls.mybody import REPORT_UPDATE_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class ReportUpdateViewTests(LoginTestCase):
     def test_no_other_user_reports_shown(self):
         other_report = create_report(self.other_user)

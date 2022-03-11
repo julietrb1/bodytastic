@@ -1,7 +1,9 @@
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_ledger_entry, create_medicine
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class MedicineTests(LoginTestCase):
     def test_ledger_recalculates(self):
         """

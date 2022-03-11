@@ -2,8 +2,10 @@ from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
 from body.urls.mybody import ENTRY_MASS_UPDATE_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class EntryFormViewTests(LoginTestCase):
     def test_entry_form_non_existent_report(self):
         response = self.client.get(reverse(ENTRY_MASS_UPDATE_ROUTE, args=[12345]))

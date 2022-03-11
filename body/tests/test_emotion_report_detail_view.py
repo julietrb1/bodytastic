@@ -2,8 +2,10 @@ from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_emotion_report
 from body.urls.mind_and_soul import EMOTION_REPORT_DETAIL_ROUTE
+from freezegun import freeze_time
 
 
+@freeze_time("2022-03-01")
 class EmotionReportDetailViewTests(LoginTestCase):
     def test_no_other_user_reports_shown(self):
         other_report = create_emotion_report(self.other_user)
