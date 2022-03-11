@@ -158,3 +158,5 @@ cython_debug/
 **/*.lcov
 
 **/.DS_Store
+node_modules
+staticfiles/

@@ -39,13 +39,15 @@ jobs:
       - name: Setup python environment
         uses: actions/setup-python@v2
         with:
-          python-version: '3.10.2'
+          python-version: "3.10.2"
       - name: Check Python version
         run: python --version
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Migrate DB
         run: python manage.py migrate
+      - name: Collect static files
+        run: python manage.py collectstatic
       - name: Run tests with coverage
         run: coverage run manage.py test && coverage xml
       - name: Submit coverage to Codecov
