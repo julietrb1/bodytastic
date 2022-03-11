@@ -4,19 +4,19 @@ from body.tests.model_helpers import create_body_area, create_entry, create_repo
 from django.utils.timezone import datetime
 
 
-BODY_REPORT_LIST_ROUTE = "report-index"
+REPORT_LIST_ROUTE = "report-index"
 
 
 class ReportListViewTests(LoginTestCase):
     def test_report_list_redirects_to_login(self):
         self.client.logout()
-        self.verify_redirect(BODY_REPORT_LIST_ROUTE)
+        self.verify_redirect(REPORT_LIST_ROUTE)
 
     def test_no_reports(self):
         """
         If no reports exist, the empty state is shown.
         """
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertContains(response, "No Reports Here, but There Could Be...")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
@@ -25,7 +25,7 @@ class ReportListViewTests(LoginTestCase):
         If a report exists, it should be shown in the list with the no entries message.
         """
         report = create_report(self.user)
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "0 entries")
@@ -36,7 +36,7 @@ class ReportListViewTests(LoginTestCase):
         A recent report should show the summary chart.
         """
         create_report(self.user, datetime.now())
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertIsNotNone(response.context["summary_chart_data"])
 
     def test_one_report_with_entries_shows_graph(self):
@@ -46,7 +46,7 @@ class ReportListViewTests(LoginTestCase):
         report = create_report(self.user, datetime.now())
         body_area = create_body_area()
         create_entry(report, body_area)
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertIsNotNone(response.context["summary_chart_data"])
 
     def test_one_report_with_entry(self):
@@ -56,7 +56,7 @@ class ReportListViewTests(LoginTestCase):
         report = create_report(self.user)
         body_area = create_body_area()
         create_entry(report, body_area)
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertContains(response, "1 Jan 2022")
         self.assertContains(response, "50.5 kg")
         self.assertContains(response, "One entry")
@@ -73,7 +73,7 @@ class ReportListViewTests(LoginTestCase):
         create_entry(report, waist_body_area, 50)
         hips_body_area = create_body_area("Hips")
         create_entry(report, hips_body_area, 85)
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertContains(response, "Two entries")
         self.assertContains(response, "Waist")
         self.assertContains(response, "Hips")
@@ -83,5 +83,5 @@ class ReportListViewTests(LoginTestCase):
     def test_no_other_user_reports_shown(self):
         report = create_report(self.user)
         create_report(self.other_user)
-        response = self.client.get(reverse(BODY_REPORT_LIST_ROUTE))
+        response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertQuerysetEqual(response.context["object_list"], [report])

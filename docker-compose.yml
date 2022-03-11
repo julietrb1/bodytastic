@@ -20,5 +20,6 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=somepassword
+      - DJANGO_LOG_LEVEL=DEBUG
     depends_on:
       - db
