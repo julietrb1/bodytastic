@@ -1,8 +1,6 @@
 from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
-
-
-MEDICINE_CREATE_ROUTE = "medicine-create"
+from body.urls.medication import MEDICINE_CREATE_ROUTE
 
 
 class MedicineCreateViewTests(LoginTestCase):

@@ -7,8 +7,7 @@ from body.tests.model_helpers import (
     create_medicine,
     create_schedule,
 )
-
-MEDICINE_DETAIL_ROUTE = "medicine-detail"
+from body.urls.medication import MEDICINE_DETAIL_ROUTE
 
 
 class MedicineDetailViewTests(LoginTestCase):

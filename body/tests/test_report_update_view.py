@@ -3,8 +3,7 @@ from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_report
 from body.models import Report
-
-REPORT_UPDATE_ROUTE = "report-update"
+from body.urls.mybody import REPORT_UPDATE_ROUTE
 
 
 class ReportUpdateViewTests(LoginTestCase):

@@ -7,7 +7,7 @@
             {% for message in messages %}
                 <div class="ui {{ message.tags }} message">
                     <p>
-                        {{ message }}
+                        {{ message|safe }}
                     </p>
                 </div>
             {% endfor %}

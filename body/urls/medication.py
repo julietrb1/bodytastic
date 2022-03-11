@@ -1,11 +1,11 @@
 from django.urls import path
 
 from body.views.medication import (
-    MedicationListView,
-    MedicationDetailView,
-    MedicationCreateView,
-    MedicationUpdateView,
-    MedicationDeleteView,
+    MedicineListView,
+    MedicineDetailView,
+    MedicineCreateView,
+    MedicineUpdateView,
+    MedicineDeleteView,
     ConsumptionCreateView,
     ConsumptionUpdateView,
     ConsumptionDeleteView,
@@ -17,71 +17,86 @@ from body.views.medication import (
     MedicineRefillDeleteView,
 )
 
+CONSUMPTION_CREATE_ROUTE = "consumption-create"
+CONSUMPTION_DELETE_ROUTE = "consumption-delete"
+CONSUMPTION_UPDATE_ROUTE = "consumption-edit"
+MEDICINE_CREATE_ROUTE = "medicine-create"
+MEDICINE_DELETE_ROUTE = "medicine-delete"
+MEDICINE_DETAIL_ROUTE = "medicine-detail"
+MEDICINE_LIST_ROUTE = "medicine-index"
+MEDICINE_UPDATE_ROUTE = "medicine-edit"
+REFILL_CREATE_ROUTE = "refill-create"
+REFILL_DELETE_ROUTE = "refill-delete"
+REFILL_UPDATE_ROUTE = "refill-update"
+SCHEDULE_CREATE_ROUTE = "schedule-create"
+SCHEDULE_DELETE_ROUTE = "schedule-delete"
+SCHEDULE_UPDATE_ROUTE = "schedule-update"
+
 urlpatterns = [
-    path("", MedicationListView.as_view(), name="medicine-index"),
+    path("", MedicineListView.as_view(), name=MEDICINE_LIST_ROUTE),
     path(
         "create/",
-        MedicationCreateView.as_view(),
-        name="medicine-create",
+        MedicineCreateView.as_view(),
+        name=MEDICINE_CREATE_ROUTE,
     ),
     path(
         "<int:pk>/",
-        MedicationDetailView.as_view(),
-        name="medicine-detail",
+        MedicineDetailView.as_view(),
+        name=MEDICINE_DETAIL_ROUTE,
     ),
     path(
         "<int:pk>/edit/",
-        MedicationUpdateView.as_view(),
-        name="medicine-edit",
+        MedicineUpdateView.as_view(),
+        name=MEDICINE_UPDATE_ROUTE,
     ),
     path(
         "<int:pk>/delete/",
-        MedicationDeleteView.as_view(),
-        name="medicine-delete",
+        MedicineDeleteView.as_view(),
+        name=MEDICINE_DELETE_ROUTE,
     ),
     path(
         "<int:medicinepk>/consumptions/create/",
         ConsumptionCreateView.as_view(),
-        name="consumption-create",
+        name=CONSUMPTION_CREATE_ROUTE,
     ),
     path(
         "<int:medicinepk>/consumptions/<int:pk>/update/",
         ConsumptionUpdateView.as_view(),
-        name="consumption-edit",
+        name=CONSUMPTION_UPDATE_ROUTE,
     ),
     path(
         "<int:medicinepk>/consumptions/<int:pk>/delete/",
         ConsumptionDeleteView.as_view(),
-        name="consumption-delete",
+        name=CONSUMPTION_DELETE_ROUTE,
     ),
     path(
         "<int:medicinepk>/schedules/create/",
         ScheduleCreateView.as_view(),
-        name="schedule-create",
+        name=SCHEDULE_CREATE_ROUTE,
     ),
     path(
         "<int:medicinepk>/schedules/<int:pk>/update",
         ScheduleUpdateView.as_view(),
-        name="schedule-update",
+        name=SCHEDULE_UPDATE_ROUTE,
     ),
     path(
         "<int:medicinepk>/schedules/<int:pk>/delete/",
         ScheduleDeleteView.as_view(),
-        name="schedule-delete",
+        name=SCHEDULE_DELETE_ROUTE,
     ),
     path(
         "<int:medicinepk>/refills/create/",
         MedicineRefillCreateView.as_view(),
-        name="refill-create",
+        name=REFILL_CREATE_ROUTE,
     ),
     path(
         "<int:medicinepk>/refills/<int:pk>/",
         MedicineRefillUpdateView.as_view(),
-        name="refill-update",
+        name=REFILL_UPDATE_ROUTE,
     ),
     path(
         "<int:medicinepk>/refills/<int:pk>/delete/",
         MedicineRefillDeleteView.as_view(),
-        name="refill-delete",
+        name=REFILL_DELETE_ROUTE,
     ),
 ]

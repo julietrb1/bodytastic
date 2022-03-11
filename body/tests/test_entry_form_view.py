@@ -1,9 +1,7 @@
 from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
-from body.models import Entry
-
-ENTRY_MASS_UPDATE_ROUTE = "entry-mass-update"
+from body.urls.mybody import ENTRY_MASS_UPDATE_ROUTE
 
 
 class EntryFormViewTests(LoginTestCase):
