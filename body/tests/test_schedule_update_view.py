@@ -3,7 +3,7 @@ from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_medicine, create_schedule
 from django.utils.timezone import make_aware, datetime
 
-BODY_SCHEDULE_UPDATE_ROUTE = "schedule-update"
+SCHEDULE_UPDATE_ROUTE = "schedule-update"
 
 
 class ScheduleUpdateViewTests(LoginTestCase):
@@ -25,7 +25,7 @@ class ScheduleUpdateViewTests(LoginTestCase):
         )
         response = self.client.get(
             reverse(
-                BODY_SCHEDULE_UPDATE_ROUTE,
+                SCHEDULE_UPDATE_ROUTE,
                 kwargs={"medicinepk": schedule.medicine.pk, "pk": schedule.pk},
             )
         )
@@ -47,7 +47,7 @@ class ScheduleUpdateViewTests(LoginTestCase):
         )
         response = self.client.get(
             reverse(
-                BODY_SCHEDULE_UPDATE_ROUTE,
+                SCHEDULE_UPDATE_ROUTE,
                 kwargs={"medicinepk": other_medicine.pk, "pk": other_schedule.pk},
             )
         )
@@ -57,7 +57,7 @@ class ScheduleUpdateViewTests(LoginTestCase):
         medicine = create_medicine(self.user)
         response = self.client.get(
             reverse(
-                BODY_SCHEDULE_UPDATE_ROUTE,
+                SCHEDULE_UPDATE_ROUTE,
                 kwargs={"medicinepk": medicine.pk, "pk": 12345},
             )
         )

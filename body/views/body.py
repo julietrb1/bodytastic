@@ -1,15 +1,20 @@
 from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView, FormView
 from django.utils.timezone import datetime
 from body.forms import ReportForm
 from django.utils.timezone import datetime, timedelta
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.contrib import messages
+from body.forms.mass_entry_form import MassEntryForm
+from django.shortcuts import get_object_or_404
 
 from body.models import BodyArea, Report, Entry
 import random
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class UserOnlyMixin:
@@ -173,7 +178,7 @@ class ReportCreateView(UserOnlyMixin, CreateView):
 
 class ReportUpdateView(UserOnlyMixin, UpdateView):
     model = Report
-    fields = ["weight_in_kg"]
+    form_class = ReportForm
 
     def form_valid(self, form):
         messages.success(
@@ -219,3 +224,39 @@ class EntryUpdateView(
 
 class EntryDeleteView(EntryUserOnlyMixin, EntrySuccessMixin, DeleteView):
     model = Entry
+
+
+class EntryFormView(FormView):
+    form_class = MassEntryForm
+    template_name = "body/entry_mass_form.html"
+
+    def get_form_kwargs(self):
+        kwargs = super(EntryFormView, self).get_form_kwargs()
+        kwargs["report"] = get_object_or_404(Report, pk=self.kwargs["reportpk"])
+        return kwargs
+
+    def form_valid(self, form):
+        report = get_object_or_404(Report, pk=self.kwargs["reportpk"])
+        for k, v in form.cleaned_data.items():
+            body_area = BodyArea.objects.filter(name=k).first()
+
+            if v:
+                _, created = Entry.objects.update_or_create(
+                    report=report, body_area=body_area, defaults={"measurement": v}
+                )
+                logger.debug(
+                    "Entry '%s' was %s",
+                    body_area.name,
+                    "created" if created else "modified",
+                )
+            else:
+                deleted_count, _ = Entry.objects.filter(
+                    report=report, body_area=body_area
+                ).delete()
+                logger.debug(
+                    "Entry '%s' deletion got %d hits", body_area.name, deleted_count
+                )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("report-detail", args=[self.kwargs["reportpk"]])
