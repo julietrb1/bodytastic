@@ -2,8 +2,7 @@ from django.urls import reverse
 from django.utils.html import escape
 
 from body.tests.login_test_case import LoginTestCase
-
-HOME_INDEX_ROUTE = "index"
+from body.urls.home import HOME_INDEX_ROUTE
 
 
 class HomeViewTests(LoginTestCase):

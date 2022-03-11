@@ -1,8 +1,7 @@
 from django.urls import reverse
 
 from body.tests.login_test_case import LoginTestCase
-
-EVENT_LIST_ROUTE = "event-index"
+from body.urls.life_events import EVENT_LIST_ROUTE
 
 
 class EventListViewTests(LoginTestCase):

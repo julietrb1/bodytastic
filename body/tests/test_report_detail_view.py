@@ -1,8 +1,7 @@
 from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
-
-REPORT_DETAIL_ROUTE = "report-detail"
+from body.urls.mybody import REPORT_DETAIL_ROUTE
 
 
 class ReportDetailViewTests(LoginTestCase):

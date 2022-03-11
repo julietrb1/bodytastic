@@ -1,8 +1,7 @@
 from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_emotion_report
-
-EMOTION_REPORT_DETAIL_ROUTE = "emotionreport-detail"
+from body.urls.mind_and_soul import EMOTION_REPORT_DETAIL_ROUTE
 
 
 class EmotionReportDetailViewTests(LoginTestCase):

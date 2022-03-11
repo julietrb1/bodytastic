@@ -3,8 +3,7 @@ from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
 from django.utils.timezone import datetime
 
-
-REPORT_LIST_ROUTE = "report-index"
+from body.urls.mybody import REPORT_LIST_ROUTE
 
 
 class ReportListViewTests(LoginTestCase):
