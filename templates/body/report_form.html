@@ -15,7 +15,7 @@
         {% csrf_token %}
         {{ form.non_field_errors }}
         <div class="fields">
-            {% if not object %}
+            {% if form.when %}
                 <div class="field">
                     {{ form.when.label_tag }}
                     <div class="ui calendar" id="{{ form.when.id_for_label }}">
@@ -39,20 +39,22 @@
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button"
-               href="{% if form.instance %}{% url 'report-detail' form.instance.pk %}{% else %}{% url 'report-create' %}{% endif %}">Cancel</a>
+               href="{% if instance %}{% url 'report-detail' form.instance.pk %}{% else %}{% url 'report-create' %}{% endif %}">Cancel</a>
             <div class="or"></div>
             <button class="ui positive button" type="submit">Save</button>
         </div>
     </form>
 {% endblock content %}
 {% block scripts %}
-    $('#{{ form.when.id_for_label }}')
-    .calendar({
-    type: 'date',
-    maxDate: new Date(),
-    disabledDates: [
-    {% for disabled_date in disabled_dates %}"{{ disabled_date }}",{% endfor %}
-    ]
-    })
-    ;
+    {% if form.when %}
+        $('#{{ form.when.id_for_label }}')
+        .calendar({
+        type: 'date',
+        maxDate: new Date(),
+        disabledDates: [
+        {% for disabled_date in disabled_dates %}"{{ disabled_date }}",{% endfor %}
+        ]
+        })
+        ;
+    {% endif %}
 {% endblock scripts %}

@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib import messages
 
 from body.forms import ConsumptionForm, RefillForm, ScheduleForm
+from body.messages import fui_msg_text
 
 from body.models import LedgerEntry, Medicine, Consumption, Schedule
 
@@ -50,7 +51,10 @@ class MedicineListView(UserOnlyMixin, ListView):
         if self.object_list.count() == 1:
             messages.info(
                 self.request,
-                f"Took a shortcut to the only medicine you have. <a href=\"{reverse('medicine-create')}\">Add one here.</a>",
+                fui_msg_text(
+                    f"Jumped to Medicine",
+                    f"Took a shortcut to the only medicine you have. <a href=\"{reverse('medicine-create')}\">Add one here.</a>",
+                ),
             )
             return redirect("medicine-detail", pk=self.object_list.first().pk)
 

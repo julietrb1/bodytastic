@@ -10,7 +10,7 @@ class ReportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReportForm, self).__init__(*args, **kwargs)
         self.fields["when"].input_formats = ["%B %d, %Y"]
-        if self.instance:
+        if self.instance.pk:
             logger.debug("Not showing when, as no instance in ReportForm.")
             del self.fields["when"]
 

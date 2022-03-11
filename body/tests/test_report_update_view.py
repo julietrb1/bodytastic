@@ -54,7 +54,7 @@ class ReportUpdateViewTests(LoginTestCase):
         )
         messages = list(response.context["messages"])
         self.assertEqual(len(messages), 1)
-        self.assertEqual(
+        self.assertIn(
+            "Report Changes Saved",
             str(messages[0]),
-            "A little tuning here and there never hurt anyone. Report changes saved.",
         )

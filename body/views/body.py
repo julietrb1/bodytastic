@@ -9,6 +9,7 @@ from django.contrib.humanize.templatetags.humanize import naturalday
 from django.contrib import messages
 from body.forms.mass_entry_form import MassEntryForm
 from django.shortcuts import get_object_or_404
+from body.messages import fui_msg_text
 
 from body.models import BodyArea, Report, Entry
 import random
@@ -183,7 +184,10 @@ class ReportUpdateView(UserOnlyMixin, UpdateView):
     def form_valid(self, form):
         messages.success(
             self.request,
-            "A little tuning here and there never hurt anyone. Report changes saved.",
+            fui_msg_text(
+                "Report Changes Saved",
+                "A little tuning here and there never hurt anyone.",
+            ),
         )
         return super().form_valid(form)
 
