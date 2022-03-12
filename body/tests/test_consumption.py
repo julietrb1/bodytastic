@@ -3,9 +3,10 @@ from body.models import LedgerEntry
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_consumption, create_medicine
 from freezegun import freeze_time
+from django.utils.timezone import datetime, make_aware
 
 
-@freeze_time("2022-01-01")
+@freeze_time(make_aware(datetime(2022, 1, 1)))
 class ConsumptionTests(LoginTestCase):
     def test_new_consumption_adds_ledger_entry(self):
         """
@@ -44,18 +45,13 @@ class ConsumptionTests(LoginTestCase):
         with self.assertRaises(ExcessiveConsumptionQuantityError):
             create_consumption(medicine)
 
-    def test_is_today_when_today(self):
-        medicine = create_medicine(self.user, current_balance=1)
-        consumption = create_consumption(medicine)
-        self.assertTrue(consumption.is_today())
-
     def test_is_today(self):
         medicine = create_medicine(self.user, current_balance=1)
         consumption = create_consumption(medicine)
         self.assertTrue(consumption.is_today())
 
-        with freeze_time("2021-12-31"):
+        with freeze_time(make_aware(datetime(2021, 12, 31))):
             self.assertFalse(consumption.is_today())
 
-        with freeze_time("2022-01-02"):
+        with freeze_time(make_aware(datetime(2022, 1, 2))):
             self.assertFalse(consumption.is_today())

@@ -1,13 +1,13 @@
 from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
-from django.utils.timezone import datetime
+from django.utils.timezone import localtime, make_aware, datetime
 
 from body.urls.mybody import REPORT_LIST_ROUTE
 from freezegun import freeze_time
 
 
-@freeze_time("2022-03-01")
+@freeze_time(make_aware(datetime(2022, 3, 1)))
 class ReportListViewTests(LoginTestCase):
     def test_report_list_redirects_to_login(self):
         self.client.logout()
@@ -36,7 +36,7 @@ class ReportListViewTests(LoginTestCase):
         """
         A recent report should show the summary chart.
         """
-        create_report(self.user, datetime.now())
+        create_report(self.user, localtime())
         response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertIsNotNone(response.context["summary_chart_data"])
 
@@ -44,7 +44,7 @@ class ReportListViewTests(LoginTestCase):
         """
         A recent report with entries should show the summary chart.
         """
-        report = create_report(self.user, datetime.now())
+        report = create_report(self.user, localtime())
         body_area = create_body_area()
         create_entry(report, body_area)
         response = self.client.get(reverse(REPORT_LIST_ROUTE))

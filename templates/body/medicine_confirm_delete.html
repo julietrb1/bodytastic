@@ -13,7 +13,7 @@
     <form method="post">
         {% csrf_token %}
         <div class="ui buttons">
-            <a class="cancel ui button" href="{% url 'medicine-index' %}">Cancel</a>
+            <a class="cancel ui button" href="{% url 'medicine-edit' object.pk %}">Cancel</a>
             <div class="or"></div>
             <button class="ui negative button" type="submit">Delete</button>
         </div>

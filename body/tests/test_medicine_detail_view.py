@@ -1,6 +1,6 @@
 from django.urls import reverse
 from body.tests.login_test_case import LoginTestCase
-from django.utils.timezone import datetime, make_aware, timedelta
+from django.utils.timezone import make_aware, timedelta, datetime, localtime
 
 from body.tests.model_helpers import (
     create_consumption,
@@ -11,7 +11,7 @@ from body.urls.medication import MEDICINE_DETAIL_ROUTE
 from freezegun import freeze_time
 
 
-@freeze_time("2022-03-01")
+@freeze_time(make_aware(datetime(2022, 3, 1)))
 class MedicineDetailViewTests(LoginTestCase):
     def test_with_consumptions(self):
         """
@@ -27,8 +27,8 @@ class MedicineDetailViewTests(LoginTestCase):
         medicine = create_medicine(self.user)
         create_schedule(
             medicine,
-            make_aware(datetime.now() - timedelta(days=1)),
-            make_aware(datetime.now() + timedelta(days=1)),
+            localtime() - timedelta(days=1),
+            localtime() + timedelta(days=1),
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "Every one day")
@@ -39,7 +39,7 @@ class MedicineDetailViewTests(LoginTestCase):
         medicine = create_medicine(self.user)
         create_schedule(
             medicine,
-            make_aware(datetime.now() - timedelta(days=1)),
+            localtime() - timedelta(days=1),
             None,
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
@@ -51,8 +51,8 @@ class MedicineDetailViewTests(LoginTestCase):
         medicine = create_medicine(self.user)
         create_schedule(
             medicine,
-            make_aware(datetime.now() - timedelta(days=2)),
-            make_aware(datetime.now() - timedelta(days=1)),
+            localtime() - timedelta(days=2),
+            localtime() - timedelta(days=1),
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "Finished:")
@@ -61,8 +61,8 @@ class MedicineDetailViewTests(LoginTestCase):
         medicine = create_medicine(self.user)
         create_schedule(
             medicine,
-            make_aware(datetime.now() + timedelta(days=1)),
-            make_aware(datetime.now() + timedelta(days=2)),
+            localtime() + timedelta(days=1),
+            localtime() + timedelta(days=2),
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "Starts:")

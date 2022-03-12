@@ -19,9 +19,15 @@
         </div>
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
-            <a class="cancel ui button" href="{% url 'medicine-index' %}">Cancel</a>
+            <a class="cancel ui button"
+               href="{% if object %}{% url 'medicine-detail' form.instance.pk %}{% else %}{% url 'medicine-index' %}{% endif %}">Cancel</a>
             <div class="or"></div>
             <button class="ui positive button" type="submit">Save</button>
         </div>
-    </form>
-{% endblock content %}
+        {% if object %}
+            <a class="ui basic icon button"
+               href="{% url 'medicine-delete' form.instance.pk %}">
+                <i aria-hidden="true" class="trash alternate icon"></i></a>
+            {% endif %}
+        </form>
+    {% endblock content %}
