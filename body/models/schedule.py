@@ -1,22 +1,20 @@
-from django.apps import apps
-
 from django.db import models
-from django.utils.timezone import datetime, timedelta
+from django.utils.timezone import localdate, timedelta, localtime, datetime
 
 
 class ScheduleManager(models.Manager):
     def active(self, medicine):
-        now_date = datetime.now().date()
+        now_date = localdate()
         return self.filter(medicine=medicine, start_date__lte=now_date,).exclude(
             end_date__lt=now_date,
         )
 
     def future(self, medicine):
-        now_date = datetime.now().date()
+        now_date = localdate()
         return self.filter(medicine=medicine, start_date__gt=now_date)
 
     def past(self, medicine):
-        now_date = datetime.now().date()
+        now_date = localdate()
         return self.filter(medicine=medicine, end_date__lt=now_date)
 
 
@@ -52,22 +50,22 @@ class Schedule(models.Model):
 
     @property
     def is_active(self):
-        now_date = datetime.now().date()
+        now_date = localdate()
         return self.start_date <= now_date and (
             not self.end_date or self.end_date >= now_date
         )
 
     @property
     def is_past(self):
-        return self.end_date and self.end_date < datetime.now().date()
+        return self.end_date and self.end_date < localdate()
 
     @property
     def is_future(self):
-        return self.start_date > datetime.now().date()
+        return self.start_date > localdate()
 
     @property
     def next_consumption(self):
-        now = datetime.now()
+        now = localtime()
 
         consumption_at = datetime(
             now.year, now.month, now.day, self.time.hour, self.time.minute

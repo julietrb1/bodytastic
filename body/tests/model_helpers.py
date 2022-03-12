@@ -1,4 +1,4 @@
-from django.utils.timezone import datetime, make_aware
+from django.utils.timezone import make_aware, datetime, localtime
 from body.models import (
     Entry,
     Report,
@@ -39,7 +39,7 @@ def create_medicine(user, name="Test meds", current_balance=0):
     )
 
 
-def create_ledger_entry(medicine, quantity, when=make_aware(datetime.now())):
+def create_ledger_entry(medicine, quantity, when=localtime()):
     return LedgerEntry.objects.create(medicine=medicine, quantity=quantity, when=when)
 
 

@@ -2,9 +2,8 @@ from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView, FormView
-from django.utils.timezone import datetime
+from django.utils.timezone import timedelta, localdate
 from body.forms import ReportForm
-from django.utils.timezone import datetime, timedelta
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.contrib import messages
 from body.forms.mass_entry_form import MassEntryForm
@@ -38,7 +37,7 @@ class BodyAreaMixin:
 class TodayMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["today"] = datetime.today().date()
+        context["today"] = localdate()
         return context
 
 
@@ -104,7 +103,7 @@ random.shuffle(COLOUR_PAIRS)
 
 def report_stats_over_time(user, last_x_days=14):
 
-    current_date = datetime.now().date()
+    current_date = localdate()
     last_x_reports = Report.objects.order_by("when").filter(
         when__gt=current_date - timedelta(days=last_x_days), user=user
     )

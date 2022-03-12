@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.utils import timezone
+from django.utils.timezone import localtime
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -131,7 +131,7 @@ class ConsumptionCreateView(
     def get_initial(self):
         initial = super().get_initial()
         initial["quantity"] = 1
-        initial["when"] = timezone.now()
+        initial["when"] = localtime()
         return initial
 
     def get_success_url(self):
