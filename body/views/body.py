@@ -173,6 +173,13 @@ class ReportCreateView(UserOnlyMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Report Created",
+                "Another day, another body report locked down.",
+            ),
+        )
         return super().form_valid(form)
 
 

@@ -197,6 +197,16 @@ class ScheduleUpdateView(
 class ScheduleDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
     model = Schedule
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Schedule Deleted",
+                "Well that schedule's gone. Didn't like it, huh?",
+            ),
+        )
+        return super().get_success_url()
+
 
 class MedicineRefillCreateView(MedicineSuccessMixin, MedicineFormMixin, CreateView):
     model = LedgerEntry
