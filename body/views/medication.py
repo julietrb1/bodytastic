@@ -134,6 +134,16 @@ class ConsumptionCreateView(
         initial["when"] = timezone.now()
         return initial
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Consumption Created",
+                "Nice! Remembering your medication, one day at a time.",
+            ),
+        )
+        return super().get_success_url()
+
 
 class ConsumptionUpdateView(
     ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
