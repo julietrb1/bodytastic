@@ -3,8 +3,9 @@ from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_medicine, create_schedule
 from django.utils.timezone import make_aware, datetime
 from freezegun import freeze_time
+from django.forms.models import model_to_dict
 
-SCHEDULE_UPDATE_ROUTE = "schedule-update"
+from body.urls.medication import SCHEDULE_UPDATE_ROUTE
 
 
 @freeze_time("2022-03-01")
@@ -64,3 +65,27 @@ class ScheduleUpdateViewTests(LoginTestCase):
             )
         )
         self.assertEqual(response.status_code, 404)
+
+    def test_updating_schedule_adds_message(self):
+        schedule = create_schedule(
+            create_medicine(self.user),
+            make_aware(datetime(2022, 1, 1)),
+            make_aware(datetime(2022, 1, 2)),
+        )
+        response = self.client.post(
+            reverse(
+                SCHEDULE_UPDATE_ROUTE,
+                kwargs={"medicinepk": schedule.medicine.pk, "pk": schedule.pk},
+            ),
+            {
+                "start_date": "March 2, 2022",
+                "end_date": "March 3, 2022",
+                "time": "8:30 AM",
+                "frequency_in_days": 1,
+                "quantity": 1,
+                "tolerance_mins": 30,
+            },
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assert_message(response, "Schedule Updated")

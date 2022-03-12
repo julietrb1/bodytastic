@@ -75,7 +75,7 @@ urlpatterns = [
         name=SCHEDULE_CREATE_ROUTE,
     ),
     path(
-        "<int:medicinepk>/schedules/<int:pk>/update",
+        "<int:medicinepk>/schedules/<int:pk>/update/",
         ScheduleUpdateView.as_view(),
         name=SCHEDULE_UPDATE_ROUTE,
     ),

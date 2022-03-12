@@ -173,6 +173,16 @@ class ScheduleUpdateView(
     model = Schedule
     form_class = ScheduleForm
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Schedule Updated",
+                "Those schedule changes have been noted.",
+            ),
+        )
+        return super().get_success_url()
+
 
 class ScheduleDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
     model = Schedule
