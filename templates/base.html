@@ -4,13 +4,7 @@
     <div class="pusher">
         <div class="top-page-spacer"></div>
         <div id="content" class="ui container">
-            {% for message in messages %}
-                <div class="ui {{ message.tags }} message">
-                    <p>
-                        {{ message|safe }}
-                    </p>
-                </div>
-            {% endfor %}
+            {% for message in messages %}<div class="ui {{ message.level_tag }} message">{{ message|safe }}</div>{% endfor %}
             <h1 class="ui header">
                 {% block title %}
                     (no title)
