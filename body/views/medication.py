@@ -92,6 +92,16 @@ class MedicineUpdateView(UserOnlyMixin, UpdateView):
     model = Medicine
     fields = ["name"]
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Medicine Updated",
+                "That medicine wasn't quite perfect, but your changes should make it all better!",
+            ),
+        )
+        return super().get_success_url()
+
 
 class MedicineDeleteView(UserOnlyMixin, DeleteView):
     model = Medicine
