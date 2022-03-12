@@ -8,7 +8,7 @@
     </thead>
     <tbody>
         {% for consumption in consumptions %}
-            <tr>
+            <tr class="{% if consumption.is_today %}blue{% endif %}">
                 <td class="selectable">
                     <a href="{% url 'consumption-edit' medicinepk=consumption.medicine.pk pk=consumption.pk %}">{{ consumption.when|naturalday|capfirst }}</a>
                 </td>

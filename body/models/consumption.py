@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.apps import apps
+from django.utils.timezone import now
 
 
 class Consumption(models.Model):
@@ -16,3 +17,6 @@ class Consumption(models.Model):
 
     def __str__(self) -> str:
         return f"({self.quantity}x) {self.when}"
+
+    def is_today(self):
+        return self.when.date() == now().date()
