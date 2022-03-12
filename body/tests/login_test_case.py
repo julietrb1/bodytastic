@@ -8,10 +8,18 @@ class LoginTestCase(TestCase):
     def setUp(self):
         self.client: Client = Client()
         self.user = User.objects.create_user(
-            "john", "lennon@thebeatles.com", "johnpassword"
+            "jennifer",
+            "jennifer@example.com",
+            "jenpassword",
+            first_name="Jennifer",
+            last_name="Appleseed",
         )
         self.other_user = User.objects.create_user(
-            "jane", "jane@example.com", "janepassword"
+            "jane",
+            "jane@example.com",
+            "janepassword",
+            first_name="Jane",
+            last_name="Appleseed",
         )
         self.logged_in = self.client.force_login(self.user)
 

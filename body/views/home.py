@@ -1,9 +1,25 @@
 from django.views.generic import TemplateView
+from django.utils import timezone
 
 
 class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
+        now = timezone.localtime()
+        if now.hour >= 0 and now.hour <= 5:
+            greeting_date_part = "Burning the Midnight Oil"
+        elif now.hour >= 6 and now.hour <= 10:
+            greeting_date_part = "Good Morning"
+        elif now.hour >= 11 and now.hour <= 14:
+            greeting_date_part = "Good Day"
+        elif now.hour >= 15 and now.hour <= 17:
+            greeting_date_part = "Good Afternoon"
+        else:
+            greeting_date_part = "Good Evening"
+
+        greeting_name_part = self.request.user.first_name or self.request.user.username
+
         context = super().get_context_data(**kwargs)
+        context["greeting"] = f"{greeting_date_part}, {greeting_name_part}"
         context["items"] = [
             {
                 "title": "Medication",
