@@ -78,6 +78,13 @@ class MedicineCreateView(UserOnlyMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Medicine Created",
+                "Oh goody. Another medicine! Is that good or bad?",
+            ),
+        )
         return super().form_valid(form)
 
 
@@ -85,10 +92,30 @@ class MedicineUpdateView(UserOnlyMixin, UpdateView):
     model = Medicine
     fields = ["name"]
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Medicine Updated",
+                "That medicine wasn't quite perfect, but your changes should make it all better!",
+            ),
+        )
+        return super().get_success_url()
+
 
 class MedicineDeleteView(UserOnlyMixin, DeleteView):
     model = Medicine
     success_url = reverse_lazy("medicine-index")
+
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Medicine Deleted",
+                "Medicine gone. Poof. Just like that.",
+            ),
+        )
+        return super().get_success_url()
 
 
 class ConsumptionCreateView(
@@ -106,6 +133,16 @@ class ConsumptionCreateView(
         initial["quantity"] = 1
         initial["when"] = timezone.now()
         return initial
+
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Consumption Created",
+                "Nice! Remembering your medication, one day at a time.",
+            ),
+        )
+        return super().get_success_url()
 
 
 class ConsumptionUpdateView(
