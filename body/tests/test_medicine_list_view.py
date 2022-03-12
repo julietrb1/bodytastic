@@ -18,12 +18,7 @@ class MedicineListViewTests(LoginTestCase):
         self.assertRedirects(
             response, reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk])
         )
-        messages = list(response.context["messages"])
-        self.assertEqual(len(messages), 1)
-        self.assertIn(
-            "Took a shortcut to the only medicine you have.",
-            str(messages[0]),
-        )
+        self.assert_message(response, "Took a shortcut to the only medicine you have.")
 
     def test_two_medicines_stays_on_page(self):
         medicine_one = create_medicine(self.user, "Med1")

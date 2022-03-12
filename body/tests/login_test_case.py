@@ -31,3 +31,11 @@ class LoginTestCase(TestCase):
             f"/accounts/login/?next={route_path}",
             fetch_redirect_response=False,
         )
+
+    def assert_message(self, response, message_content):
+        messages = list(response.context["messages"])
+        self.assertEqual(len(messages), 1)
+        self.assertIn(
+            message_content,
+            str(messages[0]),
+        )

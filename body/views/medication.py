@@ -78,6 +78,13 @@ class MedicineCreateView(UserOnlyMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Medicine Created",
+                "Oh goody. Another medicine! Is that good or bad?",
+            ),
+        )
         return super().form_valid(form)
 
 
