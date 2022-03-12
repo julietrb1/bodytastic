@@ -107,6 +107,16 @@ class MedicineDeleteView(UserOnlyMixin, DeleteView):
     model = Medicine
     success_url = reverse_lazy("medicine-index")
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Medicine Deleted",
+                "Medicine gone. Poof. Just like that.",
+            ),
+        )
+        return super().get_success_url()
+
 
 class ConsumptionCreateView(
     ChildUserOnlyMixin,
