@@ -17,7 +17,6 @@
         <a class="ui button primary"
            href="{% url 'entry-mass-update' reportpk=report.pk %}">Fill Entries</a>
         <a class="ui basic button" href="{% url 'report-update' report.pk %}">Edit</a>
-        <a class="ui basic button" href="{% url 'report-delete' report.pk %}">Delete</a>
     </div>
     <div class="ui divider hidden"></div>
     {% if object.entry_set.count %}

@@ -4,9 +4,10 @@ from body.urls.medication import CONSUMPTION_CREATE_ROUTE
 from freezegun import freeze_time
 from body.tests.model_helpers import create_consumption, create_medicine
 from django.forms.models import model_to_dict
+from django.utils.timezone import datetime, make_aware
 
 
-@freeze_time("2022-03-01")
+@freeze_time(make_aware(datetime(2022, 1, 1)))
 class ConsumptionCreateViewTests(LoginTestCase):
     def test_create_form_shows_when_field(self):
         medicine = create_medicine(self.user)

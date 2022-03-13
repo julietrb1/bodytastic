@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% block title %}
-    <i aria-hidden="true" class="trash red alternate icon circular"></i>
+    <i aria-hidden="true" class="trash red alternate icon"></i>
     <div class="content">
         Delete Report?
         <div class="sub header">{{ object.when }}</div>
@@ -18,7 +18,7 @@
         {% csrf_token %}
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
-            <a class="cancel ui button" href="{% url 'report-detail' object.pk %}">Cancel</a>
+            <a class="cancel ui button" href="{% url 'report-update' object.pk %}">Cancel</a>
             <div class="or"></div>
             <button class="ui negative button" type="submit">Delete</button>
         </div>

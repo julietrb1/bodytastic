@@ -12,30 +12,31 @@ def report_card(report):
 
 @register.inclusion_tag("body/entry_card.html")
 def entry_card(entry):
-    return {"entry": entry}
+    diff = entry.diff_from_last
+
+    if not diff:
+        colour = "secondary"
+    elif diff > 0:
+        colour = "orange"
+    else:
+        colour = "purple"
+    return {"entry": entry, "diff": diff, "colour": colour}
 
 
 @register.simple_tag
-def report_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="weight icon {colour} {circular_class}"></i>'
-    )
+def report_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="weight icon {colour}"></i>')
 
 
 @register.simple_tag
-def report_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="seedling icon {colour} {circular_class}"></i>'
-    )
+def report_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="seedling icon {colour}"></i>')
 
 
 @register.simple_tag
-def emotion_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
+def emotion_icon(colour="primary"):
     return format_html(
-        f'<i aria-hidden="true" class="hand holding water icon {colour} {circular_class}"></i>'
+        f'<i aria-hidden="true" class="hand holding water icon {colour}"></i>'
     )
 
 
@@ -56,23 +57,21 @@ def refill_table(refills):
 
 @register.inclusion_tag("body/medicine_card.html")
 def medicine_card(medicine):
-    return {"medicine": medicine}
+    return {
+        "consumption_count": medicine.consumption_set.count(),
+        "active_schedule_count": medicine.active_schedules.count(),
+        "medicine": medicine,
+    }
 
 
 @register.simple_tag
-def medicine_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="pills icon {colour} {circular_class}"></i>'
-    )
+def medicine_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="pills icon {colour}"></i>')
 
 
 @register.simple_tag
-def event_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="medal icon {colour} {circular_class}"></i>'
-    )
+def event_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="medal icon {colour}"></i>')
 
 
 @register.filter

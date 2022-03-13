@@ -11,6 +11,7 @@ class Medicine(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     current_balance = models.PositiveSmallIntegerField(default=0)
+    default_consumption_quantity = models.PositiveSmallIntegerField(default=1)
 
     class Meta:
         ordering = ["name"]
@@ -21,6 +22,10 @@ class Medicine(models.Model):
 
     def get_absolute_url(self):
         return reverse("medicine-detail", kwargs={"pk": self.pk})
+
+    @property
+    def can_add_default_consumption(self):
+        return self.default_consumption_quantity <= self.current_balance
 
     @property
     def refills(self):

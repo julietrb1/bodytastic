@@ -1,12 +1,14 @@
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import localtime
+from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib import messages
 
-from body.forms import ConsumptionForm, RefillForm, ScheduleForm
+from body.forms import RefillForm, ScheduleForm
+from body.forms.form_mixins import WhenFieldMixin
 from body.messages import fui_msg_text
 
 from body.models import LedgerEntry, Medicine, Consumption, Schedule
@@ -119,6 +121,7 @@ class MedicineDeleteView(UserOnlyMixin, DeleteView):
 
 
 class ConsumptionCreateView(
+    WhenFieldMixin,
     ChildUserOnlyMixin,
     MedicineFormMixin,
     MedicineContextMixin,
@@ -126,7 +129,7 @@ class ConsumptionCreateView(
     CreateView,
 ):
     model = Consumption
-    form_class = ConsumptionForm
+    fields = ("when", "quantity")
 
     def get_initial(self):
         initial = super().get_initial()
@@ -145,11 +148,45 @@ class ConsumptionCreateView(
         return super().get_success_url()
 
 
+class ConsumptionCreateDefaultView(View):
+    def post(self, request, *args, **kwargs):
+        medicine = get_object_or_404(
+            Medicine, pk=self.kwargs["medicinepk"], user=self.request.user
+        )
+        Consumption.objects.create(
+            medicine=medicine,
+            when=localtime(),
+            quantity=medicine.default_consumption_quantity,
+        )
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Default Consumption Logged",
+                "Look at all the time you saved! You should now see your hard work all ready.",
+            ),
+        )
+        return redirect("medicine-detail", pk=medicine.pk)
+
+
 class ConsumptionUpdateView(
-    ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
+    WhenFieldMixin,
+    ChildUserOnlyMixin,
+    MedicineContextMixin,
+    MedicineSuccessMixin,
+    UpdateView,
 ):
     model = Consumption
-    form_class = ConsumptionForm
+    fields = ("when", "quantity")
+
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Consumption Updated",
+                "Your consumption change is noted. Thanks!",
+            ),
+        )
+        return super().get_success_url()
 
 
 class ConsumptionDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
