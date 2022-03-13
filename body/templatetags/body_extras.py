@@ -12,7 +12,15 @@ def report_card(report):
 
 @register.inclusion_tag("body/entry_card.html")
 def entry_card(entry):
-    return {"entry": entry}
+    diff = entry.diff_from_last
+
+    if not diff:
+        colour = "secondary"
+    elif diff > 0:
+        colour = "orange"
+    else:
+        colour = "purple"
+    return {"entry": entry, "diff": diff, "colour": colour}
 
 
 @register.simple_tag

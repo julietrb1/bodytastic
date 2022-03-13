@@ -1,15 +1,16 @@
 {% load humanize %}
-<div class="card">
+<div class="card {{ colour }}">
     <div class="content">
-        <div class="header">
-            <i aria-hidden="true" class="circular primary ruler combined icon"></i>&nbsp;{{ entry.body_area }}
-        </div>
-        <div class="meta">{{ entry.measurement_with_unit|capfirst }}</div>
+        <div class="header">{{ entry.body_area }}</div>
         <div class="description">
+            <div class="ui small label {{ colour }}">
+                {{ entry.measurement_with_unit|capfirst }}
+                <div class="detail">{{ diff|stringformat:"+g" }}</div>
+            </div>
             {% for sensation in entry.sensations.all %}
-                <span class="ui small label primary">{{ sensation.name }}</span>
+                <div class="ui small label primary">{{ sensation.name }}</div>
             {% empty %}
-                <span class="ui small label">No sensations</span>
+                <div class="ui small label">No sensations</div>
             {% endfor %}
         </div>
     </div>

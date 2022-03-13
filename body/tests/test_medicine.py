@@ -1,9 +1,10 @@
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_ledger_entry, create_medicine
 from freezegun import freeze_time
+from django.utils.timezone import make_aware, datetime
 
 
-@freeze_time("2022-03-01")
+@freeze_time(make_aware(datetime(2022, 3, 1)))
 class MedicineTests(LoginTestCase):
     def test_ledger_recalculates(self):
         """

@@ -1,5 +1,5 @@
 from django.apps import apps
-
+from django.utils.timezone import localtime, timedelta
 from django.db import models
 
 
@@ -22,9 +22,25 @@ class Entry(models.Model):
     def __str__(self):
         return f"{self.body_area} report"
 
+    @property
     def measurement_with_unit(self):
         return (
             f"{float(self.measurement):g} {self.body_area.measurement_unit}"
             if self.measurement
             else "no measurement"
         )
+
+    @property
+    def diff_from_last(self, max_days=14):
+        last_entry = (
+            Entry.objects.filter(
+                report__when__gte=self.report.when - timedelta(days=max_days),
+                report__when__lt=self.report.when,
+            )
+            .order_by("report__when")
+            .last()
+        )
+        if not (last_entry and last_entry.measurement):
+            return None
+
+        return self.measurement - last_entry.measurement
