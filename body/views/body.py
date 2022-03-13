@@ -3,9 +3,9 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView, FormView
 from django.utils.timezone import timedelta, localdate
-from body.forms import ReportForm
 from django.contrib.humanize.templatetags.humanize import naturalday
 from django.contrib import messages
+from body.forms.form_mixins import WhenFieldMixin
 from body.forms.mass_entry_form import MassEntryForm
 from django.shortcuts import get_object_or_404
 from body.messages import fui_msg_text
@@ -160,9 +160,9 @@ class ReportDetailView(UserOnlyMixin, BodyAreaMixin, DetailView):
     model = Report
 
 
-class ReportCreateView(UserOnlyMixin, CreateView):
+class ReportCreateView(WhenFieldMixin, UserOnlyMixin, CreateView):
     model = Report
-    form_class = ReportForm
+    fields = ("when", "weight_in_kg")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -183,9 +183,9 @@ class ReportCreateView(UserOnlyMixin, CreateView):
         return super().form_valid(form)
 
 
-class ReportUpdateView(UserOnlyMixin, UpdateView):
+class ReportUpdateView(WhenFieldMixin, UserOnlyMixin, UpdateView):
     model = Report
-    form_class = ReportForm
+    fields = ("when", "weight_in_kg")
 
     def form_valid(self, form):
         messages.success(

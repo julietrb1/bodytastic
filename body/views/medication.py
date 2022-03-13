@@ -7,7 +7,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib import messages
 
-from body.forms import ConsumptionForm, RefillForm, ScheduleForm
+from body.forms import RefillForm, ScheduleForm
+from body.forms.form_mixins import WhenFieldMixin
 from body.messages import fui_msg_text
 
 from body.models import LedgerEntry, Medicine, Consumption, Schedule
@@ -120,6 +121,7 @@ class MedicineDeleteView(UserOnlyMixin, DeleteView):
 
 
 class ConsumptionCreateView(
+    WhenFieldMixin,
     ChildUserOnlyMixin,
     MedicineFormMixin,
     MedicineContextMixin,
@@ -127,7 +129,7 @@ class ConsumptionCreateView(
     CreateView,
 ):
     model = Consumption
-    form_class = ConsumptionForm
+    fields = ("when", "quantity")
 
     def get_initial(self):
         initial = super().get_initial()
@@ -167,10 +169,14 @@ class ConsumptionCreateDefaultView(View):
 
 
 class ConsumptionUpdateView(
-    ChildUserOnlyMixin, MedicineContextMixin, MedicineSuccessMixin, UpdateView
+    WhenFieldMixin,
+    ChildUserOnlyMixin,
+    MedicineContextMixin,
+    MedicineSuccessMixin,
+    UpdateView,
 ):
     model = Consumption
-    form_class = ConsumptionForm
+    fields = ("when", "quantity")
 
     def get_success_url(self):
         messages.success(
