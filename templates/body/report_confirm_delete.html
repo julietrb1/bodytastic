@@ -18,7 +18,7 @@
         {% csrf_token %}
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
-            <a class="cancel ui button" href="{% url 'report-detail' object.pk %}">Cancel</a>
+            <a class="cancel ui button" href="{% url 'report-update' object.pk %}">Cancel</a>
             <div class="or"></div>
             <button class="ui negative button" type="submit">Delete</button>
         </div>
