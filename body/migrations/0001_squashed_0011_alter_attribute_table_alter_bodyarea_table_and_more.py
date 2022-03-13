@@ -122,21 +122,6 @@ def seed_attributes(apps, _):
 
 
 class Migration(migrations.Migration):
-
-    replaces = [
-        ("body", "0001_initial"),
-        ("body", "0002_auto_20220301_2334"),
-        ("body", "0003_alter_bodyarea_options_alter_sensation_options_and_more"),
-        ("body", "0004_alter_bodyareaentry_options"),
-        ("body", "0005_alter_report_weight_in_g"),
-        ("body", "0006_rename_weight_in_g_report_weight_in_kg"),
-        ("body", "0007_alter_report_weight_in_kg"),
-        ("body", "0008_rename_bodyareaentry_entry_and_more"),
-        ("body", "0009_attribute_report_attributes"),
-        ("body", "0010_alter_report_unique_together"),
-        ("body", "0011_alter_attribute_table_alter_bodyarea_table_and_more"),
-    ]
-
     initial = True
 
     dependencies = [
