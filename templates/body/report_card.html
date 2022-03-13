@@ -9,7 +9,7 @@
         </div>
         <div class="description">
             {% for entry in report.entry_set.all %}
-                <div class="ui label small">
+                <div class="ui label teal small">
                     {{ entry.body_area.name }}
                     <div class="detail">{{ entry.measurement|floatformat:"g" }}</div>
                 </div>
