@@ -48,3 +48,13 @@ class EntryTests(LoginTestCase):
         entry_two = create_entry(report_two, body_area, 22)
         self.assertIsNone(entry_one.diff_from_last)
         self.assertIsNone(entry_two.diff_from_last)
+
+    def test_diff_from_last_with_different_body_part(self):
+        report_one = create_report(self.user, localdate() - timedelta(days=1))
+        report_two = create_report(self.user, localdate())
+        body_area_one = create_body_area("B1")
+        body_area_two = create_body_area("B2")
+        entry_one = create_entry(report_one, body_area_one, 20)
+        entry_two = create_entry(report_two, body_area_two, 22)
+        self.assertIsNone(entry_one.diff_from_last)
+        self.assertIsNone(entry_two.diff_from_last)

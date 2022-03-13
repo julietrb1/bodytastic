@@ -36,6 +36,7 @@ class Entry(models.Model):
             Entry.objects.filter(
                 report__when__gte=self.report.when - timedelta(days=max_days),
                 report__when__lt=self.report.when,
+                body_area=self.body_area,
             )
             .order_by("report__when")
             .last()
