@@ -14,11 +14,11 @@ class ConsumptionTests(LoginTestCase):
         """
         self.assertEqual(len(LedgerEntry.objects.all()), 0)
         medicine = create_medicine(self.user, current_balance=2)
-        consumption = create_consumption(medicine)
+        consumption = create_consumption(medicine, quantity=2)
         all_ledger_entries = LedgerEntry.objects.all()
         self.assertEqual(len(all_ledger_entries), 1)
         self.assertEqual(all_ledger_entries[0].when, consumption.when)
-        self.assertEqual(all_ledger_entries[0].quantity, -1)
+        self.assertEqual(all_ledger_entries[0].quantity, -2)
         self.assertEqual(all_ledger_entries[0].medicine, consumption.medicine)
 
     def test_updating_consumption_matches_ledger_entry(self):
@@ -27,11 +27,11 @@ class ConsumptionTests(LoginTestCase):
         """
         medicine = create_medicine(self.user, current_balance=5)
         consumption = create_consumption(medicine)
-        consumption.quantity = 2
+        consumption.quantity = 5
         consumption.save()
         all_ledger_entries = LedgerEntry.objects.all()
         self.assertEqual(len(all_ledger_entries), 1)
-        self.assertEqual(all_ledger_entries[0].quantity, -2)
+        self.assertEqual(all_ledger_entries[0].quantity, -5)
 
     def test_deleting_consumption_removes_ledger_entry(self):
         medicine = create_medicine(self.user, current_balance=1)

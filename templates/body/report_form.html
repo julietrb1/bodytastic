@@ -39,7 +39,7 @@
         <div class="ui divider hidden"></div>
         <div class="ui buttons">
             <a class="cancel ui button"
-               href="{% if instance %}{% url 'report-detail' form.instance.pk %}{% else %}{% url 'report-create' %}{% endif %}">Cancel</a>
+               href="{% if object %}{% url 'report-detail' object.pk %}{% else %}{% url 'report-index' %}{% endif %}">Cancel</a>
             <div class="or"></div>
             <button class="ui positive button" type="submit">Save</button>
         </div>

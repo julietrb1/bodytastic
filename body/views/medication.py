@@ -151,6 +151,16 @@ class ConsumptionUpdateView(
     model = Consumption
     form_class = ConsumptionForm
 
+    def get_success_url(self):
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Consumption Updated",
+                "Your consumption change is noted. Thanks!",
+            ),
+        )
+        return super().get_success_url()
+
 
 class ConsumptionDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
     model = Consumption
