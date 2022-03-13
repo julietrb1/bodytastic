@@ -3,7 +3,7 @@
     <div class="content">
         <div class="header">
             <i aria-hidden="true"
-               class="{% if schedule.is_active %}green{% else %}grey{% endif %} circular clock icon"></i>&nbsp;
+               class="{% if schedule.is_active %}green{% else %}grey{% endif %} clock icon"></i>&nbsp;
             {% if schedule.is_active %}
                 <strong>Next:</strong> {{ schedule.time }}
             {% elif schedule.is_past %}

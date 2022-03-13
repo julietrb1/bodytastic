@@ -24,26 +24,19 @@ def entry_card(entry):
 
 
 @register.simple_tag
-def report_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="weight icon {colour} {circular_class}"></i>'
-    )
+def report_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="weight icon {colour}"></i>')
 
 
 @register.simple_tag
-def report_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="seedling icon {colour} {circular_class}"></i>'
-    )
+def report_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="seedling icon {colour}"></i>')
 
 
 @register.simple_tag
-def emotion_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
+def emotion_icon(colour="primary"):
     return format_html(
-        f'<i aria-hidden="true" class="hand holding water icon {colour} {circular_class}"></i>'
+        f'<i aria-hidden="true" class="hand holding water icon {colour}"></i>'
     )
 
 
@@ -68,19 +61,13 @@ def medicine_card(medicine):
 
 
 @register.simple_tag
-def medicine_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="pills icon {colour} {circular_class}"></i>'
-    )
+def medicine_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="pills icon {colour}"></i>')
 
 
 @register.simple_tag
-def event_icon(colour="primary", circular=False):
-    circular_class = "circular" if circular else None
-    return format_html(
-        f'<i aria-hidden="true" class="medal icon {colour} {circular_class}"></i>'
-    )
+def event_icon(colour="primary"):
+    return format_html(f'<i aria-hidden="true" class="medal icon {colour}"></i>')
 
 
 @register.filter
