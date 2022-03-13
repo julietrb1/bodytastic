@@ -57,7 +57,11 @@ def refill_table(refills):
 
 @register.inclusion_tag("body/medicine_card.html")
 def medicine_card(medicine):
-    return {"medicine": medicine}
+    return {
+        "consumption_count": medicine.consumption_set.count(),
+        "active_schedule_count": medicine.active_schedules.count(),
+        "medicine": medicine,
+    }
 
 
 @register.simple_tag
