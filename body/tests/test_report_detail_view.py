@@ -3,6 +3,7 @@ from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_body_area, create_entry, create_report
 from body.urls.mybody import REPORT_DETAIL_ROUTE
 from freezegun import freeze_time
+from django.utils.timezone import localdate, timedelta
 
 
 @freeze_time("2022-03-01")
@@ -32,3 +33,30 @@ class ReportDetailViewTests(LoginTestCase):
         response = self.client.get(reverse(REPORT_DETAIL_ROUTE, args=[report.pk]))
         self.assertContains(response, "Sample Area")
         self.assertContains(response, "20 cm")
+
+    def test_report_negative_diff(self):
+        earlier_report = create_report(self.user, localdate() - timedelta(days=1))
+        report = create_report(self.user, localdate())
+        body_area = create_body_area()
+        create_entry(earlier_report, body_area, 20)
+        create_entry(report, body_area, 19)
+        response = self.client.get(reverse(REPORT_DETAIL_ROUTE, args=[report.pk]))
+        self.assertContains(response, "-1")
+
+    def test_report_positive_diff(self):
+        earlier_report = create_report(self.user, localdate() - timedelta(days=1))
+        report = create_report(self.user, localdate())
+        body_area = create_body_area()
+        create_entry(earlier_report, body_area, 20)
+        create_entry(report, body_area, 22)
+        response = self.client.get(reverse(REPORT_DETAIL_ROUTE, args=[report.pk]))
+        self.assertContains(response, "+2")
+
+    def test_report_zero_diff(self):
+        earlier_report = create_report(self.user, localdate() - timedelta(days=1))
+        report = create_report(self.user, localdate())
+        body_area = create_body_area()
+        create_entry(earlier_report, body_area, 20)
+        create_entry(report, body_area, 20)
+        response = self.client.get(reverse(REPORT_DETAIL_ROUTE, args=[report.pk]))
+        self.assertContains(response, "0")
