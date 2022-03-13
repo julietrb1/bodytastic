@@ -1,6 +1,7 @@
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import localtime
+from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -143,6 +144,26 @@ class ConsumptionCreateView(
             ),
         )
         return super().get_success_url()
+
+
+class ConsumptionCreateDefaultView(View):
+    def post(self, request, *args, **kwargs):
+        medicine = get_object_or_404(
+            Medicine, pk=self.kwargs["medicinepk"], user=self.request.user
+        )
+        Consumption.objects.create(
+            medicine=medicine,
+            when=localtime(),
+            quantity=medicine.default_consumption_quantity,
+        )
+        messages.success(
+            self.request,
+            fui_msg_text(
+                "Default Consumption Logged",
+                "Look at all the time you saved! You should now see your hard work all ready.",
+            ),
+        )
+        return redirect("medicine-detail", pk=medicine.pk)
 
 
 class ConsumptionUpdateView(
