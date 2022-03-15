@@ -78,7 +78,7 @@ class MedicineDetailViewTests(LoginTestCase):
             localtime() - timedelta(days=1),
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
-        self.assertContains(response, "Finished:")
+        self.assertNotContains(response, "Next:")
 
     def test_with_schedule_without_end_date_in_future(self):
         medicine = create_medicine(self.user)
@@ -88,4 +88,4 @@ class MedicineDetailViewTests(LoginTestCase):
             localtime() + timedelta(days=2),
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
-        self.assertContains(response, "Starts:")
+        self.assertNotContains(response, "Next:")

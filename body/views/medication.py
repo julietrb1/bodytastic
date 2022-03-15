@@ -71,8 +71,6 @@ class MedicineDetailView(UserOnlyMixin, DetailView):
         data["consumption_limited_set"] = self.object.consumption_set.all()[:5]
         data["refill_limited_set"] = self.object.refills[:5]
         data["schedules_active"] = Schedule.objects.active(self.object)
-        data["schedules_future"] = Schedule.objects.future(self.object)
-        data["schedules_past"] = Schedule.objects.past(self.object)
         return data
 
 

@@ -44,30 +44,11 @@
                     <i aria-hidden="true" class="icon plus"></i>
                 </a>
             </h3>
-            {% if schedules_active %}
-                <h4 class="ui header">Active</h4>
-                <div class="ui cards">
-                    {% for schedule in schedules_active %}
-                        {% schedule_card schedule %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            {% if schedules_past %}
-                <h4 class="ui header">Past</h4>
-                <div class="ui cards">
-                    {% for schedule in schedules_past %}
-                        {% schedule_card schedule %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-            {% if schedules_future %}
-                <h4 class="ui header">Future</h4>
-                <div class="ui cards">
-                    {% for schedule in schedules_future %}
-                        {% schedule_card schedule %}
-                    {% endfor %}
-                </div>
-            {% endif %}
+            <div class="ui cards">
+                {% for schedule in schedules_active %}
+                    {% schedule_card schedule %}
+                {% endfor %}
+            </div>
         </div>
         <div class="five wide column">
             <h3 class="ui header">
