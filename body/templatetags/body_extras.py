@@ -29,7 +29,7 @@ def report_icon(colour="primary"):
 
 
 @register.simple_tag
-def report_icon(colour="primary"):
+def emotionreport_icon(colour="primary"):
     return format_html(f'<i aria-hidden="true" class="seedling icon {colour}"></i>')
 
 

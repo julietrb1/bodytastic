@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.timezone import localdate, timedelta, localtime, datetime
+from django.utils.timezone import localdate, timedelta, localtime, datetime, make_aware
 
 
 class ScheduleManager(models.Manager):
@@ -67,11 +67,14 @@ class Schedule(models.Model):
     def next_consumption(self):
         now = localtime()
 
-        consumption_at = datetime(
-            now.year, now.month, now.day, self.time.hour, self.time.minute
+        consumption_at = make_aware(
+            datetime(now.year, now.month, now.day, self.time.hour, self.time.minute)
         )
 
         if now.time() > self.time:
             consumption_at = consumption_at + timedelta(days=1)
+
+        if self.end_date and consumption_at.date() > self.end_date:
+            return None
 
         return consumption_at
