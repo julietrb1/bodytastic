@@ -11,7 +11,13 @@
                 <td class="selectable">
                     <a href="{% url "refill-update" medicinepk=refill.medicine.pk pk=refill.pk %}">{{ refill.when|naturalday|capfirst }}</a>
                 </td>
-                <td>{{ refill.quantity }}</td>
+                <td>
+                    {{ refill.quantity }} ({{ refill.remaining_consumptions }} left)
+                    <div class="ui purple tiny progress"
+                         data-percent="{{ refill.remaining_percent }}">
+                        <div class="bar"></div>
+                    </div>
+                </td>
             </tr>
         {% endfor %}
     </tbody>

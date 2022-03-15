@@ -4,6 +4,7 @@ from django.utils.timezone import make_aware, timedelta, datetime, localtime
 
 from body.tests.model_helpers import (
     create_consumption,
+    create_ledger_entry,
     create_medicine,
     create_schedule,
 )
@@ -13,6 +14,16 @@ from freezegun import freeze_time
 
 @freeze_time(make_aware(datetime(2022, 3, 1)))
 class MedicineDetailViewTests(LoginTestCase):
+    def test_with_refills(self):
+        """
+        Given a medicine with refills,
+        those refills should show in a table.
+        """
+        medicine = create_medicine(self.user, current_balance=1)
+        create_ledger_entry(medicine, 5)
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "5 (5 left)")
+
     def test_with_consumptions(self):
         """
         Given that a consumption exists for a medicine, it should be shown in the view.

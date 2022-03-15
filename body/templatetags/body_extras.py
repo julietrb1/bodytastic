@@ -1,6 +1,7 @@
 import itertools
 from django import template
 from django.utils.html import format_html
+from django.forms.models import model_to_dict
 
 register = template.Library()
 
@@ -52,7 +53,10 @@ def consumption_table(consumptions):
 
 @register.inclusion_tag("body/refill_table.html")
 def refill_table(refills):
-    return {"refills": refills}
+    refills_with_percent = refills
+    for r in refills_with_percent:
+        r.remaining_percent = (r.remaining_consumptions / r.quantity) * 100
+    return {"refills": refills_with_percent}
 
 
 @register.inclusion_tag("body/medicine_card.html")
