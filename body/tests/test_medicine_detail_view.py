@@ -26,6 +26,18 @@ class MedicineDetailViewTests(LoginTestCase):
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertContains(response, "2:25 p.m.", count=5)
 
+    def test_shows_last_five_consumptions(self):
+        """
+        Given a medicine with six refills,
+        then only five should be shown in the summary view.
+        """
+        medicine = create_medicine(self.user, current_balance=6)
+        for _ in range(6):
+            create_ledger_entry(medicine, 2)
+
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "2 (2 left)", count=5)
+
     def test_with_refills(self):
         """
         Given a medicine with refills,
