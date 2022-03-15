@@ -14,10 +14,22 @@ from freezegun import freeze_time
 
 @freeze_time(make_aware(datetime(2022, 3, 1)))
 class MedicineDetailViewTests(LoginTestCase):
+    def test_shows_last_five_consumptions(self):
+        """
+        Given a medicine with six consumptions,
+        then only five should be shown in the summary view.
+        """
+        medicine = create_medicine(self.user, current_balance=6)
+        for _ in range(6):
+            create_consumption(medicine)
+
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "2:25 p.m.", count=5)
+
     def test_with_refills(self):
         """
         Given a medicine with refills,
-        those refills should show in a table.
+        then those refills should show in a table.
         """
         medicine = create_medicine(self.user, current_balance=1)
         create_ledger_entry(medicine, 5)
