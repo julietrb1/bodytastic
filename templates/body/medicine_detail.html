@@ -48,6 +48,10 @@
                 {% for schedule in schedules_active %}
                     {% schedule_card schedule %}
                 {% endfor %}
+                {% if object.schedule_set.count > schedules_active.count %}
+                    <a class="ui tiny basic button"
+                       href="{% url "schedule-index" medicinepk=object.pk %}">More Schedules</a>
+                {% endif %}
             </div>
         </div>
         <div class="five wide column">

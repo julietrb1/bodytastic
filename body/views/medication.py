@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import localtime
 from django.views import View
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -70,7 +71,7 @@ class MedicineDetailView(UserOnlyMixin, DetailView):
         data = super().get_context_data(**kwargs)
         data["consumption_limited_set"] = self.object.consumption_set.all()[:5]
         data["refill_limited_set"] = self.object.refills[:5]
-        data["schedules_active"] = Schedule.objects.active(self.object)
+        data["schedules_active"] = Schedule.objects.active(self.object)[:5]
         return data
 
 
@@ -191,6 +192,21 @@ class ConsumptionUpdateView(
 
 class ConsumptionDeleteView(ChildUserOnlyMixin, MedicineSuccessMixin, DeleteView):
     model = Consumption
+
+
+class ScheduleListView(TemplateView):
+    template_name = "body/schedule_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        medicine = get_object_or_404(
+            Medicine, pk=self.kwargs["medicinepk"], user=self.request.user
+        )
+        context["schedules_active"] = Schedule.objects.active(medicine)
+        context["schedules_past"] = Schedule.objects.past(medicine)
+        context["schedules_future"] = Schedule.objects.future(medicine)
+        context["total_schedule_count"] = medicine.schedule_set.count()
+        return context
 
 
 class ScheduleCreateView(

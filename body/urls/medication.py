@@ -14,6 +14,7 @@ MEDICINE_UPDATE_ROUTE = "medicine-edit"
 REFILL_CREATE_ROUTE = "refill-create"
 REFILL_DELETE_ROUTE = "refill-delete"
 REFILL_UPDATE_ROUTE = "refill-update"
+SCHEDULE_LIST_ROUTE = "schedule-index"
 SCHEDULE_CREATE_ROUTE = "schedule-create"
 SCHEDULE_DELETE_ROUTE = "schedule-delete"
 SCHEDULE_UPDATE_ROUTE = "schedule-update"
@@ -59,6 +60,11 @@ urlpatterns = [
         "<int:medicinepk>/consumptions/<int:pk>/delete/",
         medication_views.ConsumptionDeleteView.as_view(),
         name=CONSUMPTION_DELETE_ROUTE,
+    ),
+    path(
+        "<int:medicinepk>/schedules/",
+        medication_views.ScheduleListView.as_view(),
+        name=SCHEDULE_LIST_ROUTE,
     ),
     path(
         "<int:medicinepk>/schedules/create/",

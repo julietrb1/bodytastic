@@ -82,7 +82,7 @@ class MedicineDetailViewTests(LoginTestCase):
         self.assertContains(response, "Next:")
         self.assertContains(response, "2:25 p.m.")
 
-    def test_with_schedule_without_end_date_in_past(self):
+    def test_with_schedule_in_past(self):
         medicine = create_medicine(self.user)
         create_schedule(
             medicine,
@@ -92,7 +92,7 @@ class MedicineDetailViewTests(LoginTestCase):
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertNotContains(response, "Next:")
 
-    def test_with_schedule_without_end_date_in_future(self):
+    def test_with_schedule_in_future(self):
         medicine = create_medicine(self.user)
         create_schedule(
             medicine,
@@ -101,3 +101,47 @@ class MedicineDetailViewTests(LoginTestCase):
         )
         response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
         self.assertNotContains(response, "Next:")
+
+    def test_shows_more_schedules_with_future(self):
+        medicine = create_medicine(self.user)
+        create_schedule(
+            medicine,
+            localtime() + timedelta(days=1),
+            localtime() + timedelta(days=2),
+        )
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "More Schedules")
+
+    def test_shows_more_schedules_with_past(self):
+        medicine = create_medicine(self.user)
+        create_schedule(
+            medicine,
+            localtime() - timedelta(days=2),
+            localtime() - timedelta(days=1),
+        )
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "More Schedules")
+
+    def test_doesnt_show_more_schedules_with_present(self):
+        medicine = create_medicine(self.user)
+        for _ in range(5):
+            create_schedule(
+                medicine,
+                localtime() - timedelta(days=2),
+                None,
+            )
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "Next:", count=5)
+        self.assertNotContains(response, "More Schedules")
+
+    def test_shows_more_schedules_with_gt_five_present(self):
+        medicine = create_medicine(self.user)
+        for _ in range(6):
+            create_schedule(
+                medicine,
+                localtime() - timedelta(days=2),
+                None,
+            )
+        response = self.client.get(reverse(MEDICINE_DETAIL_ROUTE, args=[medicine.pk]))
+        self.assertContains(response, "Next:", count=5)
+        self.assertContains(response, "More Schedules")
