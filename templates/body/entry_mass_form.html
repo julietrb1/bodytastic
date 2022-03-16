@@ -9,40 +9,27 @@
     <form method="post" class="ui form">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        {% for group in form|chunks:10 %}
-            <div class="fields">
-                {% for field in group %}
-                    <div class="field">
-                        {{ field.label_tag }}
-                        <input inputmode="decimal"
-                               pattern="\d*(\.\d*)?"
-                               type="text"
-                               name="{{ field.name }}"
-                               value="{{ field.initial|floatformat:"g" }}"
-                               id="{{ field.id_for_label }}">
-                    </input>
+        <div class="inline fields">
+            {% for field in form %}
+                <div class="field">
+                    {{ field.label_tag }}
+                    <input style="width: 80px;"
+                           inputmode="decimal"
+                           pattern="\d*(\.\d*)?"
+                           type="text"
+                           name="{{ field.name }}"
+                           value="{{ field.initial|floatformat:"g" }}"
+                           id="{{ field.id_for_label }}"/>
                     {{ field.errors }}
                 </div>
             {% endfor %}
         </div>
-    {% endfor %}
-    <div class="ui divider hidden"></div>
-    <div class="ui buttons">
-        <a class="cancel ui button"
-           href="{% url 'report-detail' form.report.pk %}">Cancel</a>
-        <div class="or"></div>
-        <button class="ui positive button" type="submit">Save</button>
-    </div>
-</form>
+        <div class="ui divider hidden"></div>
+        <div class="ui buttons">
+            <a class="cancel ui button"
+               href="{% url 'report-detail' form.report.pk %}">Cancel</a>
+            <div class="or"></div>
+            <button class="ui positive button" type="submit">Save</button>
+        </div>
+    </form>
 {% endblock content %}
-{% block scripts %}
-    $('#{{ form.when.id_for_label }}')
-    .calendar({
-    type: 'date',
-    maxDate: new Date(),
-    disabledDates: [
-    {% for disabled_date in disabled_dates %}"{{ disabled_date }}",{% endfor %}
-    ]
-    })
-    ;
-{% endblock scripts %}
