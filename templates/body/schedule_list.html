@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load body_extras %}
+{% load humanize %}
+{% block title %}
+    {% medicine_icon %}
+    <div class="content">
+        Schedules <span class="ui label circular">{{ total_schedule_count }}</span>&nbsp;
+        <a href="{% url 'schedule-create' medicinepk=view.kwargs.medicinepk %}"
+           class="mini icon ui button">
+            <i aria-hidden="true" class="icon plus"></i>
+        </a>
+    </div>
+{% endblock title %}
+{% block content %}
+    <a class="ui basic button"
+       href="{% url 'medicine-detail' view.kwargs.medicinepk %}">
+        <i aria-hidden="true" class="left arrow icon"></i>
+        Back to Medicine Detail
+    </a>
+    <div class="ui hidden divider"></div>
+    <div class="ui relaxed stackable grid">
+        <div class="five wide column">
+            <h3 class="ui header">
+                Active <span class="ui tiny label circular {% if schedules_future.exists %}green{% endif %}">{{ schedules_active.count }}</span>
+            </h3>
+            <div class="ui cards">
+                {% for schedule in schedules_active %}
+                    {% schedule_card schedule %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="five wide column">
+            <h3 class="ui header">
+                Past <span class="ui tiny label circular">{{ schedules_past.count }}</span>
+            </h3>
+            <div class="ui cards">
+                {% for schedule in schedules_past %}
+                    {% schedule_card schedule %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="five wide column">
+            <h3 class="ui header">
+                Future <span class="ui tiny label circular">{{ schedules_future.count }}</span>
+            </h3>
+            <div class="ui cards">
+                {% for schedule in schedules_future %}
+                    {% schedule_card schedule %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
