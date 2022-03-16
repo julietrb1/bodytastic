@@ -14,20 +14,26 @@
                 {% for field in group %}
                     <div class="field">
                         {{ field.label_tag }}
-                        {{ field }}
-                        {{ field.errors }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-        <div class="ui divider hidden"></div>
-        <div class="ui buttons">
-            <a class="cancel ui button"
-               href="{% url 'report-detail' form.report.pk %}">Cancel</a>
-            <div class="or"></div>
-            <button class="ui positive button" type="submit">Save</button>
+                        <input inputmode="decimal"
+                               pattern="\d*(\.\d*)?"
+                               type="text"
+                               name="{{ field.name }}"
+                               value="{{ field.initial|floatformat:"g" }}"
+                               id="{{ field.id_for_label }}">
+                    </input>
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
         </div>
-    </form>
+    {% endfor %}
+    <div class="ui divider hidden"></div>
+    <div class="ui buttons">
+        <a class="cancel ui button"
+           href="{% url 'report-detail' form.report.pk %}">Cancel</a>
+        <div class="or"></div>
+        <button class="ui positive button" type="submit">Save</button>
+    </div>
+</form>
 {% endblock content %}
 {% block scripts %}
     $('#{{ form.when.id_for_label }}')
