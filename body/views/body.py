@@ -164,6 +164,12 @@ class ReportCreateView(WhenFieldMixin, UserOnlyMixin, CreateView):
     model = Report
     fields = ("when", "weight_in_kg")
 
+    def get_form_kwargs(self):
+        kwargs = super(ReportCreateView, self).get_form_kwargs()
+        if not Report.objects.filter(user=self.request.user, when=localdate()).exists():
+            kwargs["initial"]["when"] = localdate()
+        return kwargs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["disabled_dates"] = Report.objects.filter(
