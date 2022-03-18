@@ -32,7 +32,13 @@
             {% endif %}
             <div class="field">
                 {{ form.weight_in_kg.label_tag }}
-                {{ form.weight_in_kg }}
+                <input style="width: 80px;"
+                       inputmode="decimal"
+                       pattern="\d*(\.\d*)?"
+                       type="text"
+                       name="{{ form.weight_in_kg.name }}"
+                       value="{{ form.weight_in_kg.initial|floatformat:"g" }}"
+                       id="{{ form.weight_in_kg.id_for_label }}"/>
                 {{ form.weight_in_kg.errors }}
             </div>
         </div>
