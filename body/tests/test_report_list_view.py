@@ -28,7 +28,7 @@ class ReportListViewTests(LoginTestCase):
         report = create_report(self.user)
         response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertContains(response, "1 Jan 2022")
-        self.assertContains(response, "50.5 kg")
+        self.assertContains(response, "50.5")
         self.assertContains(response, "0 entries")
         self.assertQuerysetEqual(response.context["object_list"], [report])
 
@@ -59,7 +59,7 @@ class ReportListViewTests(LoginTestCase):
         create_entry(report, body_area)
         response = self.client.get(reverse(REPORT_LIST_ROUTE))
         self.assertContains(response, "1 Jan 2022")
-        self.assertContains(response, "50.5 kg")
+        self.assertContains(response, "50.5")
         self.assertContains(response, "One entry")
         self.assertContains(response, body_area.name)
         self.assertNotContains(response, "WHR:")
@@ -78,7 +78,7 @@ class ReportListViewTests(LoginTestCase):
         self.assertContains(response, "Two entries")
         self.assertContains(response, "Waist")
         self.assertContains(response, "Hips")
-        self.assertContains(response, "WHR: 0.588")
+        self.assertContains(response, "0.59")
         self.assertQuerysetEqual(response.context["object_list"], [report])
 
     def test_no_other_user_reports_shown(self):
