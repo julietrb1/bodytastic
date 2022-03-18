@@ -36,11 +36,24 @@ class Report(models.Model):
             return "no weight"
         return f"{float(self.weight_in_kg):g} kg"
 
+    def __get_measurement(self, body_area_name):
+        entry = self.entry_set.filter(body_area__name=body_area_name).first()
+        return entry.measurement if entry else None
+
+    @property
+    def waist_measurement(self):
+        return self.__get_measurement("Waist")
+
+    @property
+    def hips_measurement(self):
+        return self.__get_measurement("Hips")
+
     @property
     def waist_hip_ratio(self):
-        waist_entry = self.entry_set.filter(body_area__name="Waist").first()
-        hip_entry = self.entry_set.filter(body_area__name="Hips").first()
-        if not waist_entry or not hip_entry:
+        waist_measurement = self.waist_measurement
+        hips_measurement = self.hips_measurement
+
+        if not waist_measurement or not hips_measurement:
             return None
 
-        return waist_entry.measurement / hip_entry.measurement
+        return waist_measurement / hips_measurement
