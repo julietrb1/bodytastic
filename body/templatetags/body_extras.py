@@ -1,14 +1,25 @@
-import itertools
 from django import template
 from django.utils.html import format_html
-from django.forms.models import model_to_dict
 
 register = template.Library()
 
 
 @register.inclusion_tag("body/report_card.html")
 def report_card(report):
-    return {"report": report}
+    optional_tags = []
+
+    if report.weight_in_kg:
+        optional_tags.append(("Weight (kg)", f"{float(report.weight_in_kg):.3g}"))
+
+    bra_size = report.bra_size
+    if bra_size:
+        optional_tags.append(("Bra", bra_size))
+
+    waist_hip_ratio = report.waist_hip_ratio
+    if waist_hip_ratio:
+        optional_tags.append(("WHR", f"{float(waist_hip_ratio):.2g}"))
+
+    return {"report": report, "optional_tags": optional_tags}
 
 
 @register.inclusion_tag("body/entry_card.html")

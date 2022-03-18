@@ -4,10 +4,15 @@
     <div class="content">
         <div class="header">{% report_icon %}&nbsp;{{ report.when|naturalday|title }}</div>
         <div class="meta">
-            {{ report.entry_set.count|apnumber|capfirst }} entr{{ report.entry_set.count|pluralize:'y,ies' }} • {{ report.weight_display }}
-            {% if report.waist_hip_ratio %}• WHR: {{ report.waist_hip_ratio|floatformat:3 }}{% endif %}
+            {{ report.entry_set.count|apnumber|capfirst }} entr{{ report.entry_set.count|pluralize:'y,ies' }}
         </div>
         <div class="description">
+            {% for tag_name, tag_value in optional_tags %}
+                <div class="ui label violet small">
+                    {{ tag_name }}
+                    <div class="detail">{{ tag_value }}</div>
+                </div>
+            {% endfor %}
             {% for entry in report.entry_set.all %}
                 <div class="ui label teal small">
                     {{ entry.body_area.name }}
