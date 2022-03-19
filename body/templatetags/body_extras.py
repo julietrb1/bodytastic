@@ -1,5 +1,6 @@
 from django import template
 from django.utils.html import format_html
+from django.templatetags.static import static
 
 register = template.Library()
 
@@ -38,6 +39,13 @@ def entry_card(entry):
 @register.simple_tag
 def report_icon(colour="primary"):
     return format_html(f'<i aria-hidden="true" class="weight icon {colour}"></i>')
+
+
+@register.simple_tag
+def icons8_image(image_name):
+    return format_html(
+        f'<img class="ui image" style="width: 50px;" src="{static(f"body/icons/icons8-{image_name}.svg")}"/>'
+    )
 
 
 @register.simple_tag
