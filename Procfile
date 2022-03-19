@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn bodytastic.wsgi
+web: python manage.py collectstatic --noinput; gunicorn bodytastic.wsgi
