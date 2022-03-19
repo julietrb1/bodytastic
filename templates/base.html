@@ -14,6 +14,12 @@
             {% block content %}
                 (no content)
             {% endblock content %}
+            {% if user.is_authenticated %}
+                <div class="ui divider hidden"></div>
+                <div>
+                    Icons by <a target="_blank" href="https://icons8.com">Icons8</a>
+                </div>
+            {% endif %}
         </div>
         <div class="ui hidden divider"></div>
     </div>
