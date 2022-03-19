@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load body_extras %}
 {% block title %}
-    <i aria-hidden="true" class="book medical icon primary"></i>
+    {% consumption_icon %}
     <div class="content">
         {% if object %}
             Edit

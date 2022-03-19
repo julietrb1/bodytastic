@@ -2,7 +2,7 @@
 {% load body_extras %}
 {% load humanize %}
 {% block title %}
-    {% medicine_icon %}
+    {% schedule_icon %}
     <div class="content">
         Schedules <span class="ui label circular">{{ total_schedule_count }}</span>&nbsp;
         <a href="{% url 'schedule-create' medicinepk=view.kwargs.medicinepk %}"

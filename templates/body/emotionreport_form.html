@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load body_extras %}
 {% block title %}
-    {% if object %}
-        Edit
-    {% else %}
-        Add
-    {% endif %}
-    {{ body_area.name }} Report
+    {% emotion_report_icon %}
+    <div class="content">
+        {% if object %}
+            Edit
+        {% else %}
+            Add
+        {% endif %}
+        {{ body_area.name }} Emotion Report
+    </div>
 {% endblock title %}
 {% block content %}
     <div class="ui divider hidden"></div>

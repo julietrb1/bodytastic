@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load body_extras %}
 {% block title %}
-    <i aria-hidden="true" class="trash red alternate icon"></i>
+    {% delete_icon %}
     <div class="content">
         Delete Consumption?
         <div class="sub header">{{ object.medicine }}</div>

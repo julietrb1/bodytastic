@@ -2,7 +2,7 @@
 {% load body_extras %}
 <div class="card">
     <div class="content">
-        <div class="header">{% report_icon %}&nbsp;{{ report.when|naturalday|title }}</div>
+        <div class="header">{% report_icon width=20 %}&nbsp;{{ report.when|naturalday|title }}</div>
         <div class="meta">
             {{ report.entry_set.count|apnumber|capfirst }} entr{{ report.entry_set.count|pluralize:'y,ies' }}
         </div>
