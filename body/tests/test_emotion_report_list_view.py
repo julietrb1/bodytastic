@@ -1,7 +1,4 @@
 from django.urls import reverse
-from django.utils.timezone import localdate
-
-from body.models import Emotion, EmotionReport, EmotionEntry
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_emotion_report
 from body.urls.mind_and_soul import EMOTION_REPORT_LIST_ROUTE
