@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load body_extras %}
 {% block title %}
-    <i aria-hidden="true" class="trash red alternate icon"></i>
+    {% delete_icon %}
     <div class="content">
         Delete Refill?
         <div class="sub header">{{ object.medicine }} ({{ object.quantity }})</div>

@@ -36,28 +36,45 @@ def entry_card(entry):
     return {"entry": entry, "diff": diff, "colour": colour}
 
 
-@register.simple_tag
-def report_icon(colour="primary"):
-    return format_html(f'<i aria-hidden="true" class="weight icon {colour}"></i>')
-
-
-@register.simple_tag
-def icons8_image(image_name):
+def icons8_image(image_name, width=50):
     return format_html(
-        f'<img class="ui image" style="width: 50px;" src="{static(f"body/icons/icons8-{image_name}.svg")}"/>'
+        f'<img class="ui image" style="width: {width}px;" src="{static(f"body/icons/icons8-{image_name}")}"/>'
     )
 
 
 @register.simple_tag
-def emotionreport_icon(colour="primary"):
-    return format_html(f'<i aria-hidden="true" class="seedling icon {colour}"></i>')
+def report_icon(**kwargs):
+    return icons8_image("scales-100.png", **kwargs)
 
 
 @register.simple_tag
-def emotion_icon(colour="primary"):
-    return format_html(
-        f'<i aria-hidden="true" class="hand holding water icon {colour}"></i>'
-    )
+def emotion_report_icon(**kwargs):
+    return icons8_image("spa-candle-100.png", **kwargs)
+
+
+@register.simple_tag
+def entry_icon(**kwargs):
+    return icons8_image("sewing-tape-measure-100.png", **kwargs)
+
+
+@register.simple_tag
+def delete_icon(**kwargs):
+    return icons8_image("remove-100.png", **kwargs)
+
+
+@register.simple_tag
+def consumption_icon(**kwargs):
+    return icons8_image("treatment-100.png", **kwargs)
+
+
+@register.simple_tag
+def schedule_icon(**kwargs):
+    return icons8_image("schedule-100.png", **kwargs)
+
+
+@register.simple_tag
+def emotion_icon(**kwargs):
+    return icons8_image("trust-100.png", **kwargs)
 
 
 @register.inclusion_tag("body/schedule_card.html")
@@ -88,10 +105,20 @@ def medicine_card(medicine):
 
 
 @register.simple_tag
-def medicine_icon(colour="primary"):
-    return format_html(f'<i aria-hidden="true" class="pills icon {colour}"></i>')
+def medicine_icon(**kwargs):
+    return icons8_image("pills-100.png", **kwargs)
 
 
 @register.simple_tag
-def event_icon(colour="primary"):
-    return format_html(f'<i aria-hidden="true" class="medal icon {colour}"></i>')
+def event_icon(**kwargs):
+    return icons8_image("prize-100.png", **kwargs)
+
+
+@register.simple_tag
+def home_icon(**kwargs):
+    return icons8_image("female-user.svg", **kwargs)
+
+
+@register.simple_tag
+def refill_icon(**kwargs):
+    return icons8_image("bill-100.png", **kwargs)
