@@ -1,4 +1,6 @@
 from django.urls import reverse
+
+from body.models import Emotion, EmotionEntry
 from body.tests.login_test_case import LoginTestCase
 from body.tests.model_helpers import create_emotion_report
 from body.urls.mind_and_soul import EMOTION_REPORT_DETAIL_ROUTE
@@ -24,3 +26,12 @@ class EmotionReportDetailViewTests(LoginTestCase):
             reverse(EMOTION_REPORT_DETAIL_ROUTE, args=[report.pk])
         )
         self.assertContains(response, "1 Jan 2022")
+
+    def test_report_with_emotions(self):
+        report = create_emotion_report(self.user)
+        emotion = Emotion.objects.create(name="Sample")
+        EmotionEntry.objects.create(emotion=emotion, report=report, strength=2)
+        response = self.client.get(
+            reverse(EMOTION_REPORT_DETAIL_ROUTE, args=[report.pk])
+        )
+        self.assertContains(response, emotion.name)

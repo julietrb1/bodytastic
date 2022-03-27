@@ -7,7 +7,7 @@ from django.urls import reverse
 class LoginTestCase(TestCase):
     def setUp(self):
         self.client: Client = Client()
-        self.user = User.objects.create_user(
+        self.user: User = User.objects.create_user(
             "jennifer",
             "jennifer@example.com",
             "jenpassword",
